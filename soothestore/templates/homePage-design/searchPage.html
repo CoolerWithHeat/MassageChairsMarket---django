@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="{% static 'images/Brand.png' %}" type="image/x-icon">
+        <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/CartAnimation.css' %}">
+        <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+        <link rel="stylesheet" href="{% static 'css/searchfield.css' %}">
+        <link rel="stylesheet" href="{% static 'css/filterSlider.css' %}">
+        <link rel="stylesheet" href="{% static 'css/accordition.css' %}">
+    </head>
+    
+    <body>
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+
+                        <a href="\../" class="logo">
+                            <img id="LogoPoint" class="brandLogo" src="{% static 'images/companyLogo.png' %}">   
+                        </a>
+
+                        <ul class="nav">
+                            <li class="scroll-to-section">
+                                <div class="CartBoundary" style="cursor: pointer;">
+                                    <a href="../../Cart">
+                                        <i class="fa" style="font-size:25px">&#xf07a;</i>
+                                        <span id="lblCartCount" class='badge badge-warning'> 0 </span>
+                                    </a>
+                                </div>                  
+                            </li>
+                            <li class="scroll-to-section"><a href="#top">Home</a></li>
+                                <li class="submenu">
+                                    <a href="javascript:;">Pages</a>
+                                    <ul>
+                                        <li><a href="about.html">About Us</a></li>
+                                        <li><a href="products.html">Products</a></li>
+                                        <li><a href="single-product.html">Single Product</a></li>
+                                        <li><a href="contact.html">Contact Us</a></li>
+                                    </ul>
+                                </li>
+                            <li class="submenu">
+
+                                
+                                <a href="javascript:;">Brands</a>
+                                <ul>
+                                    <li><a href="#">Kahuna</a></li>
+                                    <li><a href="#">Osaki</a></li> 
+                                    <li><a href="#">Real Relax</a></li>
+                                    <li><a href="#">Homedics</a></li>
+                                </ul>
+                            </li>
+                            <li class="scroll-to-section onpage"><a href="#explore">Explore</a></li>
+                            <li class="scroll-to-section"><a href="/productsPage">Products</a></li>
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+
+                </div>
+                
+            </div>
+            <div class="searchBox">
+                <input class="searchInput"type="text" name="" placeholder="Search">
+                <button onclick="OpenSearchBar()" class="searchButton" href="#">
+                    <div class="searchIcon">
+                        <i class="material-icons">
+                            <i id="SearchIconFA" class="fa fa-search" aria-hidden="true"></i>
+                        </i>
+                    </div>
+                </button>
+            </div>
+        </div>
+        <div id='CartHub'>
+            <div class="CartBoundaryFixed MobileCart" style="cursor: pointer;">
+                <a href="../../Cart">
+                    <i class="fa" style="font-size:24px;">&#xf07a;</i>
+                    <span id="lblCartCountMobile" class='badge badge-warning'> 0 </span>
+                </a>
+            </div>
+        </div>
+    </header>
+    <br><br><br><br><br><br>
+    <section class="section" id="products">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Our Latest Products</h2>
+                        <span>Check out all of our products.</span>
+                    </div>
+                </div>
+                <div id="filterFrame">
+                    <div class="product-filters">
+                        <ul class="mobile-product-filters vertical menu show-for-small-only" data-accordion-menu>
+                         <li>
+                            <h2 style="margin-left: 22px;">Filters</h2>
+                            <div class="c">
+                                <input class="input" type="checkbox" id="faq-3">
+                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-3">Price</label></h1>
+                                <div class="p">
+                                    <div id="PriceRange">
+                                        <input id="MinPriceField" class="form-control" type="text" placeholder="Min">
+                                        <h4 style="font-weight: 200;">-</h4>
+                                        <input id="MaxPriceField" class="form-control" type="text" placeholder="Max">
+                                    </div>
+                                    <button onclick="ApplyPrice();">apply</button>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <input class="input" type="checkbox" id="faq-4">
+                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-4">Brand</label></h1>
+                                <div class="p">
+                                <p>I was inpired by an article on css-tricks.
+                                </p>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <input class="input" type="checkbox" id="faq-5">
+                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-5">Type</label></h1>
+                                <div class="p">
+                                <p>I was inpired by an article on css-tricks.
+                                </p>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <input class="input" type="checkbox" id="faq-6">
+                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-6">Color</label></h1>
+                                <div class="p">
+                                <p>I was inpired by an article on css-tricks.
+                                </p>
+                                </div>
+                            </div>
+                            <div class="c">
+                                <input class="input" type="checkbox" id="faq-7">
+                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-7">Size</label></h1>
+                                <div class="p">
+                                <p>I was inpired by an article on css-tricks.
+                                </p>
+                                </div>
+                            </div>
+                         </li>
+                       </ul>
+                       
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            
+            <div id="ProductContainer" class="row"></div>
+            <div id="PaginationSection" class="col-lg-12"></div>
+        </div>
+    </section>
+
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+    <script src="https://polyfill.io/v3/polyfill.js?features=Promise%2CObject.entries%2CObject.assign"></script>
+    <script src="https://cdn.jsdelivr.net/npm/algoliasearch@4.22.1/dist/algoliasearch.umd.min.js"></script>
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script>
+    <script src="{% static 'js/isotope.js' %}"></script>
+    <script src="{% static 'js/custom.js' %}"></script>
+
+    <script>
+        // function searchAlgoliaWithParams(minPrice, maxPrice, brand, rating) {
+        function searchAlgoliaWithParams(brand, minPrice=undefined, maxPrice=undefined, rating=undefined) {
+            const client = algoliasearch('K7LWE7RYA4', 'dd84d643cb097b484b87bf0a2c35d742');
+            const products = client.initIndex('MassageChair');
+
+            const KeywordSearch = '*';
+
+            const searchOptions = {
+                hitsPerPage: 10,
+                // "filters": "description: asdas"
+            };
+
+            let filters = [];
+
+            // if (minPrice !== undefined && maxPrice !== undefined) {
+            //     filters.push(`price:${minPrice} TO ${maxPrice}`);
+            // } else if (minPrice !== undefined) {
+            //     filters.push(`price >= ${minPrice}`);
+            // } else if (maxPrice !== undefined) {
+            //     filters.push(`price <= ${maxPrice}`);
+            // }
+
+            // if (brand !== undefined) {
+            //     filters.push(`brand.brand_name:${brand}`);
+            // }
+
+            // if (rating !== undefined) {
+            //     filters.push(`rating >= ${rating}`);
+            // }
+            // if (filters.length > 0) {
+            //     searchOptions.filters = filters.join(' AND ');
+            // }
+            products.search(KeywordSearch, searchOptions).then(({ hits }) => {
+                if (hits.length) {
+                    hits.forEach(Each => {
+                        console.log(Each)
+                        const container = document.getElementById('ProductContainer');
+                        const product = extractProductData(Each);
+                        container.innerHTML += product;
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Algolia search error:', error);
+            });
+        }
+        searchAlgoliaWithParams('Osaki');
+        function extractProductData(algoliaData) {
+            const title = algoliaData.title;
+            const price = algoliaData.price;
+            const description = algoliaData.description;
+            const brand = algoliaData.brand;
+            const availableColors = algoliaData.color_options;
+            const features = algoliaData.chair_features; 
+            const purchased = algoliaData.purchased;
+            const rating = algoliaData.rating;
+            const posted = algoliaData.posted;
+            const product_id = algoliaData.objectID;
+            const rating_stars = getRating(rating);
+            const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
+            const style = Cart.some(item => item.product_id === 2) ? "color: rgb(127,255,212);" : null;
+            const blackColor_Url = availableColors[0][2];
+            if (blackColor_Url){
+                const Products = `
+                    <div class="col-lg-4">
+                        <div class="item">
+                            <div class="thumb">
+                                <div class="hover-content">
+                                    <ul>
+                                        <li><a href="../Buy/${product_id}/"><i class="fa fa-eye"></i></a></li>
+                                        <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
+                                        <li><a><i style="${style}" data-id="${product_id}" onclick="AddToCard(event)" class="fa fa-shopping-cart"></i></a></li>
+                                    </ul>
+                                </div>
+                                <img src="${blackColor_Url}" alt="">
+                            </div>
+                            <div class="down-content">
+                                <h4>${title}</h4>
+                                <span>$${Number(price).toFixed(2)}</span>
+                                ${rating_stars.outerHTML}
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                return Products;
+            }
+        }
+
+        const SetPagination = (page)=>{
+            const frame = document.getElementById('PaginationSection');
+            const DesignatedButtons = `
+                <div class="pagination">
+                    <ul>
+                        <li class="active">
+                            <a href="#">1</a>
+                        </li>
+                        <li >
+                            <a href="#">2</a>
+                        </li>
+                        <li>
+                            <a href="#">3</a>
+                        </li>
+                        <li>
+                            <a href="#">4</a>
+                        </li>
+                        <li>
+                            <a href="#">></a>
+                        </li>
+                    </ul>
+                </div>`
+            ;
+            frame.innerHTML = DesignatedButtons;
+        };
+
+        
+        function setUrlParam(key, value) {
+            var url = new URL(window.location.href);
+            url.searchParams.set(key, value);
+            window.history.pushState({ path: url.href }, '', url.href);
+        }
+
+        function addPriceFilters(maxPrice, minPrice = 0) {
+            setUrlParam('minPrice', minPrice);
+            setUrlParam('maxPrice', maxPrice);
+        }
+
+        function addLatestProductParameter() {
+            var url = new URL(window.location.href);
+            url.searchParams.set('latest_product', 'true');
+            window.history.pushState({ path: url.href }, '', url.href);
+        }
+
+        function removeLatestProductParameter() {
+            var url = new URL(window.location.href);
+            url.searchParams.delete('latest_product');
+            window.history.pushState({ path: url.href }, '', url.href);
+        }
+
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+            $("."+selectedClass).fadeIn();
+            $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+
+        const getRating = (rating) => {
+            const StarsHub = document.createElement('ul');
+            StarsHub.className = 'stars';
+            const wholeRating = Math.floor(rating);
+            const hasHalfStar = rating % 1 >= 0.5;
+
+            for (let i = 0; i < wholeRating; i++) {
+                const star = document.createElement('li');
+                const icon = document.createElement('i');
+                icon.className = 'fa fa-star';
+                star.appendChild(icon);
+                StarsHub.appendChild(star);
+            }
+            
+            const classname = hasHalfStar ? 'fa fa-star' : 'fa fa-star-half';
+            const halfStar = document.createElement('li');
+            const halfStarIcon = document.createElement('i');
+            halfStarIcon.className = classname;
+            halfStar.appendChild(halfStarIcon);
+            StarsHub.appendChild(halfStar);
+
+            return StarsHub;
+        };
+
+        var logoElement = document.getElementById('LogoPoint');
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                logoElement.classList.add('active');
+            }, 999);
+            setTimeout(() => {
+                logoElement.classList.remove('active');
+            }, 1699);
+        });
+
+        function AnimateLogo(){
+            logoElement.classList.add('active');
+            setTimeout(() => {
+                logoElement.classList.remove('active');
+            }, 1000);
+        }
+
+        function ManageCart(product_id, quantity = 1) {
+            const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
+            let isRemoved = false;
+        
+            const index = savedProducts.findIndex(product => product.product_id === product_id);
+        
+            if (index === -1) {
+                savedProducts.push({ product_id, quantity });
+            } else {
+                savedProducts.splice(index, 1);
+                isRemoved = true;
+            }
+        
+            localStorage.setItem('MassageCart', JSON.stringify(savedProducts));
+        
+            return [savedProducts.length, isRemoved];
+        }
+
+        function OpenSearchBar(fadeout=true){
+            const searchBar = document.getElementsByClassName('searchBox')[0]
+            const in_closed_state = !searchBar.classList.contains('openedSearch')
+            if (in_closed_state)
+                searchBar.classList.add('openedSearch')
+                AnimateSearchIcon()
+        }
+
+        const FadaAwaySearch = (fadeout=true)=>{
+            const searchBar = document.getElementsByClassName('searchBox')[0]
+            if (!fadeout){
+                    searchBar.classList.remove('Appear');
+                    searchBar.classList.add('Disappear');
+            }else{
+                searchBar.classList.remove('Disappear');
+                searchBar.classList.add('Appear');
+            }
+        }
+
+        function CloseSearchBar(fadeout=true){
+            const searchBar = document.getElementsByClassName('searchBox')[0]
+            const in_open_state = searchBar.classList.contains('openedSearch')
+            if (in_open_state)
+                searchBar.classList.remove('openedSearch')
+                AnimateSearchIcon()
+            }
+        
+        function AnimateSearchIcon() {
+            const SearchIcon = document.getElementById('SearchIconFA');
+            const className = 'SearchIconAnimation';
+            const isAlreadyOpened = SearchIcon.classList.contains(className);
+            if (isAlreadyOpened) {
+                SearchIcon.classList.remove(className);
+                setTimeout(() => {
+                SearchIcon.classList.add(className);
+                }, 10);
+
+            } else {
+                SearchIcon.classList.add(className);
+            }
+        }
+
+        function TeachHow() {
+            const searchInput = document.querySelector('.searchInput');
+            const inputText = 'I Want Air Massage';
+            let index = 0;
+            let addTextIntervalId;
+
+            addTextIntervalId = setInterval(function () {
+                searchInput.value = inputText.slice(0, index);
+                index++;
+                if (index > inputText.length) {
+                clearInterval(addTextIntervalId);
+
+                setTimeout(() => {
+                    let clearIndex = inputText.length;
+
+                    const clearTextIntervalId = setInterval(function () {
+                    searchInput.value = inputText.slice(0, clearIndex);
+                    clearIndex--;
+
+                    if (clearIndex < 0) {
+                        clearInterval(clearTextIntervalId);
+                    }
+                    }, 20);
+                }, 777);
+                }
+            }, 50);
+
+            localStorage.setItem('CustomerAwareness', true)
+            return true
+        }
+
+
+        function AddToCard(data=null){
+            const product_id = data.target.dataset.id ? Number(data.target.dataset.id) : null;
+            const result = ManageCart(product_id);
+            const total_products = result[0];
+            const current_color = result[1] ? '#343a40' : 'rgb(127,255,212)';
+            const element = data.target;
+            const Datapath = document.getElementById('lblCartCount')
+            const DatapathMobile = document.getElementById('lblCartCountMobile')
+            const Divpath = document.getElementsByClassName('CartBoundary')[0];
+            const DivpathMobile = document.getElementsByClassName('MobileCart')[0];
+            Divpath.classList.add('animateCart');
+            DivpathMobile.classList.add('animateCart');
+            Datapath.textContent = total_products;
+            DatapathMobile.textContent = total_products;
+            if (result[1]){
+                element.classList.add('rollback');
+                element.classList.remove('CartSelected');
+            }
+            else{
+                element.classList.remove('rollback');
+                element.classList.add('CartSelected');
+            }
+            setTimeout(() => {
+                element.style.color = current_color;
+            }, 333);
+            setTimeout(() => {
+                Divpath.classList.remove('animateCart');
+                DivpathMobile.classList.remove('animateCart');
+            }, 999);
+        }
+
+        function SetProductCard(){
+            const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
+            const total_products = Cart.length;
+            const Datapath = window.innerWidth > 767 ? document.getElementById('lblCartCount') : document.getElementById('lblCartCountMobile');
+            Datapath.textContent = total_products;
+            Cart.forEach(Each=>{
+                const element = document.querySelector(`[data-id="${Each.product_id}"]`);
+                if (element)
+                    element.style.color = 'rgb(127,255,212)';
+            })
+        }
+
+
+        function HandleSearchBarState(){
+            const SearchBar = document.getElementsByClassName('searchBox')[0];
+            const AwareCustomer = JSON.parse(localStorage.getItem('CustomerAwareness')) || false
+            if (!AwareCustomer){
+                setTimeout(() => {
+                    OpenSearchBar();
+                }, 999);
+
+                setTimeout(() => {
+                    TeachHow();
+                }, 1500);
+
+                setTimeout(() => {
+                    CloseSearchBar();
+                }, 4000);
+
+                setTimeout(() => {
+                    window.addEventListener("scroll", function() {
+                        const searchBar = document.getElementsByClassName('searchBox')[0]
+                        const in_open_state = searchBar.classList.contains('openedSearch')
+                        if (window.scrollY > 100) {
+                            if (in_open_state){
+                                CloseSearchBar();
+                            }
+                        }
+                        if (window.scrollY < 50) {
+                            if (!in_open_state)
+                                OpenSearchBar();
+                        }
+                    });    
+                }, 3800);
+                
+            }else{
+                window.addEventListener("scroll", function() {
+                        const searchBar = document.getElementsByClassName('searchBox')[0]
+                        const in_open_state = searchBar.classList.contains('openedSearch')
+                        if (window.scrollY > 100) {
+                            if (in_open_state){
+                                CloseSearchBar();
+                            }
+                        }
+                        if (window.scrollY < 50) {
+                            if (!in_open_state)
+                                OpenSearchBar();
+                        }
+                        if (window.scrollY > 450) {
+                            if (!in_open_state)
+                            FadaAwaySearch(false);
+                        }
+                        if (window.scrollY < 300) {
+                            if (!in_open_state)
+                            FadaAwaySearch();
+                        }
+                    });
+                }
+            }
+
+            function getUrlParams() {
+                const searchParams = new URLSearchParams(window.location.search);
+                const params = {};
+                for (const [key, value] of searchParams.entries()) {
+                    params[key] = value;
+                }
+                return params;
+            }
+
+            function ApplyPrice(){
+                const preferred_price_min = document.getElementById('MinPriceField');
+                const preferred_price_max = document.getElementById('MaxPriceField');
+                const min_price = preferred_price_min.value || 0
+                const max_price = preferred_price_max.value || 0
+                if (preferred_price_min && preferred_price_max)
+                    //addLatestProductParameter();
+                    addPriceFilters(max_price, min_price);
+            };
+
+            console.log(getUrlParams())
+
+        HandleSearchBarState();
+        SetProductCard();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<style>
+    .card {
+        width: 300px;
+        height: 200px;
+        background-color: lightblue;
+        margin: 20px;
+        transition: background-color 0.3s ease-in-out;
+    }
+    .in-view {
+        background-color: lightgreen;
+    }
+</style>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="{% static 'images/Brand.png' %}" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,400,700&subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/productsuggestion.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/contactPopup.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/CartAnimation.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/owl-carousel.css' %}">
+
+    <link rel="stylesheet" href="{% static 'css/lightbox.css' %}">
+
+    <div class=""></div>    
+    <link rel="stylesheet" href="{% static 'css/card.css' %}">
+    <link rel="stylesheet" href="{% static 'css/cart.css' %}">
+
+    </head>
+    
+    <body>
+
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+
+    <header class="header-area header-sticky">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <nav class="main-nav">
+
+                        <a href="../../" class="logo">
+                            <img id="LogoPoint" class="brandLogo" src="{% static 'images/companyLogo.png' %}">   
+                        </a>
+
+                        <ul class="nav">
+                            <li class="scroll-to-section">
+                                <div class="neutralCart" style="cursor: pointer;">
+                                    <a href="../../Cart">
+                                        <i class="fa" style="font-size:25px">&#xf07a;</i>
+                                        <span id="lblCartCount" class='badge badge-warning'> 0 </span>
+                                    </a>
+                                </div>                  
+                            </li>
+                            <li class="scroll-to-section"><a href="#top" class="active">Home</a></li>
+                            <li class="submenu">
+                                <a href="javascript:;">Pages</a>
+                                <ul>
+                                    <li><a href="about.html">About Us</a></li>
+                                    <li><a href="products.html">Products</a></li>
+                                    <li><a href="single-product.html">Single Product</a></li>
+                                    <li><a href="contact.html">Contact Us</a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="javascript:;">Brands</a>
+                                <ul>
+                                    <li><a href="#">Kahuna</a></li>
+                                    <li><a href="#">Osaki</a></li> 
+                                    <li><a href="#">Real Relax</a></li>
+                                    <li><a href="#">Homedics</a></li>
+                                </ul>
+                            </li>
+                            <li class="scroll-to-section"><a href="#explore">Explore</a></li>
+                            <li class="scroll-to-section"><a href="/productsPage">Products</a></li>
+                        </ul>        
+                        <a class='menu-trigger'>
+                            <span>Menu</span>
+                        </a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-banner" id="top">
+        <div class="neutralCartMobile" style="cursor: pointer;">
+            <a href="../../Cart">
+                <i class="fa" style="font-size:24px">&#xf07a;</i>
+                <span id="lblCartCountMobile" class='badge badge-warning'> 0 </span>
+            </a>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="left-content">
+                        <div class="thumb">
+                            <div class="inner-content">
+                                <div style="width: 250px; height: 80px; border-style: solid;" id="GreetingHub">
+                                </div>
+                                <h5 style="color:white; text-align: left;" class="GreetingText">Chairs With Massage</h5>
+                                <span style="color:white; text-align: left;">Embrace Relaxation</span>
+                                <div class="main-border-button">
+                                    <a href="/FindProduct">Purchase now!</a>
+                                </div>
+                            </div>  
+                            <img src="{% static 'images/mainimage.jpg' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="right-content">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4 style="color:rgb(255, 255, 255); font-size: 30px; text-shadow: 1px 1px 10px rgba(74, 74, 74, 0.5);">Relax</h4>
+                                            <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.808);">Instant relaxation, anytime.</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Soothe</h4>
+                                                <p>Unwind in Ultimate Comfort at Home.</p>
+                                                <div class="main-border-button">
+                                                    <a href="/FindProduct">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img src="{% static 'images/menMassage.png' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4 style="color:rgb(255, 255, 255); font-size: 30px; text-shadow: 1px 1px 10px rgba(74, 74, 74, 0.5);">Bliss</h4>
+                                            <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.808);">Rejuvenate effortlessly.</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Enjoy</h4>
+                                                <p>Experience Blissful Relaxation in Our Chairs</p>
+                                                <div class="main-border-button">
+                                                    <a href="/FindProduct">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img src="{% static 'images/womenMassage.png' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4 style="color:rgb(255, 255, 255); font-size: 30px; text-shadow: 1px 1px 10px rgba(74, 74, 74, 0.5);">Ease</h4>
+                                            <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 5px rgb(0, 0, 0);">Relax with convenience.</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Ease</h4>
+                                                <p>Relaxation made simple: sit back.</p>
+                                                <div class="main-border-button">
+                                                    <a href="/FindProduct">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img src="{% static 'images/upscaled.jpeg' %}">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="right-first-image">
+                                    <div class="thumb">
+                                        <div class="inner-content">
+                                            <h4 style="color:rgb(255, 255, 255); font-size: 30px; text-shadow: 1px 1px 10px rgba(74, 74, 74, 0.5);">Unwind</h4>
+                                            <span style="color:rgb(255, 255, 255); text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.808);">Instant serenity awaits.</span>
+                                        </div>
+                                        <div class="hover-content">
+                                            <div class="inner">
+                                                <h4>Unwind</h4>
+                                                <p>Unwind with ease: embrace relaxation.</p>
+                                                <div class="main-border-button">
+                                                    <a href="../FindProduct">Discover More</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <img src="{% static 'images/upscaled.png' %}">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="service_section">
+        <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-lg-3">
+            <div class="box ">
+                <div class="img-box">
+                <img src="{% static 'images/delivery.png' %}" alt="">
+                </div>
+                <div class="detail-box">
+                <h5>
+                    Fast Delivery
+                </h5>
+                <p>
+                    Timely delivery, hassle-free experience.
+                </p>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+            <div class="box ">
+                <div class="img-box">
+                <img src="{% static 'images/free.png' %}" alt="">
+                </div>
+                <div class="detail-box">
+                <h5>
+                    Free Shiping
+                </h5>
+                <p>
+                    Shipping's on us, always.
+                </p>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+            <div class="box ">
+                <div class="img-box">
+                <img src="{% static 'images/quality.png' %}" alt="">
+                </div>
+                <div class="detail-box">
+                <h5>
+                    Best Quality
+                </h5>
+                <p>
+                    Crafted for excellence and durability.
+                </p>
+                </div>
+            </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+            <div class="box ">
+                <div class="img-box">
+                <img src="{% static 'images/support.png' %}" alt="">
+                </div>
+                <div class="detail-box">
+                <h5>
+                    24/7 Customer support
+                </h5>
+                <p>
+                    Always here to help, day or night.
+                </p>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <section class="section" id="men">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="section-heading">
+                        <h2>Unveiling Next-Level Relaxation</h2>
+                        <span>Experience next-level relaxation with our newest massage chairs.</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="productLine" class="container">
+            <div onclick="scrollWindow('right')" class="cube-left">
+                <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="70%" fill="white" class="bi bi-chevron-right" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M4.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L10.293 8 4.646 2.354a.5.5 0 0 1 0-.708"/>
+                </svg>
+            </div>
+            
+            <div class="productsuggestion">
+                <div class="product-card">
+                    <div class="card-badge">trending</div>
+                    <div class="product-tumb">
+                        <img src="https://massagechairstore.com/wp-content/uploads/2021/10/Kyota-Kansha_Black_Lifestyle_1000-x-720.jpg" alt="">
+                    </div>
+                    <div class="product-details">
+                        <h4><a href="">Kahuna Massage Chair</a></h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, possimus nostrum!</p>
+                        <div class="product-bottom-details">
+                            <div class="product-price"><small>$3999</small>$3499</div>
+                            <div class="product-links">
+                                <i style="color: rgba(189, 189, 189, 0.555);" class="fa fa-heart"></i>
+                                <i data-id="1" onclick="AddToCard(event)" style="color: rgba(189, 189, 189, 0.555);" class="fa fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+
+                <div class="product-card">
+                    <div class="card-badge">trending</div>
+                    <div class="product-tumb">
+                        <img src="https://ae01.alicdn.com/kf/S43b3ffb23d604e959d0540f4c08f69b9K.jpg_640x640Q90.jpg_.webp" alt="">
+                    </div>
+                    <div class="product-details">
+                        <h4><a href="">Kahuna Massage Chair</a></h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, possimus nostrum!</p>
+                        <div class="product-bottom-details">
+                            <div class="product-price"><small>$4149</small>$3799</div>
+                            <div class="product-links">
+                                <i style="color: rgba(189, 189, 189, 0.555);" class="fa fa-heart"></i>
+                                <i data-id="2" onclick="AddToCard(event)" style="color: rgba(189, 189, 189, 0.555);" class="fa fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="product-card">
+                    <div class="card-badge">trending</div>
+                    <div class="product-tumb">
+                        <img src="https://qph.cf2.quoracdn.net/main-qimg-0770fbdb79f0d54b7e9436ac60f5b04d" alt="">
+                    </div>
+                    <div class="product-details">
+                        <h4><a href="">Kahuna Massage Chair</a></h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, possimus nostrum!</p>
+                        <div class="product-bottom-details">
+                            <div class="product-price"><small>$4149</small>$3799</div>
+                            <div class="product-links">
+                                <i style="color: rgba(189, 189, 189, 0.555);" class="fa fa-heart"></i>
+                                <i data-id="3" onclick="AddToCard(event)" style="color: rgba(189, 189, 189, 0.555);" class="fa fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="card-badge">trending</div>
+                    <div class="product-tumb">
+                        <img src="https://massagechairstore.com/wp-content/uploads/2019/11/massage-chairs-heated.jpg" alt="">
+                    </div>
+                    <div class="product-details">
+                        <h4><a href="">Kahuna Massage Chair</a></h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, possimus nostrum!</p>
+                        <div class="product-bottom-details">
+                            <div class="product-price"><small>$4149</small>$3799</div>
+                            <div class="product-links">
+                                <i style="color: rgba(189, 189, 189, 0.555);" class="fa fa-heart"></i>
+                                <i data-id="4" onclick="AddToCard(event)" style="color: rgba(189, 189, 189, 0.555);" class="fa fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="card-badge">trending</div>
+                    <div class="product-tumb">
+                        <img src="https://relaxtheback.com/cdn/shop/collections/NovoXT_1200x1200.jpg?v=1580928238" alt="">
+                    </div>
+                    <div class="product-details">
+                        <h4><a href="">Kahuna Massage Chair</a></h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vero, possimus nostrum!</p>
+                        <div class="product-bottom-details">
+                            <div class="product-price"><small>$4149</small>$3799</div>
+                            <div class="product-links">
+                                <i style="color: rgba(189, 189, 189, 0.555);" class="fa fa-heart"></i>
+                                <i data-id="5" onclick="AddToCard(event)" style="color: rgba(189, 189, 189, 0.555);" class="fa fa-shopping-cart"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div onclick="scrollWindow('left')" class="cube-right">
+                <svg xmlns="http://www.w3.org/2000/svg" width="70%" height="70%" fill="white" class="bi bi-chevron-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0"/>
+                </svg>
+            </div>
+        </div>
+        
+    </section>
+
+    <div class="subscribe">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="section-heading">
+                        <h2>Enjoy $200 off your first purchase! Elevate your comfort instantly with our exclusive offer.</h2>
+                    </div>
+                    <form id="subscribe" action="" method="get">
+                        <div class="row">
+                        <div class="col-lg-5">
+                            <fieldset>
+                            <input name="name" type="text" id="name" placeholder="Your Name" required="">
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-5">
+                            <fieldset>
+                            <input name="email" type="text" id="email" pattern="[^ @]*@[^ @]*" placeholder="Your Email Address" required="">
+                            </fieldset>
+                        </div>
+                        <div class="col-lg-2">
+                            <fieldset>
+                            <button type="submit" id="form-submit" class="main-dark-button"><i class="fa fa-paper-plane"></i></button>
+                            </fieldset>
+                        </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="col-lg-4">
+                    <div class="row">
+                        <div class="col-6">
+                            <ul>
+                                <li>Store Location:<br><span>Sunny Isles Beach, FL 33160, United States</span></li>
+                                <li>Phone:<br><span>010-020-0340</span></li>
+                                <li>Office Location:<br><span>North Miami Beach</span></li>
+                            </ul>
+                        </div>
+                        <div class="col-6">
+                            <ul>
+                                <li>Work Hours:<br><span>07:30 AM - 9:30 PM Daily</span></li>
+                                <li>Email:<br><span>contact@chairswithmassage.com</span></li>
+                                <!-- <li>Social Media:<br><span><a href="#">Facebook</a>, <a href="#">Instagram</a>, <a href="#">Behance</a>, <a href="#">Linkedin</a></span></li> -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3">
+                    <div class="first-item">
+                        <ul>
+                            <li><a href="#">Shop Massage Chairs Online At HarmonyMassageChairs.com</a></li>
+                            <li><a href="#">contact@harmonymassagechairs.com</a></li>
+                            <li><a href="#">ask a questions</a></li>
+                            
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <h4>Shopping &amp; Categories</h4>
+                    <ul>
+                        <li><a href="#">Zero Gravity Chairs</a></li>
+                        <li><a href="#">Full Body Massage Chairs</a></li>
+                        <li><a href="#">Compact Models</a></li>
+                        <li><a href="#">Recliners</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3">
+                    <h4>Useful Links</h4>
+                    <ul>
+                        <!-- <li><a href="#">Homepage</a></li> -->
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Help</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                    </ul>
+                </div>
+                    <div class="col-lg-3">
+                    <h4>Help &amp; Information</h4>
+                    <ul>
+                        <li><a href="../FAQ/">Help</a></li>
+                        <li><a href="../FAQ/">FAQ's</a></li>
+                        <li><a href="../FAQ/">Shipping</a></li>
+                        <!-- <li><a href="#">Tracking ID</a></li> -->
+                    </ul>
+                </div>
+                <div class="col-lg-12">
+                    <div class="under-footer">
+                        <p>Copyright © 2022 ChairsWithMassage Co., LLC. All Rights Reserved. 
+                        
+                        <ul>
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <div class="container d-flex justify-content-center">
+        <div style="position: fixed; right: 15px; margin: auto; bottom: 15px;" class="row">
+            <div class="col-md-12">
+                <div data-target="#exampleModal" data-toggle="modal" class="ChatButton">
+                    <div class="glow-on-hover" type="button">
+                        <svg xmlns="http://www.w3.org/2000/svg"  width="75%" height="75%" fill="currentColor" class="bi bi-chat-text" viewBox="0 0 16 16">
+                            <path d="M2.678 11.894a1 1 0 0 1 .287.801 11 11 0 0 1-.398 2c1.395-.323 2.247-.697 2.634-.893a1 1 0 0 1 .71-.074A8 8 0 0 0 8 14c3.996 0 7-2.807 7-6s-3.004-6-7-6-7 2.808-7 6c0 1.468.617 2.83 1.678 3.894m-.493 3.905a22 22 0 0 1-.713.129c-.2.032-.352-.176-.273-.362a10 10 0 0 0 .244-.637l.003-.01c.248-.72.45-1.548.524-2.319C.743 11.37 0 9.76 0 8c0-3.866 3.582-7 8-7s8 3.134 8 7-3.582 7-8 7a9 9 0 0 1-2.347-.306c-.52.263-1.639.742-3.468 1.105"/>
+                            <path d="M4 5.5a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8m0 2.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5"/>
+                        </svg>
+                    </div>
+                </div>
+            </button>
+        </div>
+        </div>
+        </div>
+        <div class="modal fade mt-3" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content pl-2">
+        <div class="modal-header py-0"> <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button> </div>
+        <div class="container d-flex justify-content-center">
+        <div class="row rowed_popup">
+            <div class="col-md-6">
+            <h2 class="title pl-3 pt-0 pb-3">Contact us</h2>
+            <div class="form-group col-md-12"> 
+                <input type="text" class="form-control" placeholder="Name"> 
+            </div>
+        <div class="form-group col-md-12"> <input type="email" class="form-control" placeholder="E-mail"></div>
+        <div class="form-group col-md-12"> <textarea class="form-control" cols="30" rows="11" placeholder="Your Question"></textarea> </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+            <label class="form-check-label" for="flexCheckDefault">
+              I agree to the <a href="/Terms">Terms and Conditions</a>
+            </label>
+        </div>
+        <br>
+        <div class="form-group col-md-12"> <button class="btn btn-dark btn-block">Send</button> </div>
+        <div>
+        </div>
+        </div>
+        <!-- <div class="col-md-6"> <img src="https://i.imgur.com/hTnBa7t.png" width="100%" height="100%"> </div> -->
+        </div>
+        </div>
+        </div>
+        </div>
+    </div> 
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <script src="{% static 'js/popper.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+
+    <!-- Plugins -->
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/accordions.js' %}"></script>
+    <script src="{% static 'js/datepicker.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
+    <script src="{% static 'js/imgfix.min.js' %}"></script>
+    <script src="{% static 'js/slick.js' %}"></script>
+    <script src="{% static 'js/lightbox.js' %}"></script>
+    <script src="{% static 'js/isotope.js' %}"></script>
+    <script src="{% static 'js/slider.js' %}"></script>
+    
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+
+    <script>
+
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+            $("."+selectedClass).fadeIn();
+            $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+
+        const productLine = document.getElementsByClassName('productsuggestion')[0];
+
+        let startX = null;
+        let scrollLeft = null;
+        let isScrolling = false;
+
+        productLine.addEventListener('mousedown', (e) => {
+            startX = e.pageX - productLine.offsetLeft;
+            scrollLeft = productLine.scrollLeft;
+            isScrolling = true;
+            smoothScroll();
+        });
+
+        productLine.addEventListener('mouseleave', () => {
+            isScrolling = false;
+        });
+
+        productLine.addEventListener('mouseup', () => {
+            isScrolling = false;
+        });
+
+        productLine.addEventListener('mousemove', (e) => {
+            if (!isScrolling) return;
+            e.preventDefault();
+            const x = e.pageX - productLine.offsetLeft;
+            const walk = (x - startX) * 2;
+
+            productLine.scrollLeft = scrollLeft - walk;
+        });
+
+        function smoothScroll() {
+            if (!isScrolling) return;
+            requestAnimationFrame(smoothScroll);
+            productLine.scrollLeft += (scrollLeft - productLine.scrollLeft) * 0.1;
+        }
+
+        function getScrollWidth(){
+            const displaySize = window.innerWidth;
+            if (displaySize < 450){
+                return 340
+            }else{
+                return 375
+            }
+        }
+
+
+        function scrollWindow(specified_direction) {
+            const productLine = document.getElementsByClassName('productsuggestion')[0];
+            const displayWidth = getScrollWidth();
+            const directionOf = {
+                'left': 0-displayWidth,
+                'right': displayWidth,
+            }
+            productLine.scrollLeft += directionOf[specified_direction];
+        }
+
+        const scrollContainer = document.getElementsByClassName('productsuggestion')[0];
+        scrollContainer.addEventListener('scroll', () => {
+            if (scrollContainer.scrollTop + scrollContainer.clientHeight >= scrollContainer.scrollHeight) {
+                scrollContainer.scrollTop = 0;
+            }
+        });
+
+
+        function isInViewport(element) {
+            const bounding = element.getBoundingClientRect();
+            return (
+                bounding.top >= 0 &&
+                bounding.left >= 0 &&
+                bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+                bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+                );
+        }
+
+    function handleScroll() {
+        if (isInViewport(scrollContainer)) {
+            scrollWindow('right');
+            window.removeEventListener('scroll', handleScroll);
+            AnimateLogo('faster')
+        }
+    }
+
+    window.addEventListener('scroll', handleScroll);
+
+    var logoElement = document.getElementById('LogoPoint');
+    window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(() => {
+            logoElement.classList.add('active');
+        }, 999);
+        setTimeout(() => {
+            logoElement.classList.remove('active');
+        }, 1699);
+        var h4Element = document.createElement('h4');
+
+        // Set the style attributes
+        h4Element.style.color = 'white';
+        h4Element.style.textAlign = 'left';
+
+        // Set the text content
+        h4Element.textContent = 'Welcome!';
+        h4Element.id = 'BrandText'
+
+        // Get the div with id "GreetingHub"
+        var greetingHubDiv = document.getElementById('GreetingHub');
+
+        // Append the h4 element to the div
+        setTimeout(() => {
+            greetingHubDiv.appendChild(h4Element);
+        }, 999);
+    });
+
+    function AnimateLogo(fast=false){
+        logoElement.classList.add('active');
+        setTimeout(() => {
+            logoElement.classList.remove('active');
+        }, fast ? 499 : 1000);
+    }
+    function HandleInitialScroll(event) {
+        const chatButton = document.getElementsByClassName('glow-on-hover')[0]
+        if (chatButton)
+            chatButton.classList.add('incorporate')
+            window.removeEventListener('scroll', HandleInitialScroll);
+    }
+
+    window.addEventListener('scroll', HandleInitialScroll);
+    function ManageCart(product_id, quantity = 1) {
+        const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
+        let isRemoved = false;
+    
+        // Check if the product_id exists in the array
+        const index = savedProducts.findIndex(product => product.product_id === product_id);
+    
+        if (index === -1) {
+            savedProducts.push({ product_id, quantity });
+        } else {
+            savedProducts.splice(index, 1);
+            isRemoved = true;
+        }
+    
+        localStorage.setItem('MassageCart', JSON.stringify(savedProducts));
+    
+        return [savedProducts.length, isRemoved];
+    }
+    function SetProductCard(){
+        const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
+        const total_products = Cart.length;
+        const Datapath = window.innerWidth > 767 ? document.getElementById('lblCartCount') : document.getElementById('lblCartCountMobile');
+        Datapath.textContent = total_products;
+        Cart.forEach(Each=>{
+            const element = document.querySelector(`[data-id="${Each.product_id}"]`);
+            element.style.color = 'rgb(127,255,212)';
+        })
+    }
+    const EnableCart = (ForceEnable=false)=>{
+        const CartPath = document.getElementsByClassName('neutralCart')[0];
+        const CartPathMobile = document.getElementsByClassName('neutralCartMobile')[0];
+        const classname = 'CartBoundary';
+        const classnameMobile = 'CartBoundaryMobile';
+        const swapclassname = 'neutralCart';
+        const swapclassnameMobile = 'neutralCartMobile';
+        const ProductsSelected = (JSON.parse(localStorage.getItem('MassageCart')) || []).length
+        console.log(ProductsSelected)
+        if (CartPath && CartPathMobile)
+            if (ForceEnable){
+                CartPath.classList.add(classname)
+                CartPath.classList.remove(swapclassname)
+                CartPathMobile.classList.add(classnameMobile)
+                CartPathMobile.classList.remove(swapclassnameMobile)
+            }else{
+                if (ProductsSelected){
+                    CartPath.classList.add(classname)
+                    CartPath.classList.remove(swapclassname)
+                    CartPathMobile.classList.add(classnameMobile)
+                    CartPathMobile.classList.remove(swapclassnameMobile)
+                    setTimeout(() => {
+                        CartPath.classList.add('animateCart')
+                        CartPathMobile.classList.add('animateCart')
+                    }, 666);
+                }
+            }
+    }
+    function AddToCard(data=null){
+        EnableCart(true)
+        const product_id = data.target.dataset.id ? Number(data.target.dataset.id) : null;
+        const result = ManageCart(product_id);
+        const total_products = result[0];
+        const current_color = result[1] ? 'rgba(189, 189, 189, 0.555)' : 'rgb(127,255,212)';
+        const element = data.target;
+        const Datapath = document.getElementById('lblCartCount')
+        const DatapathMobile = document.getElementById('lblCartCountMobile')
+        const Divpath = document.getElementsByClassName('CartBoundary')[0];
+        const DivpathMobile = document.getElementsByClassName('CartBoundaryMobile')[0];
+        Divpath.classList.add('animateCart');
+        DivpathMobile.classList.add('animateCart');
+        Datapath.textContent = total_products;
+        DatapathMobile.textContent = total_products;
+        if (result[1]){
+            element.classList.add('rollback');
+            element.classList.remove('CartSelected');
+        }
+        else{
+            element.classList.remove('rollback');
+            element.classList.add('CartSelected');
+        }
+        setTimeout(() => {
+            element.style.color = current_color;
+        }, 333);
+        setTimeout(() => {
+            Divpath.classList.remove('animateCart');
+            DivpathMobile.classList.remove('animateCart');
+        }, 999);
+    }
+
+    SetProductCard()
+    EnableCart()
+    </script>
+
+</body>
+</html>

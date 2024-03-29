@@ -1,0 +1,85 @@
+.searchBox {
+  position: fixed;
+  top: 12%;
+  right: 2%;
+  transform:  translate(-6%, 1%);
+  background: #2f3640;
+  height: 45px;
+  border-radius: 40px;
+  padding: 5px;
+}
+
+.openedSearch .searchInput {
+  width: 240px; 
+}
+
+.openedSearch .searchButton {
+  background: white;
+  color : #2f3640;
+}
+
+.searchButton {
+  color: white;
+  float: right;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #2f3640;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 1s;
+  border: none;
+}
+
+.searchInput {
+  border: none;
+  background: none;
+  padding: 0;
+  color: white;
+  font-size: 16px;
+  transition: 0.4s;
+  line-height: 40px;
+  width: 0;
+  outline: none;
+}
+
+@media (max-width: 620px) {
+  .openedSearch .searchInput {
+    width: 180px;
+    padding: 0 15px;
+  }
+}
+
+@media (min-width: 620px) {
+  .openedSearch .searchInput {
+    width: 255px;
+    padding: 0 20px;
+  }
+}
+
+.SearchIconAnimation {
+  animation: SearchAnimation 1s;
+}
+
+@keyframes SearchAnimation {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(-40deg);
+  }
+  100% {
+    transform: rotate(5deg);
+  }
+}
+
+.Disappear {
+  opacity: 0;
+  transition: opacity 0.5s ease-out;
+}
+
+.Appear {
+  opacity: 1;
+  transition: opacity 0.5s ease-in;
+}

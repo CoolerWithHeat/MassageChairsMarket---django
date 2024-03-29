@@ -1,0 +1,26 @@
+[
+    {
+        "course_id": 1451497,
+        "course_name": "COSC 1570 5T SP 2024  Mathematics for Computer Science"
+    },
+    {
+        "course_id": 1451238,
+        "course_name": "COSC 2610 1T SP 2024  Operating Systems"
+    },
+    {
+        "course_id": 1452126,
+        "course_name": "COSC 2670 8T SP 2024  Network Principles"
+    },
+    {
+        "course_id": 1451383,
+        "course_name": "COSC 2710 1T SP 2024  Social Engineering and Society"
+    },
+    {
+        "course_id": 1450481,
+        "course_name": "KEYS 4008 1T SP 2024  Leading from Where You Are"
+    },
+    {
+        "course_id": 1450541,
+        "course_name": "MNGT 2500 2U SP 2024  Marketing"
+    }
+]

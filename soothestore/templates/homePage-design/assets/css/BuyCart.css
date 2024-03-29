@@ -1,0 +1,339 @@
+.visibleField{
+    display: contents;
+}
+.invisibleField{
+    display: none;
+}
+
+.loaderdisabled{
+    display: none;
+}
+
+#commentsContent{
+    animation: added-reverse 17s;
+    min-height: 361px;
+    max-height: 361px;
+}
+
+#SavingStatusBoundary{
+    width: 100%;
+    display: none;
+    min-height: 300px;
+    max-height: 300px;
+}
+
+#status-loader{
+    margin-top: 200px;
+}
+
+.loader {
+    width: 28px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: #E3AAD6;
+    transform-origin: top;
+    display: grid;
+    animation: l3-0 1s infinite linear;
+    margin: auto;
+  }
+  .loader::before,
+  .loader::after {
+    content: "";
+    grid-area: 1/1;
+    background:#F4DD51;
+    border-radius: 50%;
+    transform-origin: top;
+    animation: inherit;
+    animation-name: l3-1;
+  }
+  .loader::after {
+    background: #F10C49;
+    --s:180deg;
+  }
+  @keyframes l3-0 {
+    0%,20% {transform: rotate(0)}
+    100%   {transform: rotate(360deg)}
+  }
+  @keyframes l3-1 {
+    50% {transform: rotate(var(--s,90deg))}
+    100% {transform: rotate(0)}
+  }
+
+.cart-button {
+    position: relative;
+    outline: 0;
+    background-color: blue;
+    color: #fff;
+    border: none;
+    height: 48px;
+    width: 200px;
+    border-radius: 10px;
+    line-height: 0px;
+    overflow: hidden;
+    cursor: pointer
+}
+
+.cart-button:focus {
+    outline: none !important
+}
+
+.fa-shopping-cart {
+    position: absolute;
+    z-index: 9;
+    top: 50%;
+    left: -20%;
+    font-size: 1.8em;
+    transform: translate(-50%, -50%)
+}
+
+.fa-square {
+    position: absolute;
+    z-index: 1;
+    top: -20%;
+    left: 53%;
+    font-size: 0.8em;
+    transform: translate(-50%, -50%)
+}
+
+.cart-button span {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    color: #fff;
+    transform: translate(-50%, -50%)
+}
+
+.cart-button span.added {
+    opacity: -1
+}
+
+.cart-button.clicked .fa-shopping-cart {
+    animation: cart 2s ease-in forwards
+}
+
+.cart-button.clicked .fa-square {
+    animation: box 2s ease-in forwards
+}
+
+.cart-button.clicked span.add-to-cart {
+    animation: addcart 2s ease-in forwards
+}
+
+.cart-button.clicked span.added {
+    animation: added 2s ease-in forwards
+}
+
+@keyframes cart {
+    0% {
+        left: -10%
+    }
+
+    40%,
+    60% {
+        left: 50%
+    }
+
+    100% {
+        left: 110%
+    }
+}
+
+@keyframes box {
+
+    0%,
+    40% {
+        top: -20%
+    }
+
+    60% {
+        top: 36%;
+        left: 53%
+    }
+
+    100% {
+        top: 40%;
+        left: 112%
+    }
+}
+
+@keyframes addcart {
+
+    0%,
+    30% {
+        opacity: 1
+    }
+
+    30%,
+    100% {
+        opacity: 0
+    }
+}
+
+@keyframes added {
+
+    0%,
+    80% {
+        opacity: 0
+    }
+
+    100% {
+        opacity: 1
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+}
+
+.dissappearText{
+    animation: fadeOut 0.7s ease-in-out forwards;
+}
+
+.defaultCartState{
+    animation: fadeIn 0.7s ease-in-out forwards;
+}
+
+
+/* //////////////////////////////////////////////// Removing Animation ///////////////////////////////////////////////////// */
+.cart-button.removed .fa-shopping-cart {
+    animation: cart-reverse 2s ease-in forwards;
+}
+  
+  .cart-button.removed .fa-square {
+    animation: trial-reverse 2s ease-in forwards;
+  }
+  
+  .cart-button.removed span.add-to-cart {
+    animation: addcart-reverse 2s ease-in forwards;
+  }
+  
+    .cart-button.removed span.added {
+        animation: added-reverse 2s ease-in forwards;
+    }
+
+    @keyframes trial-reverse {
+        100% {
+            left: 50%;
+            top: -25%
+        }
+        
+        60%,
+        40% {
+            left: 52%;
+            top: 35%
+        }
+        
+        0% {
+            left: 110%;
+            top: 35%
+        }
+    }
+
+  
+  @keyframes cart-reverse {
+    100% {
+      left: -10%;
+    }
+  
+    60%,
+    40% {
+      left: 50%;
+    }
+  
+    0% {
+      left: 110%;
+    }
+    /* 100% {
+        left: -10%;
+      }
+    
+      60%{
+        left: 60%;
+      }
+      40% {
+        left: 70%;
+      }
+    
+      0% {
+        left: 110%;
+      } */
+  }
+  
+  @keyframes box-reverse {
+    0% {
+        left: 112%; /* Start box at the right side, matching the cart icon's end position */
+        top: -20%; /* Start box where it ended in the original animation */
+        transform: translate(-50%, -50%);
+    }
+
+    30% {
+        left: 74%; /* Move box towards the middle */
+        top: 28%; /* Adjust the vertical position */
+        transform: translate(-50%, -50%);
+    }
+
+    60% {
+        left: 62%; /* Continue moving box towards the middle */
+        top: 33%; /* Adjust the vertical position */
+        transform: translate(-50%, -50%);
+    }
+
+    100% {
+        left: 50%; /* Move box to the middle, matching the cart icon's starting position */
+        top: 35%; /* Maintain the box's original vertical position */
+        transform: translate(-50%, -50%);
+    }
+}
+
+  
+  
+  
+@keyframes addcart-reverse {
+    100%,
+    70% {
+      opacity: 1;
+    }
+  
+    70%,
+    0% {
+      opacity: 0;
+    }
+  }
+  
+  @keyframes added-reverse {
+    100%,
+    20% {
+      opacity: 1;
+    }
+  
+    0% {
+      opacity: 0;
+    }
+  }
+  
+
+@media (min-width:767px){
+    .MobileProductView{
+        display: none;
+    }
+}
+
+@media (max-width:767px){
+    .DesktopProductView{
+        display: none;
+    }
+}

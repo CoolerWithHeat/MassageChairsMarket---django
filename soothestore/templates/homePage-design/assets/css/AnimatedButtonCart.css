@@ -1,0 +1,213 @@
+  #app-cover {
+    position: absolute;
+    right: 0;
+    bottom: 0 ;
+    width: 40px;
+    height: 40px;
+    margin: -98px auto 0 auto;
+    background-color: #fff;
+    border-radius: 50%;
+    box-shadow: 0 0 0 2px #ffdedc;
+    overflow: hidden;
+  }
+  #checkbox {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    z-index: 3;
+  }
+  
+  #bin-icon {
+    position: absolute;
+    top: 66%;
+    right: 0;
+    left: 2px;
+    width: 20px;
+    height: 20px;
+    margin: -15px auto 0 auto;
+    border-radius: 50%;
+    z-index: 2;
+  }
+  
+  #lid {
+    position: relative;
+    width: 23px;
+    height: 2px;
+    left: -3px;
+    border-radius: 4px;
+  }
+  
+  #lid:before {
+    content: "";
+    position: absolute;
+    top: -2px;
+    right: 0;
+    left: 0;
+    width: 6px;
+    height: 4px;
+    margin: 0 auto;
+    border-radius: 7px 7px 0 0;
+  }
+  
+  #box {
+    position: relative;
+    width: 17px;
+    height: 20px;
+    margin-top: 1px;
+    border-radius: 0 0 4px 4px;
+  }
+  
+  #box-inner {
+    position: relative;
+    top: 2px;
+    width: 13px;
+    height: 16px;
+    margin: 0 auto;
+    background-color: #fff;
+    border-radius: 0 0 3px 3px;
+  }
+  
+  #bin-lines {
+    position: relative;
+    top: 2px;
+    margin: 0 auto;
+  }
+  
+  #bin-lines,
+  #bin-lines:before,
+  #bin-lines:after {
+    width: 1px;
+    height: 12px;
+    border-radius: 4px;
+  }
+  
+  #bin-lines:before,
+  #bin-lines:after {
+    content: "";
+    position: absolute;
+  }
+  
+  #bin-lines:before {
+    left: -4px;
+  }
+  
+  #bin-lines:after {
+    left: 4px;
+  }
+  
+  #layer {
+    position: absolute;
+    right: -30px;
+    bottom: -30px;
+    width: 0;
+    height: 0;
+    background-color: #03a9f4;
+    border-radius: 50%;
+    transition: 1.25s ease all;
+    z-index: 1;
+  }
+  
+  #lid,
+  #lid:before,
+  #box,
+  #bin-lines,
+  #bin-lines:before,
+  #bin-lines:after {
+    background-color: #f44336;
+    transition: 0.5s ease background-color;
+  }
+  
+  #checkbox:checked ~ #bin-icon #lid,
+  #checkbox:checked ~ #bin-icon #lid:before,
+  #checkbox:checked ~ #bin-icon #box,
+  #checkbox:checked ~ #bin-icon #box-inner {
+    background-color: #fff;
+  }
+  
+  #checkbox:checked ~ #bin-icon #bin-lines,
+  #checkbox:checked ~ #bin-icon #bin-lines:before,
+  #checkbox:checked ~ #bin-icon #bin-lines:after {
+    background-color: #03a9f4;
+  }
+  
+  #checkbox:checked + #bin-icon #box {
+    animation: shake 0.2s ease 0.1s;
+  }
+  
+  #checkbox:checked + #bin-icon #lid {
+    animation: lift-up 0.7s ease 0.2s, shake_u 0.8s ease 0.1s,
+      shake_l 0.2s ease 0.1s;
+  }
+  
+  #checkbox:checked ~ #layer {
+    width: 226px;
+    height: 226px;
+  }
+  
+  @keyframes shake {
+    0% {
+      transform: rotateZ(3deg);
+    }
+    25% {
+      transform: rotateZ(0);
+    }
+    75% {
+      transform: rotateZ(-3deg);
+    }
+    100% {
+      transform: rotateZ(0);
+    }
+  }
+  
+  @keyframes lift-up {
+    0% {
+      top: 0;
+    }
+    50% {
+      top: -10px;
+    }
+    100% {
+      top: 0;
+    }
+  }
+  
+  @keyframes shake_u {
+    0% {
+      transform: rotateZ(0);
+    }
+    25% {
+      transform: rotateZ(-15deg);
+    }
+    50% {
+      transform: rotateZ(0deg);
+    }
+    75% {
+      transform: rotateZ(15deg);
+    }
+    100% {
+      transform: rotateZ(0);
+    }
+  }
+  
+  @keyframes shake_l {
+    0% {
+      transform: rotateZ(0);
+    }
+    80% {
+      transform: rotateZ(3deg);
+    }
+    90% {
+      transform: rotateZ(-3deg);
+    }
+    100% {
+      transform: rotateZ(0);
+    }
+  }
+  

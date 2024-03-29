@@ -1,0 +1,48 @@
+@import url("https://fonts.googleapis.com/css?family=Poppins:400,400i,700");
+
+div.c{
+  position: relative;
+  margin:0.6em;
+}
+
+.input{
+    visibility: hidden;
+}
+
+.optionLabel{
+  padding:1em;
+  position: relative;
+  font-size: 16px;
+  border-width: 1px;
+  border-bottom-style: solid;
+  border-bottom-color: rgba(255, 203, 31, 0.74);
+}
+
+label::before{
+    content:"";
+    display: inline-block;
+    border: 14px solid transparent;
+    border-left:13px solid white;
+    transition: transform 1.3s ease; 
+}
+
+label{
+    cursor: pointer;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 17px;
+}
+
+div.p{
+  max-height:0px;
+  overflow: hidden;
+  transition:max-height 0.5s;
+  background-color: white;
+  box-shadow:0 0 10px 0 rgba(0, 0, 0, 0.2);
+  
+}
+
+.input:checked ~ h1 ~ div.p{
+  max-height:100px;
+}

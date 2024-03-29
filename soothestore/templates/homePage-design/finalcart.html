@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="stylesheet" href="{% static 'css/animationonly.css' %}">
+    <link rel="stylesheet" href="{% static 'css/brandAnimation.css' %}">
+    <link rel="stylesheet" href="{% static 'css/AnimatedButtonCart.css' %}">
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+        rel="stylesheet"
+    />
+    <link
+        href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+        rel="stylesheet"
+    />
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.1.0/mdb.min.css"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="{% static 'css/BuyCart.css' %}">   
+</head>
+    </head>
+    
+    <body>
+
+    <div id="preloader">
+        <div class="jumper">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+    </div>
+    
+    <div id="loadingWindow" class="invisibleField" style="margin: auto;width: 99%; height: 99%; z-index: 9; background-color: rgb(199, 199, 199); opacity: 0.8; position: fixed;">
+      <div id="loader" style="transform: translate(-50%, -50%); top: 50%; left: 50%; position: absolute;" class="loader"></div>
+    </div>
+    <section class="h-100 h-custom" style="background-color: #eee;">
+        <div class="container py-5 h-100">
+          <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col">
+              <div class="card">
+                <div class="card-body p-4">
+                  <div class="row">
+                    <div id="CartProductsClosure" class="col-lg-7">
+                      <h5 class="mb-3"><a href="#!" class="text-body"><i
+                            class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
+                      <hr>
+      
+                      <div class="d-flex justify-content-between align-items-center mb-4">
+                        <div>
+                          <p class="mb-1">Shopping cart</p>
+                          <p id="AmountDetails" class="mb-0"></p>
+                        </div>
+                      </div>
+
+
+                    </div>
+                    <div class="col-lg-5">
+      
+                      <div class="card bg-primary text-white rounded-3">
+                        <div class="card-body">
+                          <div class="d-flex justify-content-between align-items-center mb-4">
+                            <h5 class="mb-0">Card details</h5>
+                            <a href="\../" class="logo">
+                                <img style="width: 120px; border-radius: 10px;" id="LogoPoint" class="brandLogo" src="{% static 'images/companyLogo.png' %}">   
+                            </a>
+                          </div>
+      
+                          <p class="small mb-2">Card type</p>
+                          <a href="#!" type="submit" class="text-white"><i
+                              class="fab fa-cc-mastercard fa-2x me-2"></i></a>
+                          <a href="#!" type="submit" class="text-white"><i
+                              class="fab fa-cc-visa fa-2x me-2"></i></a>
+                          <a href="#!" type="submit" class="text-white"><i
+                              class="fab fa-cc-amex fa-2x me-2"></i></a>
+                          <a href="#!" type="submit" class="text-white"><i class="fab fa-cc-paypal fa-2x"></i></a>
+      
+                          <form class="mt-4">
+                            <div class="form-outline form-white mb-4">
+                            <input onclick="AnimateLogo('fast');" type="text" id="typeName" class="form-control form-control-lg" siez="17"
+                                placeholder="Cardholder's Name" />
+                            <label class="form-label" for="typeName">Cardholder's Name</label>
+                            </div>
+    
+                            <div class="form-outline form-white mb-4">
+                            <input type="text" id="typeText" class="form-control form-control-lg" siez="17"
+                                placeholder="1234 5678 9012 3457" minlength="19" maxlength="19" />
+                            <label class="form-label" for="typeText">Card Number</label>
+                            </div>
+      
+                            <div class="row mb-4">
+                              <div class="col-md-6">
+                                <div class="form-outline form-white">
+                                  <input type="text" id="typeExp" class="form-control form-control-lg"
+                                    placeholder="MM/YYYY" size="7" id="exp" minlength="7" maxlength="7" />
+                                  <label class="form-label" for="typeExp">Expiration</label>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-outline form-white">
+                                  <input type="password" id="typeText" class="form-control form-control-lg"
+                                    placeholder="&#9679;&#9679;&#9679;" size="1" minlength="3" maxlength="3" />
+                                  <label class="form-label" for="typeText">Cvv</label>
+                                </div>
+                              </div>
+                            </div>
+      
+                          </form>
+      
+    
+                        <div id="PriceHolder">
+                        </div>
+
+                        </div>
+                      </div>
+      
+                    </div>
+      
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    <!-- jQuery -->
+    <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+
+
+    <!-- Plugins -->
+    <script src="{% static 'js/owl-carousel.js' %}"></script>
+    <script src="{% static 'js/scrollreveal.min.js' %}"></script>
+    <script src="{% static 'js/waypoints.min.js' %}"></script>
+    
+    
+    <!-- Global Init -->
+    <script src="{% static 'js/custom.js' %}"></script>
+
+
+    <script>
+        const host = window.location.protocol + '//' +window.location.host  + '/'
+        $(function() {
+            var selectedClass = "";
+            $("p").click(function(){
+            selectedClass = $(this).attr("data-rel");
+            $("#portfolio").fadeTo(50, 0.1);
+                $("#portfolio div").not("."+selectedClass).fadeOut();
+            setTimeout(function() {
+            $("."+selectedClass).fadeIn();
+            $("#portfolio").fadeTo(50, 1);
+            }, 500);
+                
+            });
+        });
+    
+    const logoElement = document.getElementById('LogoPoint');
+    
+    function AnimateLogo(fast=false){
+        logoElement.classList.add('active');
+        setTimeout(() => {
+            logoElement.classList.remove('active');
+        }, fast ? 499 : 1000);
+    }
+
+    const makeProduct = (productData)=>{
+      const window = document.getElementById('CartProductsClosure');
+      const productStructure = `
+          <div class="card mb-3 mb-lg-0">
+            <div class="card-body">
+                <div class="d-flex justify-content-between">
+                  <div class="d-flex flex-row align-items-center">
+                    <div>
+                      <img
+                        src="${productData.image}"
+                        class="img-fluid rounded-3" alt="Shopping item" style="width: 65px;">
+                    </div>
+                    <div class="ms-3">
+                      <h5>${productData.title}</h5>
+                      <p class="small mb-0">${productData.color}</p>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-row align-items-center">
+                    <div style="width: 50px;">
+                      <h5 class="fw-normal mb-0">${productData.quantity}</h5>
+                    </div>
+                    <div style="width: 80px;">
+                      <h5 class="mb-0">${productData.price}</h5>
+                    </div>
+                    <div id="app-cover">
+                      <input data-id='${productData.id}' onclick='RemoveOuttaCart(event);' type="checkbox" id="checkbox">
+                      <div id="bin-icon">
+                        <div id="lid"></div>
+                        <div id="box">
+                          <div id="box-inner">
+                            <div id="bin-lines"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div id="layer"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>`;
+      if (window)
+        window.innerHTML += productStructure;
+    };
+
+    const FetchCart = async (UsersCart)=>{
+      const verifiedResponse = await fetch(host+'VerifyCart/', {
+        method: "POST",
+        body: JSON.stringify(UsersCart)
+      });
+      if (verifiedResponse.status == 200){
+        const parsedData = await verifiedResponse.json();
+        if (parsedData.cart){
+          const total_price = parsedData.total_price
+          console.log('server-response', parsedData)
+          const verified_products = parsedData.verified_products
+          setOuterDetails({total_price, verified_products});
+          if (Array.isArray(parsedData.cart))
+            parsedData.cart.forEach(each=>makeProduct(each))
+          }
+        else
+          ResetCart()
+      }
+      lockwindow(false);
+    };
+
+    const getCheckData = ()=>{
+      lockwindow();
+      resetProductWindow();
+      const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
+      if (Cart)
+        FetchCart(Cart)
+    };
+
+
+    const resetProductWindow = ()=>{
+      const window = document.getElementById('CartProductsClosure');
+      window.innerHTML = `
+      <h5 class="mb-3"><a href="#!" class="text-body">
+        <i class="fas fa-long-arrow-alt-left me-2"></i>Continue shopping</a></h5>
+        <hr>
+
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <p class="mb-1">Shopping cart</p>
+          <p id="AmountDetails" class="mb-0"></p>
+        </div>
+      </div>`;
+      return true;
+    };
+    
+    const setOuterDetails = (outerDetails)=>{
+      const amountHeader = document.getElementById('AmountDetails');
+      const priceHeader = document.getElementById('PriceHolder');
+      const amount = outerDetails.verified_products;
+      const shipping_cost = outerDetails.shipping || 0;
+      const total = outerDetails.total_price || 0;
+      amountHeader.innerText = `You have ${amount} items in your cart`;
+      const priceStructure = `
+            <hr class="my-4">
+              <div class="d-flex justify-content-between">
+                <p class="mb-2">Subtotal</p>
+                <p class="mb-2" id="Subtotal">$${total}</p>
+              </div>
+
+              <div class="d-flex justify-content-between">
+                <p class="mb-2">Shipping</p>
+                <p class="mb-2" id="shipping">${shipping_cost ? `$${shipping_cost}` : 'Free'}</p>
+              </div>
+
+              <div class="d-flex justify-content-between mb-4">
+                <p class="mb-2">Total(Incl. taxes)</p>
+                <p class="mb-2" id="Final">$${total}</p>
+              </div>
+
+              <button type="button" class="btn btn-info btn-block btn-lg">
+                <div class="d-flex justify-content-between">
+                  <span id="FinalPrice">$${total}</span>
+                  <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
+                </div>
+            </button>`;
+      priceHeader.innerHTML = priceStructure;
+    }
+
+    function ManageCart(product_id, quantity = 1) {
+            const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
+            let isRemoved = false;
+        
+            const index = savedProducts.findIndex(product => product.product_id === product_id);
+        
+            if (index === -1) {
+                savedProducts.push({ product_id: Number(product_id), quantity: Number(quantity) });
+            } else {
+                savedProducts.splice(index, 1);
+                isRemoved = true;
+            }
+        
+            localStorage.setItem('MassageCart', JSON.stringify(savedProducts));
+        
+            return [savedProducts.length, isRemoved];
+      }
+
+      const RemoveOuttaCart = (event)=>{
+        const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
+        console.log(savedProducts)
+          const id = event.target ? Number(event.target.dataset.id) : null;
+          if (id){
+            ManageCart(id);
+            lockwindow();
+            setTimeout(() => {
+              getCheckData();
+            }, 999);
+          }
+      };
+
+      const ResetCart = (event)=>{
+        localStorage.setItem('MassageCart', JSON.stringify([]));
+      };
+
+      const lockwindow = (lockit=true)=>{
+        const window = document.getElementById('loadingWindow');
+        if (lockit)
+          window.classList.remove('invisibleField')
+        else
+          window.classList.add('invisibleField')
+      };
+      getCheckData();
+    </script>
+
+</body>
+</html>

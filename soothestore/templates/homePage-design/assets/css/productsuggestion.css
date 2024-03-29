@@ -1,0 +1,54 @@
+.productsuggestion{
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    cursor: pointer;
+    height: 600px;
+    width: 2000px;
+}
+
+@media (min-width:450px){
+    .productsuggestion::-webkit-scrollbar{
+        visibility: hidden;
+    }
+}
+
+#productLine{
+    display: flex;
+    height: auto;
+    position: relative;
+    justify-content:space-between;
+}
+
+.cube-left{
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 141, 10, 0.712);
+    position: absolute;
+    left: 0;
+    margin-top: 250px;
+    z-index: 99;
+    cursor: pointer;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+.cube-right{
+    width: 40px;
+    height: 40px;
+    background-color: rgba(255, 141, 10, 0.712);
+    position: absolute;
+    right: 0;
+    margin-top: 250px;
+    z-index: 99;
+    cursor: pointer;
+    border-radius: 50%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}

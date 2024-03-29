@@ -1,0 +1,187 @@
+
+.button-23 {
+  background-color: #FFFFFF;
+  border: 1px solid #222222;
+  border-radius: 8px;
+  box-sizing: border-box;
+  color: #222222;
+  cursor: pointer;
+  display: inline-block;
+  font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,"Helvetica Neue",sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  margin: 0;
+  outline: none;
+  padding: 13px 23px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  touch-action: manipulation;
+  transition: box-shadow .2s,-ms-transform .1s,-webkit-transform .1s,transform .1s;
+  user-select: none;
+  -webkit-user-select: none;
+  width: auto;
+}
+
+.button-23:focus-visible {
+  box-shadow: #222222 0 0 0 2px, rgba(255, 255, 255, 0.8) 0 0 0 4px;
+  transition: box-shadow .2s;
+}
+
+.button-23:active {
+  background-color: #F7F7F7;
+  border-color: #000000;
+  transform: scale(.96);
+}
+
+.button-23:disabled {
+  border-color: #DDDDDD;
+  color: #DDDDDD;
+  cursor: not-allowed;
+  opacity: 1;
+}
+
+#errorCard{
+    animation: alert-animation 0.7s;
+}
+
+.popDissappear{
+    animation: alert-reverse 0.7s;
+}
+
+@keyframes alert-animation {
+    0% {
+      transform: scale(0);
+    }
+    30% {
+      transform: scale(0);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  @keyframes alert-reverse {
+    0% {
+        transform: scale(1);
+      }
+      30% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(0);
+      }
+  }
+
+
+/* ////////////////////////////////////   Success Animation    ////////////////////////////////// */
+
+  .main-container {
+    width: 100%;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .check-container {
+    width: 6.25rem;
+    height: 7.5rem;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .check-container .check-background {
+    width: 100%;
+    height: calc(100% - 1.25rem);
+    background: linear-gradient(to bottom right, #5de593, #41d67c);
+    box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset, 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+    transform: scale(0.84);
+    border-radius: 50%;
+    animation: animateContainer 0.75s ease-out forwards 0s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+  }
+  .check-container .check-background svg {
+    width: 65%;
+    transform: translateY(0.25rem);
+    stroke-dasharray: 80;
+    stroke-dashoffset: 80;
+    animation: animateCheck 0.35s forwards 0.75s ease-out;
+  }
+  .check-container .check-shadow {
+    bottom: calc(-15% - 5px);
+    left: 0;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, #49da83, transparent);
+    animation: animateShadow 0.75s ease-out forwards 0.25s;
+  }
+  
+  @keyframes animateContainer {
+    0% {
+      opacity: 0;
+      transform: scale(0);
+      box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset, 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+    }
+    25% {
+      opacity: 1;
+      transform: scale(0.9);
+      box-shadow: 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset, 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+    }
+    43.75% {
+      transform: scale(1.15);
+      box-shadow: 0px 0px 0px 43.334px rgba(255, 255, 255, 0.25) inset, 0px 0px 0px 65px rgba(255, 255, 255, 0.25) inset;
+    }
+    62.5% {
+      transform: scale(1);
+      box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 0px 21.667px rgba(255, 255, 255, 0.25) inset;
+    }
+    81.25% {
+      box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset;
+    }
+    100% {
+      opacity: 1;
+      box-shadow: 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset, 0px 0px 0px 0px rgba(255, 255, 255, 0.25) inset;
+    }
+  }
+  @keyframes animateCheck {
+    from {
+      stroke-dashoffset: 80;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  @keyframes animateShadow {
+    0% {
+      opacity: 0;
+      width: 100%;
+      height: 15%;
+    }
+    25% {
+      opacity: 0.25;
+    }
+    43.75% {
+      width: 40%;
+      height: 7%;
+      opacity: 0.35;
+    }
+    100% {
+      width: 85%;
+      height: 15%;
+      opacity: 0.25;
+    }
+  }
+
+  .fa-star-third::after {
+    content: '';
+    position: absolute;
+    width: 33.33%;
+    height: 100%;
+    background: linear-gradient(90deg, yellow, transparent);
+    z-index: 1;
+  }
