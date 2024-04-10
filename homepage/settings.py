@@ -101,6 +101,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+
 LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'UTC'
@@ -108,6 +109,11 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 
 USE_TZ = True
+
+ALGOLIA = {
+    'APPLICATION_ID': 'K7LWE7RYA4',
+    'API_KEY': 'dd84d643cb097b484b87bf0a2c35d742'
+}
 
 
 
