@@ -53,6 +53,12 @@ def extract_product_data(algolia_data):
    return extracted_data
 
 def HomePage(request):
+    filters = {
+        "filters": "brand: Osaki",
+    }
+    response = raw_search(MassageChair, filters)
+
+    print(response)
     return render(request, 'homePage-design/home.html')
 
 def SearchPage(request):

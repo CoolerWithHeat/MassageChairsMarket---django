@@ -1,0 +1,199 @@
+/* Header Styles */
+.header-area {
+    border-bottom: 3px dotted #eee;
+    box-shadow: none;
+    background-color: #fff;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    z-index: 100;
+    height: 100px;
+    transition: all .5s ease 0s;
+  }
+  
+  .header-area .main-nav {
+    min-height: 80px;
+    background: transparent;
+  }
+  
+  .header-area .main-nav .logo {
+    line-height: 100px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    float: left;
+    transition: all 0.3s ease 0s;
+  }
+  
+  .header-area .main-nav .nav {
+    float: right;
+    margin-top: 30px;
+    margin-right: 0px;
+    background-color: transparent;
+    transition: all 0.3s ease 0s;
+    position: relative;
+    z-index: 999;
+  }
+  
+  .header-area .main-nav .nav li {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  
+  .header-area .main-nav .nav li a {
+    display: block;
+    font-weight: 600;
+    font-size: 15px;
+    color: #2a2a2a;
+    text-transform: capitalize;
+    transition: all 0.3s ease 0s;
+    height: 40px;
+    line-height: 40px;
+    border: transparent;
+    letter-spacing: 1px;
+  }
+  
+  .header-area .main-nav .nav li.submenu {
+    position: relative;
+    padding-right: 30px;
+  }
+  
+  .header-area .main-nav .nav li.submenu:after {
+    font-family: FontAwesome;
+    content: "\f107";
+    font-size: 12px;
+    color: #2a2a2a;
+    position: absolute;
+    right: 18px;
+    top: 12px;
+  }
+  
+  .header-area .main-nav .nav li.submenu ul {
+    position: absolute;
+    width: 200px;
+    box-shadow: 0 2px 28px 0 rgba(0, 0, 0, 0.06);
+    overflow: hidden;
+    top: 50px;
+    opacity: 0;
+    transform: translateY(+2em);
+    visibility: hidden;
+    z-index: -1;
+    transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+  }
+  
+  .header-area .main-nav .nav li.submenu ul li a {
+    opacity: 1;
+    display: block;
+    background: #f7f7f7;
+    color: #2a2a2a !important;
+    padding-left: 20px;
+    height: 40px;
+    line-height: 40px;
+    transition: all 0.3s ease 0s;
+    font-size: 13px;
+    font-weight: 400;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .header-area .main-nav .menu-trigger {
+    cursor: pointer;
+    display: block;
+    position: absolute;
+    top: 33px;
+    width: 32px;
+    height: 40px;
+    text-indent: -9999em;
+    z-index: 99;
+    right: 40px;
+    display: none;
+  }
+  
+  .header-area .main-nav .menu-trigger span,
+  .header-area .main-nav .menu-trigger span:before,
+  .header-area .main-nav .menu-trigger span:after {
+    -moz-transition: all 0.4s;
+    -o-transition: all 0.4s;
+    -webkit-transition: all 0.4s;
+    transition: all 0.4s;
+    background-color: #1e1e1e;
+    display: block;
+    position: absolute;
+    width: 30px;
+    height: 2px;
+    left: 0;
+  }
+  
+  /* Product Section Styles */
+  .section-heading h2 {
+    font-size: 34px;
+    font-weight: 700;
+    color: #2a2a2a;
+  }
+  
+  .section-heading span {
+    font-size: 14px;
+    color: #a1a1a1;
+    font-style: italic;
+    font-weight: 400;
+  }
+  
+  .item .down-content {
+    padding-top: 20px;
+    position: relative;
+    z-index: 3;
+    background-color: #fff;
+  }
+  
+  .item .down-content h4 {
+    font-size: 22px;
+    color: #2a2a2a;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+  
+  .item .down-content span {
+    font-size: 18px;
+    color: #a1a1a1;
+    font-weight: 500;
+    display: block;
+  }
+  
+  .item .down-content ul.stars {
+    position: absolute;
+    right: 0;
+    top: 20px;
+  }
+  
+  .item .down-content ul.stars li {
+    display: inline;
+    font-size: 13px;
+  }
+  
+  .item .thumb .hover-content {
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+    bottom: -60px;
+    width: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: all .5s;
+  }
+  
+  .item .thumb .hover-content ul li {
+    display: inline;
+    margin: 0px 10px;
+  }
+  
+  .item .thumb .hover-content ul li a {
+    width: 50px;
+    height: 50px;
+    text-align: center;
+    line-height: 50px;
+    display: inline-block;
+    color: #2a2a2a;
+    background-color: #fff;
+  }

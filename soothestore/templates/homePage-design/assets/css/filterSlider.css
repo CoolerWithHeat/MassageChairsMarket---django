@@ -5,18 +5,138 @@
   background: #17a2b8;
 }
 
-@media (min-width:460px){
-    #filterFrame{
-        position: absolute;
-        left: 0;
+.ParentDropDown{
+    display: flex;
+    justify-content: left;
+}
+
+.parent-title{
+    width: 80%;
+    margin-left: 15px;
+}
+
+.MaxLabel, .MinLabel{
+    background: #995afd;
+    /* background-color: rgba(121, 60, 192, 0.979); */
+    border-radius: 8px;
+    color: white;
+    width: 45px;
+    height: 25px;
+    text-align: center;
+}
+
+@media (max-width:260px){
+    .filterWindow{
+        width: 100%;
+        margin: auto;
+    }
+    .ProductsListingWindow{
+        width: 75%;
+        margin-left: 15px;
+        margin: auto;
+    }
+    .FiltersParent{
+        width: 100%;
+    }
+    .MaxLabel{
+        float: left;
     }
 }
 
+@media (min-width:260px) and (max-width:770px){
 
-@media (max-width:460px){
-    #filterFrame{
-        position: relative;
-        
+    .Filters_And_Products_Together{
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .filterWindow{
+        width: 270px;
+        margin: auto;
+    }
+    
+    .ProductsListingWindow{
+        width: 75%;
+        margin-left: 15px;
+        margin: auto;
+    }
+    .FiltersParent{
+        width: 100%;
+    }
+    .MaxLabel{
+        float: left;
+    }
+
+}
+
+@media (min-width:770px) and (max-width:1500px){
+    .Filters_And_Products_Together{
+        display: flex;
+        justify-content: right;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .filterWindow{
+        width: 30%;
+        position: fixed;
+        left: 0;
+    }
+    
+    .ProductsListingWindow{
+        width: 65%;
+        margin-right: 15px;
+    }
+}
+
+@media (min-width:1500px) and (max-width:1800px){
+    .Filters_And_Products_Together{
+        display: flex;
+        justify-content: right;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .filterWindow{
+        width: 17%;
+        position: fixed;
+        left: 0;
+    }
+    
+    .ProductsListingWindow{
+        width: 80%;
+        margin-right: 15px;
+    }
+}
+
+@media (min-width:1800px){
+    .Filters_And_Products_Together{
+        display: flex;
+        justify-content: right;
+        width: 100%;
+        height: 100%;
+    }
+    
+    .filterWindow{
+        width: 370px;
+        position: fixed;
+        left: 0;
+        z-index: 2;
+        border-right-style: solid;
+        border-width: 1px;
+    }
+    
+    .ProductsListingWindow{
+        width: 80%;
+        margin-left: 15px;
+        z-index: 1;
+        /* min-height: 500px; */
+        /* background-color: red; */
+    }
+    .FiltersParent{
+        width: 100%;
     }
 }
 
@@ -28,7 +148,105 @@
     justify-content: space-evenly;
 }
 
-#MinPriceField, #MaxPriceField{
-    width: 60px;
-    font-size: 12px;
+.icon-control {
+    margin-top: 5px;
+    float: right;
+    font-size: 80%;
 }
+
+  .slider-labels {
+    margin-top: 10px;
+  }
+  .noUi-target,.noUi-target * {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -ms-touch-action: none;
+    touch-action: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  
+  .noUi-target {
+    position: relative;
+    direction: ltr;
+  }
+  
+  .noUi-base {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    z-index: 1;
+  }
+  
+  .noUi-origin {
+    position: absolute;
+    right: 0;
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+  
+  .noUi-handle {
+    position: relative;
+    z-index: 1;
+  }
+  
+  .noUi-stacking .noUi-handle {
+    z-index: 10;
+  }
+  
+  .noUi-state-tap .noUi-origin {
+    -webkit-transition: left 0.3s,top .3s;
+    transition: left 0.3s,top .3s;
+  }
+  
+  .noUi-state-drag * {
+    cursor: inherit !important;
+  }
+  
+  /* Painting and performance;
+   * Browsers can paint handles in their own layer.
+   */
+  .noUi-base,.noUi-handle {
+    -webkit-transform: translate3d(0,0,0);
+    transform: translate3d(0,0,0);
+  }
+  
+  /* Slider size and handle placement;
+   */
+  .noUi-horizontal {
+    height: 4px;
+  }
+  
+  .noUi-horizontal .noUi-handle {
+    width: 21px;
+    height: 21px;
+    border-radius: 50%;
+    left: -7px;
+    top: -9px;
+    background: #747474;
+    /* background: #79eaee; */
+    cursor: pointer;
+  }
+  
+  .noUi-background {
+    background: #D6D7D9;
+  }
+  
+  .noUi-connect {
+    background: #904bff;
+    /* background: #8edbfff3; */
+    -webkit-transition: background 450ms;
+    transition: background 450ms;
+  }
+  
+  .noUi-origin {
+    border-radius: 2px;
+  }
+  
+  .noUi-target {
+    border-radius: 2px;
+  }

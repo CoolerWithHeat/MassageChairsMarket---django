@@ -9,16 +9,14 @@
         <link rel="icon" href="{% static 'images/Brand.png' %}" type="image/x-icon">
         <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}">
-        <link rel="stylesheet" type="text/css" href="{% static 'css/font-awesome.css' %}">
         <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'css/cart.css' %}">
         <link rel="stylesheet" type="text/css" href="{% static 'css/CartAnimation.css' %}">
         <link rel="stylesheet" href="{% static 'css/templatemo-hexashop.css' %}">
         <link rel="stylesheet" href="{% static 'css/searchfield.css' %}">
         <link rel="stylesheet" href="{% static 'css/filterSlider.css' %}">
-        <link rel="stylesheet" href="{% static 'css/accordition.css' %}">
+        <link rel="stylesheet" type="text/css" href="{% static 'css/masterCardAnimation.css' %}">   
     </head>
-    
     <body>
     <div id="preloader">
         <div class="jumper">
@@ -57,9 +55,7 @@
                                         <li><a href="contact.html">Contact Us</a></li>
                                     </ul>
                                 </li>
-                            <li class="submenu">
-
-                                
+                            <li class="submenu">                               
                                 <a href="javascript:;">Brands</a>
                                 <ul>
                                     <li><a href="#">Kahuna</a></li>
@@ -80,7 +76,7 @@
                 
             </div>
             <div class="searchBox">
-                <input class="searchInput"type="text" name="" placeholder="Search">
+                <input id="SearchKeywordHolder" class="searchInput"type="text" name="" placeholder="Search">
                 <button onclick="OpenSearchBar()" class="searchButton" href="#">
                     <div class="searchIcon">
                         <i class="material-icons">
@@ -99,75 +95,34 @@
             </div>
         </div>
     </header>
-    <br><br><br><br><br><br>
+    <br><br><br>
     <section class="section" id="products">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="section-heading">
-                        <h2>Our Latest Products</h2>
-                        <span>Check out all of our products.</span>
+        <div class="col-lg-12">
+            <div id="LatestAlert" class="section-heading"></div>
+        </div>
+        <div class="Filters_And_Products_Together">
+            <div id="ProductFilters" class="filterWindow">
+                <article class="FiltersParent" class="filter-group">
+                    <div class="card-header">
+                        <a href="#" data-toggle="collapse" data-target="#collapse_0" aria-expanded="true" class="">
+                            <div class="ParentDropDown">
+                                <svg style="display:inline-block;" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z"/>
+                                </svg> 
+                                <h6 class="parent-title">Filters</h6>
+                                <i class="icon-control fa fa-chevron-down"></i>
+                            </div>
+                        </a>
                     </div>
-                </div>
-                <div id="filterFrame">
-                    <div class="product-filters">
-                        <ul class="mobile-product-filters vertical menu show-for-small-only" data-accordion-menu>
-                         <li>
-                            <h2 style="margin-left: 22px;">Filters</h2>
-                            <div class="c">
-                                <input class="input" type="checkbox" id="faq-3">
-                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-3">Price</label></h1>
-                                <div class="p">
-                                    <div id="PriceRange">
-                                        <input id="MinPriceField" class="form-control" type="text" placeholder="Min">
-                                        <h4 style="font-weight: 200;">-</h4>
-                                        <input id="MaxPriceField" class="form-control" type="text" placeholder="Max">
-                                    </div>
-                                    <button onclick="ApplyPrice();">apply</button>
-                                </div>
-                            </div>
-                            <div class="c">
-                                <input class="input" type="checkbox" id="faq-4">
-                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-4">Brand</label></h1>
-                                <div class="p">
-                                <p>I was inpired by an article on css-tricks.
-                                </p>
-                                </div>
-                            </div>
-                            <div class="c">
-                                <input class="input" type="checkbox" id="faq-5">
-                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-5">Type</label></h1>
-                                <div class="p">
-                                <p>I was inpired by an article on css-tricks.
-                                </p>
-                                </div>
-                            </div>
-                            <div class="c">
-                                <input class="input" type="checkbox" id="faq-6">
-                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-6">Color</label></h1>
-                                <div class="p">
-                                <p>I was inpired by an article on css-tricks.
-                                </p>
-                                </div>
-                            </div>
-                            <div class="c">
-                                <input class="input" type="checkbox" id="faq-7">
-                                <h1 class="optionLabel"><label style="color: rgb(53, 53, 53);" for="faq-7">Size</label></h1>
-                                <div class="p">
-                                <p>I was inpired by an article on css-tricks.
-                                </p>
-                                </div>
-                            </div>
-                         </li>
-                       </ul>
-                       
+                </article>
+            </div>
+            <br>
+            <div class="ProductsListingWindow">
+                <div class="container">
+                    <div id="ProductContainer" class="row"></div>
+                    <div id="PaginationSection" class="col-lg-12"></div>
                 </div>
             </div>
-        </div>
-        <div class="container">
-            
-            <div id="ProductContainer" class="row"></div>
-            <div id="PaginationSection" class="col-lg-12"></div>
         </div>
     </section>
 
@@ -185,55 +140,82 @@
     <script src="{% static 'js/imgfix.min.js' %}"></script>
     <script src="{% static 'js/isotope.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
+    <script src="{% static 'js/SliderHandler.js' %}"></script>
 
     <script>
-        // function searchAlgoliaWithParams(minPrice, maxPrice, brand, rating) {
-        function searchAlgoliaWithParams(brand, minPrice=undefined, maxPrice=undefined, rating=undefined) {
+        var MinPriceDemonstration;
+        var MaxPriceDemonstration;
+        function debounce(func, delay) {
+            let timeoutId;
+            return function(...args) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(() => {
+                    func.apply(this, args);
+                }, delay);
+            };
+        }
+
+        function ValidateSearchParam(data) {
+            return typeof data === 'string' ? [data] : data
+        }
+
+        function searchAlgoliaWithParams(RequestedProperties) {
+            UpdateLoadingStatus(false);
             const client = algoliasearch('K7LWE7RYA4', 'dd84d643cb097b484b87bf0a2c35d742');
             const products = client.initIndex('MassageChair');
-
-            const KeywordSearch = '*';
-
+            const minPrice = parseFloat(RequestedProperties.minPrice)  || 0;
+            const maxPrice = parseFloat(RequestedProperties.maxPrice) || 16000;
+            const brandFilters = ValidateSearchParam(RequestedProperties.Brand); 
+            const KeywordSearch = RequestedProperties.SearchKey || '*';
+            let brand_filters = '';
+            const price_filters = `${brandFilters ? ' AND ' : ''}(price > ${minPrice} AND price <= ${maxPrice})`;
+            let search_filter = `(brand: 'Osaki' OR brand:Kahuna) AND (price > ${minPrice} AND price <= ${maxPrice})`
+            if (brandFilters && Array.isArray(brandFilters)){
+                const filter = brandFilters.map(each=>`brand: '${each}' `)
+                const finalBrandFilter = `(${filter.join('OR ')}) `;
+                brand_filters = finalBrandFilter;
+            }
             const searchOptions = {
-                hitsPerPage: 10,
-                // "filters": "description: asdas"
+                hitsPerPage: 100,
+                filters: brand_filters + price_filters,
             };
-
-            let filters = [];
-
-            // if (minPrice !== undefined && maxPrice !== undefined) {
-            //     filters.push(`price:${minPrice} TO ${maxPrice}`);
-            // } else if (minPrice !== undefined) {
-            //     filters.push(`price >= ${minPrice}`);
-            // } else if (maxPrice !== undefined) {
-            //     filters.push(`price <= ${maxPrice}`);
-            // }
-
-            // if (brand !== undefined) {
-            //     filters.push(`brand.brand_name:${brand}`);
-            // }
-
-            // if (rating !== undefined) {
-            //     filters.push(`rating >= ${rating}`);
-            // }
-            // if (filters.length > 0) {
-            //     searchOptions.filters = filters.join(' AND ');
-            // }
-            products.search(KeywordSearch, searchOptions).then(({ hits }) => {
-                if (hits.length) {
-                    hits.forEach(Each => {
-                        console.log(Each)
-                        const container = document.getElementById('ProductContainer');
-                        const product = extractProductData(Each);
-                        container.innerHTML += product;
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Algolia search error:', error);
-            });
+            if (search_filter){
+                products.search(KeywordSearch, searchOptions).then((response) => {
+                    manageSearchHistory(RequestedProperties);
+                    const hits = response.hits;
+                    console.log('seasrch triggered')
+                    setTimeout(() => {
+                        UpdateLoadingStatus(true);
+                        if (hits.length) {
+                            hits.forEach(Each => {
+                                const container = document.getElementById('ProductContainer');
+                                const product = extractProductData(Each);
+                                container.innerHTML += product;
+                            });
+                    }
+                    }, 499);
+                })
+                .catch(error => {
+                    console.error('Algolia search error:', error);
+                });
+            }
         }
-        searchAlgoliaWithParams('Osaki');
+
+        function manageSearchHistory(data, retrieve = false) {
+            if (retrieve) {
+                const storedData = localStorage.getItem('searchHistory');
+                return storedData ? JSON.parse(storedData) : [];
+            } else {
+                localStorage.setItem('searchHistory', JSON.stringify(data));
+            }
+        }
+
+        function removeLatestAlert() {
+            var element = document.getElementById("LatestAlert");
+            if (element) {
+                element.parentNode.removeChild(element);
+            }
+        }
         function extractProductData(algoliaData) {
             const title = algoliaData.title;
             const price = algoliaData.price;
@@ -302,16 +284,46 @@
             frame.innerHTML = DesignatedButtons;
         };
 
-        
-        function setUrlParam(key, value) {
+        function setUrlParam(key, value, multi = false, remove = false) {
+            const existingParams = getUrlParams();
             var url = new URL(window.location.href);
-            url.searchParams.set(key, value);
+
+            if (url.searchParams.has(key)) {
+                var existingValue = url.searchParams.get(key);
+                var existingValues = existingValue.split(',');
+                if (!remove) {
+                    // If remove is true, remove only the requested value from the URL parameter
+                    existingValues = existingValues.filter(val => val !== value);
+                    if (existingValues.length === 0) {
+                        url.searchParams.delete(key);
+                    } else {
+                        url.searchParams.set(key, existingValues.join(','));
+                    }
+                } else if (multi) {
+                    // If multi is true, append the value to the existing URL parameter
+                    if (!existingValues.includes(value)) {
+                        existingValues.push(value);
+                        url.searchParams.set(key, existingValues.join(','));
+                    }
+                } else {
+                    // If multi is false and remove flag is false, override the existing URL parameter value
+                    url.searchParams.set(key, value);
+                }
+            } else {
+                // If the URL parameter doesn't exist, simply set it to the provided value
+                url.searchParams.set(key, value);
+            }
+
             window.history.pushState({ path: url.href }, '', url.href);
         }
 
+
         function addPriceFilters(maxPrice, minPrice = 0) {
-            setUrlParam('minPrice', minPrice);
-            setUrlParam('maxPrice', maxPrice);
+            if (maxPrice){
+                setUrlParam('maxPrice', maxPrice || 16000, false, true);
+            }else{
+                setUrlParam('minPrice', minPrice || 0, false, true);
+            }
         }
 
         function addLatestProductParameter() {
@@ -364,7 +376,6 @@
 
             return StarsHub;
         };
-
         var logoElement = document.getElementById('LogoPoint');
         document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => {
@@ -401,11 +412,25 @@
         }
 
         function OpenSearchBar(fadeout=true){
-            const searchBar = document.getElementsByClassName('searchBox')[0]
-            const in_closed_state = !searchBar.classList.contains('openedSearch')
+            const url_params = getUrlParams();
+            const first_time = url_params.SearchKey == undefined;
+            const searchBar = document.getElementsByClassName('searchBox')[0];
+            const in_closed_state = !searchBar.classList.contains('openedSearch');
+            const SearchKeywordHolder = document.getElementById('SearchKeywordHolder');
+            const currentKeywordValue = SearchKeywordHolder.value;
+            const same = url_params.SearchKey == currentKeywordValue;
+
+            if ((first_time && !currentKeywordValue)){}
+            
+            else{
+                if (!same){
+                    searchBar.classList.remove('openedSearch')
+                    AddSearchKeyword(currentKeywordValue);
+                }
+            }
             if (in_closed_state)
                 searchBar.classList.add('openedSearch')
-                AnimateSearchIcon()
+                AnimateSearchIcon();
         }
 
         const FadaAwaySearch = (fadeout=true)=>{
@@ -573,31 +598,277 @@
                         }
                     });
                 }
-            }
+        }
 
-            function getUrlParams() {
-                const searchParams = new URLSearchParams(window.location.search);
-                const params = {};
-                for (const [key, value] of searchParams.entries()) {
+        function UpdateLoadingStatus(remove=true){
+            if (remove){
+                const loader = document.getElementById('loader');
+                if (loader)
+                    loader.remove();
+            }else{
+                const loading_window = document.getElementById('ProductContainer');
+                loading_window.innerHTML = `<div id="loader" style="margin-top: 250px;" class="loader"></div>`;
+            }
+            AppendLatestAlert();
+        };
+
+        function removeUrlParam(key, valueToRemove) {
+            var url = new URL(window.location.href);
+            var existingValue = url.searchParams.get(key);
+            if (existingValue) {
+                var values = existingValue.split(','); // Split the existing values
+                var updatedValues = values.filter(val => val !== valueToRemove); // Remove the specified value
+
+                if (updatedValues.length === 0) {
+                    url.searchParams.delete(key); // If no values left, delete the parameter
+                } else {
+                    url.searchParams.set(key, updatedValues.join(',')); // Update the parameter with the remaining values
+                }
+
+                window.history.pushState({ path: url.href }, '', url.href);
+            }
+        }
+
+        function checkIfActivated(data, comparisonValue) {
+            if (Array.isArray(data)) {
+                return data.includes(comparisonValue);
+            } else if (typeof data === 'string') {
+                return data === comparisonValue;
+            } else {
+                return false;
+            }
+        }
+
+        function getUrlParams() {
+            const searchParams = new URLSearchParams(window.location.search);
+            const params = {};
+            for (const [key, value] of searchParams.entries()) {
+                if (value.includes(',')) {
+                    params[key] = value.split(',');
+                } else {
                     params[key] = value;
                 }
-                return params;
             }
+            return params;
+        }
 
-            function ApplyPrice(){
-                const preferred_price_min = document.getElementById('MinPriceField');
-                const preferred_price_max = document.getElementById('MaxPriceField');
-                const min_price = preferred_price_min.value || 0
-                const max_price = preferred_price_max.value || 0
-                if (preferred_price_min && preferred_price_max)
-                    //addLatestProductParameter();
-                    addPriceFilters(max_price, min_price);
-            };
+        function isObject(variable) {
+            return variable instanceof Object && variable !== null;
+        }
 
-            console.log(getUrlParams())
+        function ApplyPrice(){
+            const preferred_price_min = document.getElementById('MinPriceField');
+            const preferred_price_max = document.getElementById('MaxPriceField');
+            const min_price = preferred_price_min.value || 0
+            const max_price = preferred_price_max.value || 0
+            if (preferred_price_min && preferred_price_max)
+                addPriceFilters(max_price, min_price);
+        };
 
+        function HandleFilterCheckbox(event){
+            const target_tag = event.target
+            const is_checked = target_tag.checked
+            const filterData = target_tag.name  
+            const FilterParent = target_tag.getAttribute('data-parent') 
+            setUrlParam(FilterParent, filterData, true, is_checked);
+            const infrequest_request =  debounce(TriggerFilter, 599);
+            infrequest_request();
+        }
+
+        function removeMoneyFormat(moneyString) {
+            const cleanString = moneyString.replace(/[$,]/g, '');
+            const numericValue = parseFloat(cleanString);
+            return numericValue;
+        }
+
+        function TriggerFilter(updatedProperties){
+            const params = getUrlParams();
+            const finalParams = isObject(updatedProperties) ? {...params, ...updatedProperties} : params
+            searchAlgoliaWithParams(finalParams);
+        }; 
         HandleSearchBarState();
         SetProductCard();
+
+        function handleSlider(event) {
+            const dataId = event.target.getAttribute('data-id');
+            const decided_price = removeMoneyFormat(event.target.value);
+            const for_max_price = dataId == 'maxPrice';
+            TriggerFilter({[dataId]: decided_price});
+            const update_price = debounce(addPriceFilters, 999);
+            if (for_max_price){
+                update_price(decided_price);
+            }else{
+                update_price(false, decided_price);
+            }
+        }
+
+    function arrangeFilters(){
+            TriggerFilter();
+            const current_params = getUrlParams();
+            function deploySubFilters(options){
+                const getOption = (optionName, amountAvailable, filterName)=> {
+                        const already_activated = checkIfActivated(current_params[filterName], optionName);
+                        const amount = amountAvailable ? amountAvailable : (29 + (Math.floor(Math.random() * 8) + -1))
+                        return  `    <label class="custom-control custom-checkbox">
+                                        <input onchange='HandleFilterCheckbox(event)' ${already_activated ? 'checked' : ''} name='${optionName}' data-parent='${filterName}' type="checkbox" class="custom-control-input">
+                                        <div class="custom-control-label">${optionName}<b class="badge badge-pill badge-info float-right">${amount}</b></div>
+                                    </label>
+                                `
+                    }
+                let ParentOptions = [];
+                var objectIDs = 3;
+                if (isObject(options)){
+                    for (let key in options){
+                        const filterName = key;
+                        const filterOptions = options[key];
+                        let processedOptions = [];
+                        if (Array.isArray(filterOptions)){
+                            for (const obj of filterOptions) {
+                                for (const key in obj) {
+                                    if (obj.hasOwnProperty(key)) {
+                                        const value = obj[key];
+                                        processedOptions.push(getOption(key, value, filterName))
+                                    }
+                                }
+                            }
+                        }
+                        if (processedOptions){
+                            processedOptions = processedOptions.join('');
+                            ParentOptions.push(`
+                                <article class="filter-group">
+                                    <div class="card-header">
+                                        <a href="#" data-toggle="collapse" data-target="#collapse_${objectIDs}" aria-expanded="true" class="">
+                                            <i class="icon-control fa fa-chevron-down"></i>
+                                            <h6 class="title">${filterName}</h6>
+                                        </a>
+                                    </div>
+                                    <div class="filter-content collapse" id="collapse_${objectIDs}" style="">
+                                        <div class="card-body">
+                                            ${processedOptions}
+                                        </div>
+                                    </div>
+                                </article>
+                            `)
+                            objectIDs += 1;
+                        }
+                    } 
+                if (ParentOptions)
+                    ParentOptions = ParentOptions.join('');
+                    return ParentOptions
+                }
+                }
+            const FilterWindow = document.getElementById('ProductFilters');
+            const SubFilters = deploySubFilters({Brand: [{Kahuna: 26}, {Osaki: 29}, {'Real Relax': 25}], Date: [{Latest: 0}, {Options: 0}]});
+            const filterObject = `
+            <article class="FiltersParent" class="filter-group">
+                <div class="card-header">
+                    <a href="#" data-toggle="collapse" data-target="#collapse_0" aria-expanded="true" class="">
+                        <div class="ParentDropDown">
+                            <svg style="display:inline-block;" xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3M2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3m-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1z"/>
+                            </svg> 
+                            <h6 class="parent-title">Filters</h6>
+                            <i class="icon-control fa fa-chevron-down"></i>
+                        </div>
+                    </a>
+                </div>
+                <div class="filter-content collapse show" id="collapse_0" style="">
+                        <div class="card-body">
+                            <article class="filter-group">
+                                <div class="card-header">
+                                    <a href="#" data-toggle="collapse" data-target="#collapse_1" aria-expanded="true" class="">
+                                        <i class="icon-control fa fa-chevron-down"></i>
+                                        <h6 class="title">Price Range</h6>
+                                    </a>
+                                </div>
+                                <div class="filter-content collapse show" id="collapse_1">
+                                    <div class="card-body">
+                                        <div class="slider-container">
+                                            <div class="row">
+                                            <div class="col-sm-12">
+                                                <div id="slider-range"></div>
+                                            </div>
+                                            </div>
+                                            <div class="row">
+                                            <div class="col-sm-12">
+                                                <form>
+                                                    <input id="PriceSliderMin" type="hidden" name="min-value" value="">
+                                                    <input id="PriceSliderMax" type="hidden" name="max-value" value="">
+                                                </form>
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-6">
+                                                <label class="MinLabel">Min</label>
+                                                <input data-id="minPrice" class="form-control" placeholder="$0" type="text" id="MinPriceHub">
+                                            </div>
+                                            <div class="form-group text-right col-md-6">
+                                                <label class="MaxLabel">Max</label>
+                                                <input data-id="maxPrice" class="form-control" placeholder="$15,999" type="text" id="MaxPriceHub">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </article>
+                            ${SubFilters}
+                        </div>
+                </div>
+            </article>`
+            FilterWindow.innerHTML = filterObject;
+            return true;
+        }
+
+        function AddSearchKeyword(keyword){
+            setUrlParam('SearchKey', keyword, false, true)
+            TriggerFilter();
+            return true;
+        }
+        
+        function AppendLatestAlert(){
+            setTimeout(() => {
+                const url_params = getUrlParams();
+                const NoFiltersYet = !Object.keys(url_params).length > 0;
+                const window = document.getElementById('LatestAlert');
+                if (NoFiltersYet){
+                    window.innerHTML = `
+                        <h2>Explore Latest Products</h2>
+                        <span>By MassageChairsMarket.com</span>
+                    `;
+                }else{
+                    window.innerHTML = '';
+                }
+            }, 599);
+        }
+
+        function SetSearchValue(){
+            const params = getUrlParams();
+            const search_value = params.SearchKey
+            if(!(search_value == undefined)){
+                const value_window = document.getElementById('SearchKeywordHolder');
+                value_window.value = search_value;
+            }
+        }
+        
+        const ready = arrangeFilters();
+
+        if (ready){
+            SetSearchValue();
+            setTimeout(() => {
+                MinPriceDemonstration = document.getElementById("MinPriceHub");
+                MaxPriceDemonstration = document.getElementById("MaxPriceHub");   
+                setTimeout(() => {
+                        MaxPriceRepresentor.addEventListener('onchange', debounce(handleSlider, 599))
+                }, 399);
+                setTimeout(() => {
+                        MinPriceDemonstration.addEventListener('onchange', debounce(handleSlider, 599))
+                }, 399);
+                
+            }, 111);
+        }
+
+
     </script>
 
 </body>

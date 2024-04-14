@@ -52,6 +52,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+
+
 ROOT_URLCONF = 'homepage.urls'
 
 TEMPLATES = [
@@ -110,10 +113,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-ALGOLIA = {
-    'APPLICATION_ID': 'K7LWE7RYA4',
-    'API_KEY': 'dd84d643cb097b484b87bf0a2c35d742'
-}
 
 
 
