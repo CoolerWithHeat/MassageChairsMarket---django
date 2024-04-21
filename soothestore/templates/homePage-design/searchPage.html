@@ -39,7 +39,7 @@
                         <ul class="nav">
                             <li class="scroll-to-section">
                                 <div class="CartBoundary" style="cursor: pointer;">
-                                    <a href="../../Cart">
+                                    <a href="./Cart/">
                                         <i class="fa" style="font-size:25px">&#xf07a;</i>
                                         <span id="lblCartCount" class='badge badge-warning'> 0 </span>
                                     </a>
@@ -136,7 +136,6 @@
     <script src="{% static 'js/datepicker.js' %}"></script>
     <script src="{% static 'js/scrollreveal.min.js' %}"></script>
     <script src="{% static 'js/waypoints.min.js' %}"></script>
-    <script src="{% static 'js/jquery.counterup.min.js' %}"></script>
     <script src="{% static 'js/imgfix.min.js' %}"></script>
     <script src="{% static 'js/isotope.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
@@ -181,7 +180,6 @@
             };
             if (search_filter){
                 products.search(KeywordSearch, searchOptions).then((response) => {
-                    manageSearchHistory(RequestedProperties);
                     const hits = response.hits;
                     console.log('seasrch triggered')
                     setTimeout(() => {
@@ -201,14 +199,14 @@
             }
         }
 
-        function manageSearchHistory(data, retrieve = false) {
-            if (retrieve) {
-                const storedData = localStorage.getItem('searchHistory');
-                return storedData ? JSON.parse(storedData) : [];
-            } else {
-                localStorage.setItem('searchHistory', JSON.stringify(data));
-            }
-        }
+        // function manageSearchHistory(data, retrieve = false) {
+        //     if (retrieve) {
+        //         const storedData = localStorage.getItem('searchHistory');
+        //         return storedData ? JSON.parse(storedData) : [];
+        //     } else {
+        //         localStorage.setItem('searchHistory', JSON.stringify(data));
+        //     }
+        // }
 
         function removeLatestAlert() {
             var element = document.getElementById("LatestAlert");
@@ -240,7 +238,7 @@
                                     <ul>
                                         <li><a href="../Buy/${product_id}/"><i class="fa fa-eye"></i></a></li>
                                         <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a><i style="${style}" data-id="${product_id}" onclick="AddToCard(event)" class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a><i style="${style}" data-id="${product_id}" data-type="listed-product" data-color="${availableColors[0][0]}" onclick="AddToCard(event)" class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <img src="${blackColor_Url}" alt="">
@@ -292,7 +290,6 @@
                 var existingValue = url.searchParams.get(key);
                 var existingValues = existingValue.split(',');
                 if (!remove) {
-                    // If remove is true, remove only the requested value from the URL parameter
                     existingValues = existingValues.filter(val => val !== value);
                     if (existingValues.length === 0) {
                         url.searchParams.delete(key);
@@ -300,17 +297,14 @@
                         url.searchParams.set(key, existingValues.join(','));
                     }
                 } else if (multi) {
-                    // If multi is true, append the value to the existing URL parameter
                     if (!existingValues.includes(value)) {
                         existingValues.push(value);
                         url.searchParams.set(key, existingValues.join(','));
                     }
                 } else {
-                    // If multi is false and remove flag is false, override the existing URL parameter value
                     url.searchParams.set(key, value);
                 }
             } else {
-                // If the URL parameter doesn't exist, simply set it to the provided value
                 url.searchParams.set(key, value);
             }
 
@@ -393,21 +387,24 @@
             }, 1000);
         }
 
-        function ManageCart(product_id, quantity = 1) {
+        function ManageCart(product) {
+            const product_id = product.id
+            const quantity = product.quantity || 1
+            const selectedColor = product.selectedColor
             const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
             let isRemoved = false;
-        
+
             const index = savedProducts.findIndex(product => product.product_id === product_id);
-        
+
             if (index === -1) {
-                savedProducts.push({ product_id, quantity });
+                savedProducts.push({ product_id, quantity, selectedColor});
             } else {
                 savedProducts.splice(index, 1);
                 isRemoved = true;
             }
-        
+
             localStorage.setItem('MassageCart', JSON.stringify(savedProducts));
-        
+
             return [savedProducts.length, isRemoved];
         }
 
@@ -424,8 +421,10 @@
             
             else{
                 if (!same){
-                    searchBar.classList.remove('openedSearch')
                     AddSearchKeyword(currentKeywordValue);
+                    setTimeout(() => {
+                        searchBar.classList.remove('openedSearch')
+                    }, 333);
                 }
             }
             if (in_closed_state)
@@ -501,7 +500,8 @@
 
         function AddToCard(data=null){
             const product_id = data.target.dataset.id ? Number(data.target.dataset.id) : null;
-            const result = ManageCart(product_id);
+            const product_color = data.target.dataset.color;
+            const result = ManageCart({id: product_id, quantity:1, selectedColor:product_color});
             const total_products = result[0];
             const current_color = result[1] ? '#343a40' : 'rgb(127,255,212)';
             const element = data.target;
@@ -530,18 +530,42 @@
             }, 999);
         }
 
-        function SetProductCard(){
+        function checkProductIdExists(digit, dataArray) {
+            for (var i = 0; i < dataArray.length; i++) {
+                if (dataArray[i].product_id === digit) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function SetProductCard(forCartValidation=false){
             const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
             const total_products = Cart.length;
             const Datapath = window.innerWidth > 767 ? document.getElementById('lblCartCount') : document.getElementById('lblCartCountMobile');
             Datapath.textContent = total_products;
-            Cart.forEach(Each=>{
-                const element = document.querySelector(`[data-id="${Each.product_id}"]`);
-                if (element)
-                    element.style.color = 'rgb(127,255,212)';
+            const listerProducts = document.querySelectorAll('[data-type="listed-product"]');
+            listerProducts.forEach(TheProduct=>{
+                const product_id = Number(TheProduct.getAttribute('data-id'));
+                const product_added = checkProductIdExists(product_id, Cart);
+                TheProduct.style.color = product_added ? 'rgb(127,255,212)' : '';
             })
+            // if (!forCartValidation){
+            //     Cart.forEach(Each=>{
+            //         const element = document.querySelector(`[data-id="${Each.product_id}"]`);
+            //         if (element)
+            //             element.style.color = 'rgb(127,255,212)';
+            //     })
+            // }
+            // else{
+            //     const listerProducts = document.querySelectorAll('[data-type="listed-product"]');
+            //     listerProducts.forEach(TheProduct=>{
+            //         const product_id = Number(TheProduct.getAttribute('data-id'));
+            //         const product_added = checkProductIdExists(product_id, Cart);
+            //         TheProduct.style.color = product_added ? 'rgb(127,255,212)' : '';
+            //     })
+            // }
         }
-
 
         function HandleSearchBarState(){
             const SearchBar = document.getElementsByClassName('searchBox')[0];
@@ -686,8 +710,6 @@
             const finalParams = isObject(updatedProperties) ? {...params, ...updatedProperties} : params
             searchAlgoliaWithParams(finalParams);
         }; 
-        HandleSearchBarState();
-        SetProductCard();
 
         function handleSlider(event) {
             const dataId = event.target.getAttribute('data-id');
@@ -868,6 +890,13 @@
             }, 111);
         }
 
+        SetProductCard();
+        window.addEventListener('pageshow', function(event) {
+            setTimeout(() => {
+                SetProductCard(true);
+                HandleSearchBarState();
+            }, 799);
+        });
 
     </script>
 

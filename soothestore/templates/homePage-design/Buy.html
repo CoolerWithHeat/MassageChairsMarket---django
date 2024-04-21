@@ -52,7 +52,7 @@
                         <ul class="nav">
                             <li class="scroll-to-section">
                                 <div class="CartBoundary" style="cursor: pointer;">
-                                    <a href="./Cart">
+                                    <a href="../../Cart">
                                         <i class="fa" style="font-size:25px">&#xf07a;</i>
                                         <span id="lblCartCount" class='badge badge-warning'> 0 </span>
                                     </a>
@@ -92,10 +92,9 @@
         </div>
     </header>
     <br><br><br><br><br>
-
     <body>
         <div style="z-index: 9;" class="CartBoundaryMobile MobileCart" style="cursor: pointer;">
-            <a href="\../Cart">
+            <a href="../../Cart">
                 <i class="fa" style="font-size:24px">&#xf07a;</i>
                 <span class='badge badge-warning' id='lblCartCount_mobile'> 0 </span>
             </a>
@@ -150,12 +149,13 @@
                                 <ul class="slider-list">
                                     <li class="slider-item">
                                         <a id="PrimaryWindow">
-                                            <img src="https://www.kahunachair.com/wp-content/uploads/2014/12/6800_brown.jpg" alt="New Product 1" />
+                                            <img id="PrimaryMobileChairImage" src="">
                                         </a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
+                        <br>
                         <div id="AllImagesWindow"></div>
                     </div>
                 </div>
@@ -165,11 +165,10 @@
                 <div class="imgs-col">
                     <div id="DesktopImageWindow" class="main-img">
                         <a class="prev2" onclick="plusSlides2(-1)">&#10094;</a>
-                        <div class="mySlides2">
+                        <div id="PrimaryDesktopChairImage" class="mySlides2">
                             <img id="PrimaryChairImage" src="">
                         </div>
                     </div>
-
                     <div id="SecondaryProductView" class="thumbnails cursor"></div>
                 </div>
             </div>
@@ -246,11 +245,6 @@
 
         const product_id = extractIdFromUrl(window.location.pathname);
 
-
-        function GetProductQuantity() {
-
-        }
-
         function AnimateLogo() {
             logoElement.classList.add('active');
             setTimeout(() => {
@@ -258,14 +252,17 @@
             }, 1000);
         }
 
-        function ManageCart(product_id, quantity = 1) {
+        function ManageCart(product) {
+            const product_id = product.id
+            const quantity = product.quantity || 1
+            const selectedColor = product.selectedColor
             const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
             let isRemoved = false;
 
             const index = savedProducts.findIndex(product => product.product_id === product_id);
 
             if (index === -1) {
-                savedProducts.push({ product_id, quantity });
+                savedProducts.push({ product_id, quantity, selectedColor});
             } else {
                 savedProducts.splice(index, 1);
                 isRemoved = true;
@@ -324,8 +321,9 @@
             const targetButton = document.getElementsByClassName('cart-button')[0];
             const CartHeader = document.getElementById('CartButtonState');
             const product_id = ProductIdBase.dataset.id ? Number(ProductIdBase.dataset.id) : null;
-            const quantity = document.getElementsByClassName('ProductQuantity')[0]
-            const result = ManageCart(product_id, Number(quantity.textContent));
+            const requested_color = ProductIdBase.dataset.selectedcolor;
+            const quantity = document.getElementById('quantityHolder');
+            const result = ManageCart({id: product_id, quantity:Number(quantity.textContent), selectedColor:requested_color});
             const total_products = result[0];
             const current_color = result[1] ? 'rgb(127,255,212)' : '#343a40';
             const element = data.target;
@@ -338,6 +336,7 @@
             DivpathMobile.classList.add('animateCart');
             Datapath.textContent = total_products;
             DatapathMobile.textContent = total_products;
+            console.log(JSON.parse(localStorage.getItem('MassageCart')))
             fadeAwayText(CartHeader);
             if (result[1]) {
                 targetButton.classList.add('removed');
@@ -353,9 +352,9 @@
                 targetButton.classList.remove('removed');
                 targetButton.classList.remove('clicked');
                 if (result[1]) {
-                    CartHeader.textContent = 'Item Removed';
+                    CartHeader.textContent = 'Add to Cart';
                 } else {
-                    CartHeader.textContent = 'Item Added';
+                    CartHeader.textContent = 'Remove From Cart';
                 }
                 fadeAwayText(CartHeader, false);
             }, 1999);
@@ -366,23 +365,30 @@
             const CartButton = document.getElementById('UserCardBase');
             const CartHeader = document.getElementById('CartButtonState');
             const DeductionIndicator = document.getElementById('deducted');
-            const product_id = Number(CartButton.dataset.id);
-            const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
-            const index = savedProducts.findIndex(product => product.product_id === product_id);
-            if (!(index === -1)) {
-                CartHeader.innerText = 'Item Added';
+            if (CartButton){
+                const product_id = Number(CartButton.dataset.id);
+                const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
+                const index = savedProducts.findIndex(product => product.product_id === product_id);
+                if (!(index === -1)) {
+                    CartHeader.innerText = 'Item Added';
+                }
             }
         }
 
-        function SetProductCard() {
+        function SetProductCart() {
             const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
             const total_products = Cart.length;
             const Datapath = window.innerWidth > 767 ? document.getElementById('lblCartCount') : document.getElementById('lblCartCount_mobile');
+            const baseButton = document.getElementById('UserCardBase');
+            const current_id = baseButton.getAttribute('data-id');
             Datapath.textContent = total_products;
-            Cart.forEach(Each => {
-                const element = document.querySelector(`[data-id="${Each.product_id}"]`);
-                element.style.color = 'rgb(127,255,212)';
-            })
+            const alreadyInCart = CheckifExists(Number(current_id));
+            const statusBase = document.getElementById('CartButtonState');
+            if (alreadyInCart){
+                statusBase.textContent = 'Remove from Cart'
+            }else{
+                statusBase.textContent = 'Add to Cart'
+            }
         }
 
         const SelectRate = (propertyBase) => {
@@ -576,6 +582,7 @@
                     alertWindow.remove();
             }
         };
+
 
         const EnableLoading = (enable = true) => {
             const alertWindow = document.getElementById('SavingStatusBoundary');
@@ -779,6 +786,11 @@
         const CheckIfAdded = (id) => {
             const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
             return Cart.includes(Number(id))
+        }
+
+        const CheckifExists = (id) => {
+            const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
+            return Cart.some(product => product.product_id === id);
         }
 
         const SetLoading = (Enable = true) => {
@@ -1002,6 +1014,7 @@
             `
             window.innerHTML = loading;
         }
+
         const test_url = "https://relaxtheback.com/cdn/shop/files/SuperNovo-2.0_CREAM_Hero_Model_5b4001a4-c8bc-4eaa-ac5b-6dde71a98410_1500x1500.jpg?v=1699045917"
         const test_description = "This cutting-edge technology performs an incredibly fast and accurate assessment, promptly detecting your shoulder height. Once this vital information is collected, the chair skillfully maps out a customized massage experience tailored precisely to your body's unique dimensions."
 
@@ -1013,7 +1026,7 @@
             const showcaseText = data.description
             const image_tag = `
                 <div class="product-img">
-                    <img src="${image_url}" height="420" width="327">
+                    <img id="showcaseImage" src="${image_url}" height="420" width="327">
                 </div>
             `
             const description_tag = `
@@ -1182,6 +1195,7 @@
             }
             MakeRequest(url, null, "GET", HandleReiews)
         }
+
         const ResetRatingsAndReviews = ()=>{
             const field1 = document.getElementById("RatingLoadingWindow")
             const field2 = document.getElementById("RatingsClosure")
@@ -1193,13 +1207,14 @@
 
         const FetchColorSelector = (color_data) => {
             if (Array.isArray(color_data)) {
+                const default_color = color_data[0][0];
                 const colors = color_data.map(each_data => {
                     const color_name = each_data[0];
                     const color_code = each_data[1];
                     const color_image = each_data[2];
-                    return `<img onclick="SetChairColor(event, '${color_name}');" class="ColorImage" src="${color_image}" alt="${color_name}">`;
+                    return `<img onclick="SetChairColor(event, '${color_name}');" id="${color_name == default_color ? 'color-selected' : ''}" class="ColorImage" src="${color_image}" alt="${color_name}">`;
                 });
-                return colors.join('');
+                return [colors.join(''), color_data[0][0]];
             }
             return '';
         };
@@ -1209,6 +1224,7 @@
             if (is_expected_data){
                 const window = document.getElementById('ProductInfoSection');
                 const title = data.title;
+                const product_id = data.id;
                 const brand = data.brand.brand_name;
                 const description = data.description;
                 const discount_amount = Number(data.discount_amount);
@@ -1216,7 +1232,8 @@
                 const color_options = data.color_options;
                 const discount_tag = discount_amount ? `<small id="deducted" data-amount="${discount_amount}">-$${discount_amount}</small>` : '';
                 const old_price = discount_amount ? `<span id="old-price">$${price+discount_amount}</span>` : '';
-                const colors_available = FetchColorSelector(color_options);
+                const colors_available = FetchColorSelector(color_options)[0];
+                const default_color = FetchColorSelector(color_options)[1];
                 const info_body = `
                         <h1 id="name">${title}</h1>
                             <span id="highlight">BY ${brand}</span>
@@ -1230,7 +1247,7 @@
                                 ${old_price}
                             <div id="ProductColorOptionsSection">
                                 <div id="ColorOptionInfo">
-                                    <p class="Display-6">Chair Color: <b id="CurrentSelectedColor"></b></p>
+                                    <p class="Display-6">Chair Color: <b id="CurrentSelectedColor">${default_color}</b></p>
                                 </div>
                                 <div id="ColorOptionImages">
                                     ${colors_available}
@@ -1240,15 +1257,15 @@
                                 <button id="quantityButton">
                                     <img src="{% static 'images/BuyPage/icon-minus.svg' %}" alt="" onclick="minus()">
                                 </button>
-                                <button class='ProductQuantity' style="width: 5px;" id="result">1</button>
-                                <button id="quantityButton" onclick="plus()"><img src="{% static 'images/BuyPage/icon-plus.svg' %}"
-                                        alt=""></button>
-                                <div id="UserCardBase" class="buttons" data-id="1" onclick="AddToCart(event);"> <button
-                                        class="cart-button">
-                                        <h6 id="CartButtonState" class="defaultCartState">Add to Cart</h6> <i
-                                            class="fa fa-shopping-cart"></i> <i class="fa fa-square"></i>
-                                    </button> </div>
-                        </div>
+                                <button style="width: 5px;" id="result"><h6 id="quantityHolder">1</h6></button>
+                                <button id="quantityButton" onclick="plus()"><img src="{% static 'images/BuyPage/icon-plus.svg' %}" alt=""></button>
+                                <div id="UserCardBase" class="buttons" data-id="${product_id}" data-selectedColor='${default_color}' onclick="AddToCart(event);">
+                                    <button id="MainCartButton" class="cart-button">
+                                            <h6 id="CartButtonState" class="defaultCartState">Add to Cart</h6> 
+                                            <i class="fa fa-shopping-cart"></i> <i class="fa fa-square"></i>
+                                    </button> 
+                                </div>
+                            </div>
                     `;
 
                     window.innerHTML = info_body;
@@ -1261,10 +1278,18 @@
             const effected_tag = event.target;
             const selected_color = color;
             for (color_tag of all){
-                if (color_tag == effected_tag)
-                    effected_tag.setAttribute("id", "color-selected");
-                else
+                if (color_tag == effected_tag){
+                    const already_selected = effected_tag.getAttribute('id') ? true : false;
+                    if (!already_selected){
+                        const cartButton = document.getElementById('UserCardBase');
+                        effected_tag.setAttribute("id", "color-selected");
+                        cartButton.setAttribute('data-selectedColor', selected_color);
+                        ManageChanges();
+                    }
+                }
+                else{
                     color_tag.removeAttribute("id");
+                }
             }
             color_indicator.textContent = selected_color;
         };
@@ -1272,8 +1297,12 @@
         function SetImageAsMain(event){
             const image_tag = event.target;
             if (image_tag){
-                const primaryView = document.getElementById('PrimaryWindow');
-                primaryView.innerHTML = `<img class="fade-appear" src="${image_tag.src}" alt="New Product 1" />`;
+                const primaryMobileView = document.getElementById('PrimaryWindow');
+                const primaryDekstopView = document.getElementById('PrimaryDesktopChairImage');
+                const mobile_image = `<img id='PrimaryMobileChairImage' class="fade-appear" src="${image_tag.src}" alt="New Product" />`;
+                const desktop_image = `<img id='PrimaryDesktopChairImage' class="fade-appear" src="${image_tag.src}" alt="New Product" />`;
+                primaryMobileView.innerHTML = mobile_image;
+                primaryDekstopView.innerHTML = desktop_image;
             }
         }
 
@@ -1289,7 +1318,9 @@
 
         function serPrimaryImage(image_url){
             const primary_image = document.getElementById('PrimaryChairImage');
+            const primary_mobile_image = document.getElementById('PrimaryMobileChairImage');
             primary_image.setAttribute('src', image_url);
+            primary_mobile_image.setAttribute('src', image_url);
         }
 
         const first = [
@@ -1298,44 +1329,84 @@
             "https://images.thdstatic.com/productImages/2f1b7bff-3f5f-4a39-9a78-c5e9cf109cbd/svn/black-white-kahuna-massage-chairs-lm-6800tbw-31_600.jpg",
             "https://www.kahunachair.com/wp-content/uploads/2014/12/6800_brown.jpg",
         ]
+
         function SettleDesktopView(data=[]){
             const SecondaryProductView = document.getElementById('SecondaryProductView');
             const SpecialViewImages = document.getElementById('SpecialViewImages');
             var times = 0;
             if (data.length)
                 serPrimaryImage(data[0]);
-                const processedData_view = data.map(each_url=>`<img src="${each_url}" alt="L/T" onclick="openModal();currentSlide(1)">`)
+                const processedData_view = data.map(each_url=>`<img id="SecondaryImages" src="${each_url}" alt="L/T" onclick="SetImageAsMain(event);">`)
                 const processedData_special = data.map(each_url=>{
                     times += 1;
-                    return`<img src="${each_url}" alt="L/T" class="${times == 1 ? "active" : ''}" onclick="openModal();currentSlide(${times})">`;
+                    return`<img src="${each_url}" alt="L/T" class="${times == 1 ? "active" : ''}" onclick="openModal(); currentSlide(${times})">`;
                 })
                 const body_form_1 = `
                         <div>
-                            ${processedData_view}
+                            ${processedData_view.join('')}
                         </div>
                 `
                 const body_form_2 = `
                         <div>
-                            ${processedData_special}
+                            ${processedData_special.join('')}
                         </div>
                 `
                 SecondaryProductView.innerHTML = body_form_1;
-                SpecialViewImages.innerHTML = body_form_2;
+                // SpecialViewImages.innerHTML = body_form_2;
         }
+
         function PageManagement(respones){
             const available_colors = respones.available_colors.map(each_color=>each_color.image)
             setMobileView(available_colors);
             SettleDesktopView(available_colors);
             SetProductDetails(respones)
-            console.log(respones)
         }
 
-        
+        function resetCartButton(){
+            const button = document.getElementById('CartButtonState')
+            if (button){
+                const MainButton = document.getElementById('MainCartButton');
+                MainButton.classList.add('buttonresetanimation');
+                setTimeout(() => {
+                    MainButton.classList.remove('buttonresetanimation');
+                }, 599);
+                setTimeout(() => {
+                    button.textContent = 'Add to Cart';
+                }, 299);
+            }
+        };
+
+        function ManageChanges(){
+            const ID_holder = document.getElementById('UserCardBase');
+            if (ID_holder){
+                const product_id = ID_holder.getAttribute('data-id')
+                if (product_id){
+                    const Id = Number(product_id);
+                    const exists = CheckifExists(Id);
+                    if (exists){
+                        console.log('resetting button cause exists already');
+                        const Datapath = document.getElementById('lblCartCount');
+                        const DatapathMobile = document.getElementById('lblCartCount_mobile');
+                        const cartProductsAmount = ManageCart({id: Id})[0];
+                        DatapathMobile.textContent = cartProductsAmount
+                        Datapath.textContent = cartProductsAmount
+                        resetCartButton();
+                    }
+                }
+            }
+        }
+
+        window.addEventListener('pageshow', function(event) {
+            setTimeout(() => {
+                SetProductCart();
+            }, 399);
+        });
+
         MakeRequest(`/GetProduct/${product_id}/`, null, "GET", PageManagement)
         ManageRatingAndReviews();
         SetLoading();
-        SetProductCard();
         UpdateProductStatus();
+
 
     </script>
 

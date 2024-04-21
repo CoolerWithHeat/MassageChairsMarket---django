@@ -227,14 +227,12 @@ https://templatemo.com/tm-571-hexashop
     <script src="assets/js/datepicker.js"></script>
     <script src="assets/js/scrollreveal.min.js"></script>
     <script src="assets/js/waypoints.min.js"></script>
-    <script src="assets/js/jquery.counterup.min.js"></script>
+    <!-- <script src="assets/js/jquery.counterup.min.js"></script> -->
     <script src="assets/js/imgfix.min.js"></script> 
     <script src="assets/js/slick.js"></script> 
     <script src="assets/js/lightbox.js"></script> 
     <script src="assets/js/isotope.js"></script> 
     <script src="assets/js/quantity.js"></script>
-    
-    <!-- Global Init -->
     <script src="assets/js/custom.js"></script>
 
     <script>
@@ -246,8 +244,8 @@ https://templatemo.com/tm-571-hexashop
             $("#portfolio").fadeTo(50, 0.1);
                 $("#portfolio div").not("."+selectedClass).fadeOut();
             setTimeout(function() {
-              $("."+selectedClass).fadeIn();
-              $("#portfolio").fadeTo(50, 1);
+            $("."+selectedClass).fadeIn();
+            $("#portfolio").fadeTo(50, 1);
             }, 500);
                 
             });

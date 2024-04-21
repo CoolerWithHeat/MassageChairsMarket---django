@@ -23,4 +23,4 @@
     50% { transform: rotate(-8deg) scale(1.2); }
     70% { transform: rotate(5deg) scale(1.2); }
     100% { transform: scale(1); }
-  }
+}

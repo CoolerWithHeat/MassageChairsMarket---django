@@ -86,33 +86,38 @@ var total = 1;
 var Result = null;
 
 function plus() {
-    if (Result == null)
-        Result = document.getElementById('result');
+    ManageChanges();
+    if (Result == null){
+        Result = document.getElementById('quantityHolder');
+    }
     const deductSpan = document.getElementById("deducted");
     const priceSpan = document.getElementById("amount");
     const price = priceSpan.dataset.price;
     total += 1;
     const resulted_price = (price*total).toFixed(2);
-    Result.innerHTML = total;
+    Result.textContent = total;
     priceSpan.textContent = resulted_price;
-    if (total > 1)
+    if (total > 1 && deductSpan)
         deductSpan.textContent = `-$${deductSpan.dataset.amount*total}`;
 }
 
 function minus() {
-    if (Result == null)
-        Result = document.getElementById('result');
+    ManageChanges();
+    if (Result == null){
+        Result = document.getElementById('quantityHolder');
+    }
     const priceSpan = document.getElementById("amount");
     const deductSpan = document.getElementById("deducted");
     if (Result.innerHTML > 1) {
         const price = priceSpan.dataset.price;
         total -= 1;
         const resulted_price = (price*total).toFixed(2);
-        Result.innerHTML = total;
+        Result.textContent = total;
         priceSpan.textContent = resulted_price;
-        deductSpan.textContent = `-$${deductSpan.dataset.amount*total}`;
+        if (deductSpan){
+            deductSpan.textContent = `-$${deductSpan.dataset.amount*total}`;
+        }
     }
-
 }
 
 ///////////////////////////////////////////////////////// Cart  //////////////////////////////////////////////////////////////

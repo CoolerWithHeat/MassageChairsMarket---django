@@ -9,6 +9,9 @@ from .models import MassageChair, ChairReview, ReviewResponse, UserReaction
 from .serializers import MassageChairSerializer, ChairReviewSerializer, ReviewResponseSerializer, UserReactionSerializer
 from rest_framework import status
 from django.conf import settings
+from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
+import stripe
 import json, requests
 
 def get_customer_location(ip_address):
@@ -73,6 +76,15 @@ def FAQ(request):
 def Cart(request):
     return render(request, 'homePage-design/finalcart.html')
 
+def validate_color_for_chair(cart_data, chair_instance):
+    product_id = cart_data.get('product_id')
+    selected_color = cart_data.get('selectedColor')
+    available_colors = [color.color_name for color in chair_instance.available_colors.all()]
+    if selected_color not in available_colors:
+        return False
+    else:
+        return True
+
 class CheckCart(APIView):
     def post(self, request, *args, **kwargs):
         products = json.loads(request.body) if request.body else []
@@ -81,11 +93,14 @@ class CheckCart(APIView):
         try:
             product_ids = [product['product_id'] for product in products]
             verified_products = MassageChair.objects.filter(id__in=product_ids)
-            for each in verified_products:
+            for times in range(len(verified_products)):
+                each = verified_products[times]
+                client_requested_data = products[times]
+                available_matches = validate_color_for_chair(client_requested_data, each)
                 desired_product_id = each.id
                 desired_product = next((product for product in products if product['product_id'] == desired_product_id), None)
                 product_object = {}
-                if desired_product:
+                if desired_product and available_matches:
                     product_object['id'] = each.id
                     product_object['title'] = each.title    
                     product_object['quantity'] = desired_product['quantity']
@@ -94,7 +109,7 @@ class CheckCart(APIView):
                     images = each.available_colors.all()
                     if images:
                         image_url = images[0].image.url
-                        color = str(images[0])
+                        color = each.color_options()[0][0]
                         product_object['color'] = color
                         product_object['image'] = image_url
                     verified_cart.append(product_object)
@@ -199,3 +214,44 @@ class MassageChairDetailView(APIView):
             return Response(serialized.data)
         except MassageChair.DoesNotExist:
             return Response({'message': 'Chair with id {} does not exist'.format(product_ID)}, status=status.HTTP_404_NOT_FOUND)
+        
+def get_cart_details(products):
+    line_items = []
+    for item in products:
+        product_id = item['product_id']
+        quantity = item['quantity']
+        product = get_object_or_404(MassageChair, id=product_id)
+        line_items.append({
+            'price_data': {
+                'currency': 'usd',
+                'unit_amount': int(product.price * 100),
+                'product_data': {
+                    'name': product.title,
+                    'images': [product.color_options()[0][2]],
+                },
+            },
+            'quantity': quantity,
+        })
+
+    return line_items
+
+@api_view(['POST'])
+def InitiateCheckoutSession(request):
+    try:
+        cart = request.data['cartProducts']
+        cart_details = get_cart_details(cart)
+        stripe.api_key = settings.STRIPE_SECRET_KEY
+        if len(cart_details):
+            print(cart_details)
+            checkout_session = stripe.checkout.Session.create(
+                line_items=cart_details,
+                mode='payment',
+                success_url='https://your-website.com/success',
+                cancel_url='https://your-website.com/cancel',
+            )
+            return Response({'sessionId': checkout_session.id})
+    except Exception as e:
+        return Response({'error': str(e)}, status=400)
+
+def initiatePayment(request):
+    return render(request, "homePage-design/trial.html")

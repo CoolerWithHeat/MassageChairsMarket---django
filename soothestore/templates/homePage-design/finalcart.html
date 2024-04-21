@@ -24,6 +24,7 @@
         rel="stylesheet"
     />
     <link rel="stylesheet" type="text/css" href="{% static 'css/BuyCart.css' %}">   
+    <script src="https://js.stripe.com/v3/"></script>
 </head>
     </head>
     
@@ -110,12 +111,11 @@
                                 </div>
                               </div>
                             </div>
-      
+                            
                           </form>
       
     
-                        <div id="PriceHolder">
-                        </div>
+                        <div id="PriceHolder"></div>
 
                         </div>
                       </div>
@@ -172,6 +172,7 @@
 
     const makeProduct = (productData)=>{
       const window = document.getElementById('CartProductsClosure');
+      console.log(productData)
       const productStructure = `
           <div class="card mb-3 mb-lg-0">
             <div class="card-body">
@@ -213,7 +214,7 @@
       if (window)
         window.innerHTML += productStructure;
     };
-
+    var concluded_price;
     const FetchCart = async (UsersCart)=>{
       const verifiedResponse = await fetch(host+'VerifyCart/', {
         method: "POST",
@@ -222,8 +223,8 @@
       if (verifiedResponse.status == 200){
         const parsedData = await verifiedResponse.json();
         if (parsedData.cart){
+          concluded_price = parsedData.total_price;
           const total_price = parsedData.total_price
-          console.log('server-response', parsedData)
           const verified_products = parsedData.verified_products
           setOuterDetails({total_price, verified_products});
           if (Array.isArray(parsedData.cart))
@@ -235,10 +236,12 @@
       lockwindow(false);
     };
 
+    const getCartProducts = ()=>JSON.parse(localStorage.getItem('MassageCart')) || [];
+
     const getCheckData = ()=>{
       lockwindow();
       resetProductWindow();
-      const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
+      const Cart = getCartProducts();
       if (Cart)
         FetchCart(Cart)
     };
@@ -284,7 +287,7 @@
                 <p class="mb-2" id="Final">$${total}</p>
               </div>
 
-              <button type="button" class="btn btn-info btn-block btn-lg">
+              <button onclick="handleCheckout();" class="btn btn-info btn-block btn-lg">
                 <div class="d-flex justify-content-between">
                   <span id="FinalPrice">$${total}</span>
                   <span>Checkout <i class="fas fa-long-arrow-alt-right ms-2"></i></span>
@@ -324,6 +327,42 @@
           }
       };
 
+      async function MakeRequest(pathname, body, type, callback){
+        const request = await fetch(host+pathname, {
+            'method': type,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            'body': type == "POST" ? JSON.stringify(body) : null,
+        })
+        if ((request.status == 201) || (request.status == 200)){
+            const response = await request.json();
+            callback(response)
+        }
+        else{
+            console.log(request.status)
+        }
+    }
+    function InitiatePayment(data){
+        var stripe = Stripe('pk_test_51P4rPa03nbzcvY4RjXQ1HB1Zwv17Q6t1XqfyIRuwArK5qQ84SNAb18JijIlRk52qY2XSHgltnSsFKKDy3RXmdXue00efTfvi7i');
+        stripe.redirectToCheckout({
+            sessionId: data.sessionId,
+        }).then(function (result) {
+            console.log(result)
+        });
+    }
+    const handleCheckout =()=>{
+      const final = parseFloat(concluded_price);
+      if (final > 0){
+          const products = getCartProducts();
+          const body = {
+              'amount': final*100,
+              'cartProducts':products,
+          };
+          MakeRequest('/initiate_checkout/', body, 'POST', InitiatePayment)
+      }
+    };
+
       const ResetCart = (event)=>{
         localStorage.setItem('MassageCart', JSON.stringify([]));
       };
@@ -336,6 +375,7 @@
           window.classList.add('invisibleField')
       };
       getCheckData();
+      
     </script>
 
 </body>

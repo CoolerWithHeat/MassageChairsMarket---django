@@ -1,7 +1,8 @@
 #ColorOptionImages {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content:left;
+    gap: 5px;
     width: fit-content;
 }
     

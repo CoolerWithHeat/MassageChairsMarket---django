@@ -14,4 +14,6 @@ urlpatterns = [
     path('GetReview/<int:product_id>/', ProductReviewsEndpoint.as_view()),
     path('RecordUserReaction/<int:review_id>/', UserReactionCreateView.as_view()),
     path('GetProduct/<int:product_ID>/', MassageChairDetailView.as_view()),
+    path('payment/', initiatePayment),
+    path('initiate_checkout/', InitiateCheckoutSession),
 ]

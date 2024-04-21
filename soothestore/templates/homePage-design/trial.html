@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Buy cool new product</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://js.stripe.com/v3/"></script>
+  </head>
+  <body>
+    <section>
+      <div class="product">
+        <img style="width: 460px;" src="https://m.media-amazon.com/images/I/61BOZg9SWKL.jpg" alt="Osaki massage chair" />
+        <div class="description">
+          <h3>Osaki OX-4000 Massage Chair</h3>
+          <h4>$4999.99</h4>
+        </div>
+      </div>
+      <button style="cursor: pointer;" onclick="handleClick();" id="checkout-button">Checkout</button>
+    </section>
+  </body>
+</html>
+
+<script>
+    const host = window.location.protocol + "//" + window.location.host
+    async function MakeRequest(pathname, body, type, callback){
+        const request = await fetch(host+pathname, {
+            'method': type,
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            'body': type == "POST" ? JSON.stringify(body) : null,
+        })
+        if ((request.status == 201) || (request.status == 200)){
+            const response = await request.json();
+            callback(response)
+        }
+        else{
+            console.log(request.status)
+        }
+    }
+    function InitiatePayment(data){
+        var stripe = Stripe('pk_test_51P4rPa03nbzcvY4RjXQ1HB1Zwv17Q6t1XqfyIRuwArK5qQ84SNAb18JijIlRk52qY2XSHgltnSsFKKDy3RXmdXue00efTfvi7i');
+        stripe.redirectToCheckout({
+            sessionId: data.sessionId,
+        }).then(function (result) {
+            console.log(result)
+        });
+    }
+    const handleClick =()=>{
+        const body = {
+            'amount': 490000
+        };
+        MakeRequest('/initiate_checkout/', body, 'POST', InitiatePayment)
+    };
+</script>
