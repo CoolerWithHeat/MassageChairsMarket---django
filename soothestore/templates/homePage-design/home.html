@@ -73,10 +73,9 @@
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
                                 <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="../../../">Home</a></li>
+                                    <li><a href="../../FindProduct/">Products</a></li>
+                                    <li><a href="../../../FAQ/">FAQ</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
@@ -88,8 +87,8 @@
                                     <li><a href="#">Homedics</a></li>
                                 </ul>
                             </li>
-                            <li class="scroll-to-section"><a href="#explore">Explore</a></li>
-                            <li class="scroll-to-section"><a href="/productsPage">Products</a></li>
+                            <li class="scroll-to-section"><a href="../../FindProduct/">Explore</a></li>
+                            <li class="scroll-to-section"><a href="../../FindProduct/">Products</a></li>
                         </ul>        
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -114,6 +113,7 @@
                         <div class="thumb">
                             <div class="inner-content">
                                 <div style="width: 250px; height: 80px; border-style: solid;" id="GreetingHub">
+                                    <h4>Welcome!</h4>
                                 </div>
                                 <h5 style="color:white; text-align: left;" class="GreetingText">Chairs With Massage</h5>
                                 <span style="color:white; text-align: left;">Embrace Relaxation</span>
@@ -453,8 +453,8 @@
                 <div class="col-lg-3">
                     <div class="first-item">
                         <ul>
-                            <li><a href="#">Shop Massage Chairs Online At HarmonyMassageChairs.com</a></li>
-                            <li><a href="#">contact@harmonymassagechairs.com</a></li>
+                            <li><a href="#">Shop Massage Chairs Online At MassageChairsMarket.com</a></li>
+                            <li><a href="#">contact@MassageChairsMarket.com</a></li>
                             <li><a href="#">ask a questions</a></li>
                             
                         </ul>
@@ -473,7 +473,6 @@
                 <div class="col-lg-3">
                     <h4>Useful Links</h4>
                     <ul>
-                        <!-- <li><a href="#">Homepage</a></li> -->
                         <li><a href="#">About Us</a></li>
                         <li><a href="#">Help</a></li>
                         <li><a href="#">Contact Us</a></li>
@@ -485,19 +484,22 @@
                         <li><a href="../FAQ/">Help</a></li>
                         <li><a href="../FAQ/">FAQ's</a></li>
                         <li><a href="../FAQ/">Shipping</a></li>
-                        <!-- <li><a href="#">Tracking ID</a></li> -->
                     </ul>
                 </div>
                 <div class="col-lg-12">
                     <div class="under-footer">
-                        <p>Copyright © 2022 ChairsWithMassage Co., LLC. All Rights Reserved. 
-                        
-                        <ul>
-                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                            <li><a href="#"><i class="fa fa-behance"></i></a></li>
-                        </ul>
+                        <p>Copyright © 2022 massagechairsmarket Co., LLC. All Rights Reserved. 
+
+                            <!--                  Social Media Links !                  -->
+
+                        <!-- 
+                            <ul>
+                                <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                                <li><a href="#"><i class="fa fa-behance"></i></a></li>
+                            </ul> 
+                        -->
                     </div>
                 </div>
             </div>
@@ -542,7 +544,6 @@
         <div>
         </div>
         </div>
-        <!-- <div class="col-md-6"> <img src="https://i.imgur.com/hTnBa7t.png" width="100%" height="100%"> </div> -->
         </div>
         </div>
         </div>
@@ -657,10 +658,8 @@
         function isInViewport(element) {
             const bounding = element.getBoundingClientRect();
             return (
-                bounding.top >= 0 &&
-                bounding.left >= 0 &&
-                bounding.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
-                bounding.right <= (window.innerWidth || document.documentElement.clientWidth)
+                    bounding.bottom <= (window.innerHeight+200 || document.documentElement.clientHeight) &&
+                    bounding.right <= (window.innerWidth+200 || document.documentElement.clientWidth)
                 );
         }
 
@@ -683,19 +682,11 @@
             logoElement.classList.remove('active');
         }, 1699);
         var h4Element = document.createElement('h4');
-
-        // Set the style attributes
-        h4Element.style.color = 'white';
-        h4Element.style.textAlign = 'left';
-
-        // Set the text content
+        // h4Element.style.color = 'white';
+        // h4Element.style.textAlign = 'left';
         h4Element.textContent = 'Welcome!';
         h4Element.id = 'BrandText'
-
-        // Get the div with id "GreetingHub"
         var greetingHubDiv = document.getElementById('GreetingHub');
-
-        // Append the h4 element to the div
         setTimeout(() => {
             greetingHubDiv.appendChild(h4Element);
         }, 999);
@@ -718,8 +709,6 @@
     function ManageCart(product_id, quantity = 1) {
         const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
         let isRemoved = false;
-    
-        // Check if the product_id exists in the array
         const index = savedProducts.findIndex(product => product.product_id === product_id);
     
         if (index === -1) {

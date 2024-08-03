@@ -58,14 +58,13 @@
                                     </a>
                                 </div>
                             </li>
-                            <li class="scroll-to-section"><a href="#top">Home</a></li>
+                            <li class="scroll-to-section"><a href="../../../">Home</a></li>
                             <li class="submenu">
                                 <a href="javascript:;">Pages</a>
                                 <ul>
-                                    <li><a href="about.html">About Us</a></li>
-                                    <li><a href="products.html">Products</a></li>
-                                    <li><a href="single-product.html">Single Product</a></li>
-                                    <li><a href="contact.html">Contact Us</a></li>
+                                    <li><a href="../../../">Home</a></li>
+                                    <li><a href="../../FindProduct/">Products</a></li>
+                                    <li><a href="../../../FAQ/">FAQ</a></li>
                                 </ul>
                             </li>
                             <li class="submenu">
@@ -77,8 +76,8 @@
                                     <li><a href="#">Homedics</a></li>
                                 </ul>
                             </li>
-                            <li class="scroll-to-section onpage"><a href="#explore">Explore</a></li>
-                            <li class="scroll-to-section"><a href="/productsPage">Products</a></li>
+                            <li class="scroll-to-section onpage"><a href="../../FindProduct/">Explore</a></li>
+                            <li class="scroll-to-section"><a href="../../FindProduct/">Products</a></li>
                         </ul>
                         <a class='menu-trigger'>
                             <span>Menu</span>
@@ -139,6 +138,7 @@
                 </a>
             </div>
         </div>
+
         <main>
             <!------------------------------------------- Mobile View -------------------------------------------->
             <div id="MobileVantagePoint">
@@ -164,7 +164,6 @@
             <div class="DesktopProductView">
                 <div class="imgs-col">
                     <div id="DesktopImageWindow" class="main-img">
-                        <a class="prev2" onclick="plusSlides2(-1)">&#10094;</a>
                         <div id="PrimaryDesktopChairImage" class="mySlides2">
                             <img id="PrimaryChairImage" src="">
                         </div>
@@ -182,6 +181,7 @@
         </main>
 
         <div id="ShowcaseHub"></div>
+                
         <br>
         <br>
         <div id="RatingLoadingWindow"></div>
@@ -197,13 +197,12 @@
     </body>
 
     <script src="{% static 'js/popper.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-2.1.0.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/owl-carousel.js' %}"></script>
     <script src="{% static 'js/scrollreveal.min.js' %}"></script>
     <script src="{% static 'js/custom.js' %}"></script>
     <script src="{% static 'js/script.js' %}"></script>
-    <script src="{% static 'js/slider.js' %}"></script>
 
     <script>
 
@@ -220,7 +219,7 @@
 
             });
         });
-
+        var last_showcase = null;
         const host = window.location.protocol + "//" + window.location.host
         var logoElement = document.getElementById('LogoPoint');
         window.addEventListener('DOMContentLoaded', function () {
@@ -252,24 +251,37 @@
             }, 1000);
         }
 
-        function ManageCart(product) {
+        function ManageCart(product, forVerification=false) {
             const product_id = product.id
             const quantity = product.quantity || 1
             const selectedColor = product.selectedColor
             const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
             let isRemoved = false;
+            let sameColorRequested = false;
+            const index = savedProducts.findIndex(product => {
+                if (sameColorRequested){sameColorRequested = product.selectedColor == selectedColor}
+                return product.product_id === product_id && product.selectedColor === selectedColor
+            });
+            const notAddedYet = index === -1;
+            if (forVerification){
+                if (notAddedYet) {
+                    return true;
+                }
+                else{
+                    return false
+                }
+            }else{
+                if (notAddedYet) {
+                    savedProducts.push({ product_id, quantity, selectedColor});
+                } else {
+                    // const sameQuantity = savedProducts[index].quantity === quantity;
+                    // console.log(sameQuantity ? 'same quantity': 'quantity is different !!!')
+                    savedProducts.splice(index, 1);
+                    isRemoved = true;
+                }
 
-            const index = savedProducts.findIndex(product => product.product_id === product_id);
-
-            if (index === -1) {
-                savedProducts.push({ product_id, quantity, selectedColor});
-            } else {
-                savedProducts.splice(index, 1);
-                isRemoved = true;
+                localStorage.setItem('MassageCart', JSON.stringify(savedProducts));
             }
-
-            localStorage.setItem('MassageCart', JSON.stringify(savedProducts));
-
             return [savedProducts.length, isRemoved];
         }
 
@@ -315,8 +327,8 @@
                 window.innerHTML = DefaultStructure;
         }
 
-        function AddToCart(data = null) {
-            const ProductIdBase = document.getElementsByClassName('buttons')[0];
+        function AddToCart(data = {}) {
+            const ProductIdBase = document.getElementById('UserCardBase');
             const savedProducts = JSON.parse(localStorage.getItem('MassageCart')) || [];
             const targetButton = document.getElementsByClassName('cart-button')[0];
             const CartHeader = document.getElementById('CartButtonState');
@@ -329,7 +341,6 @@
             const element = data.target;
             const Datapath = document.getElementById('lblCartCount')
             const DatapathMobile = document.getElementById('lblCartCount_mobile')
-            DatapathMobile.textContent = 3;
             const Divpath = document.getElementsByClassName('CartBoundary')[0];
             const DivpathMobile = document.getElementsByClassName('MobileCart')[0];
             Divpath.classList.add('animateCart');
@@ -471,8 +482,10 @@
                     setTimeout(() => {
                         ResetRatingsAndReviews();
                         SetLoading(true);
+                    }, 1799);
+                    setTimeout(() => {
                         ManageRatingAndReviews();
-                    }, 1899);
+                    }, 2399);
                 }
             else{
                     setTimeout(() => {
@@ -497,15 +510,6 @@
                 commentsField.style.display = 'none';
                 const prepared_data = {poster: name, review_text:text, customer_rate:product_rate}
                 MakeRequest(product_path, prepared_data, 'POST', placeNewReview)
-                // setTimeout(() => {
-                //     EnableLoading(false);
-                //     LetKnowSuccess();
-                // }, 999);
-                // setTimeout(() => {
-                //     wholeWindow.className = 'invisibleField';
-                //     Button.style.display = 'block';
-                //     ResetCommentFields();
-                // }, 2999);
             } else {
                 errorField.style.removeProperty('display');
                 setTimeout(() => {
@@ -816,7 +820,7 @@
                                     <div class="line-right h20 w60 m10"></div>
                                     <div class="line-right h20 w60 m10"></div>
                                     <div class="line-right h20 w60 m10"></div>
-                                    <div class="line-right h20 w60 m10"></div>
+                                    <div id="RevealTriggerPoint" class="line-right h20 w60 m10"></div>
                                 </div>
                             </div>
                         </div>
@@ -1015,45 +1019,71 @@
             window.innerHTML = loading;
         }
 
-        const test_url = "https://relaxtheback.com/cdn/shop/files/SuperNovo-2.0_CREAM_Hero_Model_5b4001a4-c8bc-4eaa-ac5b-6dde71a98410_1500x1500.jpg?v=1699045917"
-        const test_description = "This cutting-edge technology performs an incredibly fast and accurate assessment, promptly detecting your shoulder height. Once this vital information is collected, the chair skillfully maps out a customized massage experience tailored precisely to your body's unique dimensions."
-
         function PlaceShowcaseCard(data) {
-            const Showcasehub = document.getElementById('ShowcaseHub')
-            const image_side = data.side
-            const showcase_id = data.showcase_id
-            const image_url = data.image_url
-            const showcaseText = data.description
-            const image_tag = `
-                <div class="product-img">
-                    <img id="showcaseImage" src="${image_url}" height="420" width="327">
-                </div>
-            `
-            const description_tag = `
-                <div class="product-info">
-                    <div class="product-text">
-                    <h1 id="ProductShowcaseHeader-${showcase_id}">ACUPOINT® BODY SENSING</h1>
-                    <br>
-                    <p id="ProductShowcaseDescription-${showcase_id}">${showcaseText}</p>
+            const Showcasehub = document.getElementById('ShowcaseHub');
+            const showcase_side = data.side;
+            const showcase_headline = data.showcase_headline;
+            const showcase_id = data.showcase_id;
+            const image_url = data.image_url;
+            const showcaseText = data.description;
+            const its_video_showcase = data.video_showcase;
+            last_showcase = showcase_side;
+            if (its_video_showcase){
+                const video_frame = data.needs_embedding;
+                const framed_video = `
+                    <div class="product-img">
+                        ${video_frame}
                     </div>
-                </div>
-            `
-            const showcaseCard = `
-                <div class="ProductShowcase">
-                    <div>
-                        <div class="wrapper">
-                            ${image_side == "left" ? image_tag : description_tag}
-                            ${image_side == "right" ? image_tag : description_tag}
+                `;
+                const information_tag = `
+                    <div class="product-info">
+                        <div class="product-text">
+                            <br>
+                            <p id="ProductShowcaseDescription">${showcase_headline}</p>
                         </div>
                     </div>
-                </div>
-            `
-            Showcasehub.innerHTML += showcaseCard
+                `;
+                const showcaseCard = `
+                    <div class="ProductShowcase">
+                        <div>
+                            <div class="wrapper">
+                                ${showcase_side == "left" ? framed_video : information_tag}
+                                ${showcase_side == "right" ? framed_video : information_tag}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                Showcasehub.innerHTML += showcaseCard;
+            }
+            else{
+                const image_tag = `
+                    <div class="product-img">
+                        <img id="showcaseImage" src="${image_url}" height="420" width="327">
+                    </div>
+                `;
+                const description_tag = `
+                    <div class="product-info">
+                        <div class="product-text">
+                        <h1 id="ProductShowcaseHeader-${showcase_id}">${showcase_headline}</h1>
+                        <br>
+                        <p id="ProductShowcaseDescription-${showcase_id}">${showcaseText}</p>
+                        </div>
+                    </div>
+                `;
+                const showcaseCard = `
+                    <div class="ProductShowcase">
+                        <div>
+                            <div class="wrapper">
+                                ${showcase_side == "left" ? image_tag : description_tag}
+                                ${showcase_side == "right" ? image_tag : description_tag}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                Showcasehub.innerHTML += showcaseCard;
+            }
 
         }
-        const ID_list = [1, 2]
-        PlaceShowcaseCard({ image_url: test_url, description: test_description, showcase_id: ID_list[0], side: 'left' })
-        PlaceShowcaseCard({ image_url: test_url, description: test_description, showcase_id: ID_list[1], side: 'right' })
 
         // -------------------------------------------- Text Animation -----------------------------------------------------
 
@@ -1164,7 +1194,6 @@
             MakeRequest(request_url, action, "POST", handleResponse);
         }
 
-        document.addEventListener("DOMContentLoaded", HandletextReveal(ID_list));
 
         function FilterReviews() {
             const data = localStorage.getItem('filteredReviews')
@@ -1273,8 +1302,9 @@
         }
 
         function SetChairColor(event, color){
-            const color_indicator = document.getElementById('CurrentSelectedColor')
-            const all = document.getElementsByClassName("ColorImage")
+            SetImageAsMain(event);
+            const color_indicator = document.getElementById('CurrentSelectedColor');
+            const all = document.getElementsByClassName("ColorImage");
             const effected_tag = event.target;
             const selected_color = color;
             for (color_tag of all){
@@ -1310,7 +1340,7 @@
             if (data.length){
                 const window = document.getElementById('AllImagesWindow');
                 data.forEach(each_url=>{
-                    const image_tag = `<img src="${each_url}" alt="L/T" onclick="SetImageAsMain(event);">`;
+                    const image_tag = `<img id="SecondaryImages" src="${each_url}" alt="L/T" onclick="SetImageAsMain(event);">`;
                     window.innerHTML += image_tag;
                 })
             }
@@ -1322,14 +1352,7 @@
             primary_image.setAttribute('src', image_url);
             primary_mobile_image.setAttribute('src', image_url);
         }
-
-        const first = [
-            "https://www.kahunachair.com/wp-content/uploads/2014/12/6800_brown.jpg",
-            "https://www.kahunachair.com/wp-content/uploads/2018/10/kappa_brown.jpg",
-            "https://images.thdstatic.com/productImages/2f1b7bff-3f5f-4a39-9a78-c5e9cf109cbd/svn/black-white-kahuna-massage-chairs-lm-6800tbw-31_600.jpg",
-            "https://www.kahunachair.com/wp-content/uploads/2014/12/6800_brown.jpg",
-        ]
-
+        
         function SettleDesktopView(data=[]){
             const SecondaryProductView = document.getElementById('SecondaryProductView');
             const SpecialViewImages = document.getElementById('SpecialViewImages');
@@ -1337,29 +1360,27 @@
             if (data.length)
                 serPrimaryImage(data[0]);
                 const processedData_view = data.map(each_url=>`<img id="SecondaryImages" src="${each_url}" alt="L/T" onclick="SetImageAsMain(event);">`)
-                const processedData_special = data.map(each_url=>{
-                    times += 1;
-                    return`<img src="${each_url}" alt="L/T" class="${times == 1 ? "active" : ''}" onclick="openModal(); currentSlide(${times})">`;
-                })
                 const body_form_1 = `
                         <div>
                             ${processedData_view.join('')}
                         </div>
                 `
-                const body_form_2 = `
-                        <div>
-                            ${processedData_special.join('')}
-                        </div>
-                `
                 SecondaryProductView.innerHTML = body_form_1;
-                // SpecialViewImages.innerHTML = body_form_2;
         }
 
-        function PageManagement(respones){
-            const available_colors = respones.available_colors.map(each_color=>each_color.image)
-            setMobileView(available_colors);
-            SettleDesktopView(available_colors);
-            SetProductDetails(respones)
+        function PageManagement(response){
+            const available_colors = response.available_colors.map(each_color=>each_color.image)
+            const additional_images = response.additional_images
+            const all_images_combined = [...additional_images, ...available_colors]
+            if (response.video_demonstrations){
+                HandleShowcase(response.video_demonstrations, true);
+            };
+            if (response.chair_features){
+                HandleShowcase(response.chair_features);
+            };
+            setMobileView(all_images_combined);
+            SettleDesktopView(all_images_combined);
+            SetProductDetails(response)
         }
 
         function resetCartButton(){
@@ -1376,7 +1397,22 @@
             }
         };
 
-        function ManageChanges(){
+        function revertCartButton(){
+            const button = document.getElementById('CartButtonState')
+            if (button){
+                const MainButton = document.getElementById('MainCartButton');
+                MainButton.classList.add('buttonresetanimation');
+                setTimeout(() => {
+                    MainButton.classList.remove('buttonresetanimation');
+                }, 599);
+                setTimeout(() => {
+                    button.textContent = 'Remove From Cart';
+                }, 299);
+            }
+        };
+
+
+        function ManageChanges(easyCheck=true){
             const ID_holder = document.getElementById('UserCardBase');
             if (ID_holder){
                 const product_id = ID_holder.getAttribute('data-id')
@@ -1384,14 +1420,97 @@
                     const Id = Number(product_id);
                     const exists = CheckifExists(Id);
                     if (exists){
-                        console.log('resetting button cause exists already');
+                        const requested_color = ID_holder.dataset.selectedcolor;
                         const Datapath = document.getElementById('lblCartCount');
                         const DatapathMobile = document.getElementById('lblCartCount_mobile');
-                        const cartProductsAmount = ManageCart({id: Id})[0];
-                        DatapathMobile.textContent = cartProductsAmount
-                        Datapath.textContent = cartProductsAmount
-                        resetCartButton();
+                        const button_reset_needed = ManageCart({id: Id, selectedColor:requested_color}, easyCheck);
+                        if (!easyCheck){
+                            const wasDeleted = button_reset_needed[1];
+                            const resultedProductsInCart = button_reset_needed[0];
+                            if (wasDeleted){
+                                const Datapath = document.getElementById('lblCartCount');
+                                const DatapathMobile = document.getElementById('lblCartCount_mobile');
+                                Datapath.textContent = resultedProductsInCart;
+                                DatapathMobile.textContent = resultedProductsInCart;
+                                resetCartButton();
+                            }
+                        }else{
+                            if (button_reset_needed)
+                                resetCartButton();
+                            else
+                                revertCartButton();
+                        }
+                        AddToCart
                     }
+                }
+            }
+        }
+
+        function getRandomDirection() {
+            var randomNumber = Math.random();
+            if (randomNumber < 0.5) {
+                return 'left';
+            } else {
+                return 'right';
+            }
+        }
+
+        function GenerateVideoFrame(platformName, videoId) {
+            const screenWidth = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+            const screenHeight = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+            let url;
+            if (platformName.toLowerCase() === 'youtube') {
+                url = `https://www.youtube.com/embed/${videoId}`;
+                return `<iframe style="border-radius: 18px;" width="105%" height="105%" src="${url}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+            } else if (platformName.toLowerCase() === 'vimeo') {
+                const window = document.getElementsByClassName('videoShowcaseFrame');
+                const frameWindow = window ? window[0] : null;
+                let height = screenWidth > 768 ? 600 : 260;
+                url = `https://player.vimeo.com/video/${videoId}`;
+                return `<iframe src="${url}" style="border-radius: 18px;" width="800px" height="${height}px" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>`
+            } else {
+                console.error('Invalid platform name');
+                return null;
+            }
+        }
+
+        function HandleShowcase(showcaseList, video=false){
+            const isValidForm = Array.isArray(showcaseList);
+            function GenerateShowcaseSide(){
+                const previousSide = last_showcase;
+                let finalDecision = '';
+                if (previousSide == null || previousSide == 'any side'){
+                    const generatedSide = getRandomDirection();
+                    finalDecision = generatedSide;
+                }
+                else{
+                    const options = {
+                        'left' : 'right',
+                        'right' : 'left',
+                    };
+                    finalDecision = options[previousSide];
+                }
+                return finalDecision;
+            }
+            if (video && isValidForm){
+                showcaseList.forEach(eachVideo=>{
+                    const embedding_code = GenerateVideoFrame(eachVideo.platform, eachVideo.video_id)
+                    const video_text = eachVideo.information;
+                    const video_side = eachVideo.video_side == "any side" ? GenerateShowcaseSide() : eachVideo.video_side;
+                    if (embedding_code)
+                        PlaceShowcaseCard({ showcase_headline:video_text, needs_embedding: embedding_code, side: video_side, video_showcase:true})
+                })
+            }
+            if (!video && isValidForm){
+                if (Array.isArray(showcaseList)){
+                    let text_IDs = [];
+                    showcaseList.forEach(eachFeature=>{
+                        text_IDs.push(eachFeature.id)
+                        const decided_side = eachFeature.showcase_side == "any side" ? GenerateShowcaseSide() : eachFeature.showcase_side;
+                        PlaceShowcaseCard({ showcase_headline:eachFeature.called, image_url: eachFeature.image, description: eachFeature.information, showcase_id: eachFeature.id, side: decided_side})
+                    })
+                    if (text_IDs.length)
+                        document.addEventListener("DOMContentLoaded", HandletextReveal(text_IDs));
                 }
             }
         }
@@ -1403,7 +1522,34 @@
         });
 
         MakeRequest(`/GetProduct/${product_id}/`, null, "GET", PageManagement)
-        ManageRatingAndReviews();
+        setTimeout(() => {
+            const targetElement = document.getElementById('RevealTriggerPoint');
+            const secondaryDesktopWindow = document.getElementById('SecondaryProductView');
+
+            secondaryDesktopWindow.addEventListener('mouseenter', function() {
+                secondaryDesktopWindow.addEventListener('wheel', handleScroll);
+            });
+
+            secondaryDesktopWindow.addEventListener('mouseleave', function() {
+                secondaryDesktopWindow.removeEventListener('wheel', handleScroll);
+            });
+
+            function handleScroll(event) {
+                event.preventDefault();
+                const scrollSpeed = 260;
+                const scrollDirection = event.deltaY > 0 ? 1 : -1;
+                secondaryDesktopWindow.scrollLeft += scrollDirection * scrollSpeed;
+            }
+
+            function TriggerReviews() {
+                const bounding = targetElement.getBoundingClientRect();
+                if (bounding.top >= 0 && bounding.top <= window.innerHeight) {
+                    ManageRatingAndReviews();
+                    window.removeEventListener('scroll', TriggerReviews);
+                }
+            }
+            window.addEventListener('scroll', TriggerReviews);
+        }, 799);
         SetLoading();
         UpdateProductStatus();
 

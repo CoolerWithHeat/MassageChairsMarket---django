@@ -207,7 +207,6 @@
     animation: fadeIn 0.7s ease-in-out forwards;
 }
 
-
 /* //////////////////////////////////////////////// Removing Animation ///////////////////////////////////////////////////// */
 .cart-button.removed .fa-shopping-cart {
     animation: cart-reverse 2s ease-in forwards;
@@ -221,9 +220,9 @@
     animation: addcart-reverse 2s ease-in forwards;
   }
   
-    .cart-button.removed span.added {
-        animation: added-reverse 2s ease-in forwards;
-    }
+  .cart-button.removed span.added {
+      animation: added-reverse 2s ease-in forwards;
+  }
 
     @keyframes trial-reverse {
         100% {
@@ -317,7 +316,6 @@
 .buttonresetanimation {
     animation: fadeButton 0.7s ease-in-out forwards;
 }
-  
 
 @media (min-width:767px){
     .MobileProductView{
@@ -325,11 +323,41 @@
     }
 }
 
-@media (max-width:767px){
-    .DesktopProductView{
-        display: none;
-    }
+@media (max-width:360px){
+  #AllImagesWindow {
+    width: 34.5vh;
+    height: 80px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-wrap: nowrap;
+    border: none;
+    scroll-behavior: smooth;
+  }
+  .DesktopProductView{
+    display: none;
+  }
 }
+
+@media (min-width:360px) and (max-width:767px){
+  #AllImagesWindow {
+    width: 34.5vh;
+    height: 80px;
+    overflow-x: auto;
+    white-space: nowrap;
+    border: 1px solid #ccc;
+    display: flex;
+    flex-wrap: nowrap;
+    border: none;
+    scroll-behavior: smooth;
+  }
+  .DesktopProductView{
+    display: none;
+  }
+}
+
+
 
 #PrimaryMobileChairImage{
   width: 260px;
@@ -351,4 +379,75 @@
 #showcaseImage{
   display: block;
   margin: auto;
+}
+
+#SecondaryProductView{
+  height: 135px;
+  max-width: 545px;
+  white-space: nowrap;
+  overflow-x: scroll;
+  border: 1px solid #ccc;
+  border: none;
+  scroll-behavior: smooth;
+}
+
+#AllImagesWindow img {
+  max-width: 60px;
+  max-height: 60px;
+  height: auto;
+  margin: 5px;
+}
+
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsla(26, 100%, 55%, 0.637);
+  border-radius: 18px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(255, 139, 31);
+}
+
+#SecondaryProductView::-webkit-scrollbar {
+  height: 5px;
+  border-radius: 12px;
+}
+
+#SecondaryProductView::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#SecondaryProductView::-webkit-scrollbar-thumb {
+  background: hsla(26, 100%, 55%, 0.637);
+}
+
+#SecondaryProductView::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Mobile View Additional Images Window */
+
+#AllImagesWindow::-webkit-scrollbar {
+  height: 5px;
+  border-radius: 12px;
+}
+
+#AllImagesWindow::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#AllImagesWindow::-webkit-scrollbar-thumb {
+  background: hsla(26, 100%, 55%, 0.637);
+}
+
+#AllImagesWindow::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }

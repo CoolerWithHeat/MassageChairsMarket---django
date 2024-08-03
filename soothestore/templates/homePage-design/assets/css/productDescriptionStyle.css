@@ -9,8 +9,13 @@
   }
   
   .product-img {
-    width: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: 50%;  
   }
+
   
   .product-img img {
     width: 80%;
@@ -18,12 +23,14 @@
     height: auto;
     object-fit: cover;
     border-radius: 7px 0 0 7px;
+    max-width: 100%;
+    max-height: 100%;  
   }
   
   .product-info {
-    position: relative; /* Required for absolute positioning */
+    position: relative;
     width: 50%;
-    height: 500px; /* Fixed height */
+    height: 500px;
     border-radius: 0 7px 7px 0;
     background-color: #ffffff;
     display: flex;
@@ -31,12 +38,12 @@
   }
   
   .product-text {
-    position: absolute; /* Position the text absolutely */
-    top: 50%; /* Move the top edge of the text to the middle of the parent */
-    transform: translateY(-50%); /* Adjust position to vertically center */
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
     padding: 20px;
-    width: 80%; /* Adjust width as needed */
-    text-align: left; /* Align text to the left */  
+    width: 80%;
+    text-align: left;
   }
   
   .product-text h1 {
@@ -75,22 +82,54 @@
   .product-price-btn button:hover {
     background-color: #79b0a1;
   }
+
+    /* <div class="ProductShowcase">
+      <div>
+          <div class="wrapper">
+                      
+            <div class="product-img">
+              <iframe style="border-radius: 18px;" width="105%" height="99%" src="https://player.vimeo.com/video/913507481" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+
+                      
+            <div class="product-info">
+              <div class="product-text">
+              <p id="ProductShowcaseDescription">Discover a new realm of relaxation and rejuvenation with the Super Novo 2.0 Massage Chair. This state-of-the-art chair takes massage technology to unprecedented heights, offering an unparalleled experience that will leave you feeling invigorated and refreshed.
+
+            Indulge in the luxury of choice with 38 auto-wellness programs. Whether you're in need of deep tissue therapy, full-body immersion, or simply desire a moment of blissful relaxation, the Super Novo has you covered. This comprehensive collection of therapeutic programs ensures that you'll find the perfect massage experience tailored to your specific needs and preferences.</p>
+              </div>
+            </div>
+
+          </div>
+      </div>
+    </div> */
   
   @media screen and (max-width: 768px) {
     .wrapper {
       flex-direction: column;
     }
+    .product-img {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      width: 100%;  
+    }
     
-    .product-img,
+    .product-img img {
+      width: 85%;
+      max-width: 85%;
+      height: auto;
+      object-fit: cover;
+      border-radius: 7px 0 0 7px;
+      max-width: 100%;
+      max-height: 100%; 
+      margin: auto; 
+    }
     .product-info {
       width: 100%;
       border-radius: 7px;
     }
-    
-    .product-img img {
-      border-radius: 7px 7px 0 0;
-    }
-    
     .product-text {
       padding: 20px;
     }

@@ -17,7 +17,6 @@
 
 .MaxLabel, .MinLabel{
     background: #995afd;
-    /* background-color: rgba(121, 60, 192, 0.979); */
     border-radius: 8px;
     color: white;
     width: 45px;
@@ -124,16 +123,12 @@
         position: fixed;
         left: 0;
         z-index: 2;
-        border-right-style: solid;
-        border-width: 1px;
     }
     
     .ProductsListingWindow{
         width: 80%;
         margin-left: 15px;
         z-index: 1;
-        /* min-height: 500px; */
-        /* background-color: red; */
     }
     .FiltersParent{
         width: 100%;
@@ -238,7 +233,6 @@
   
   .noUi-connect {
     background: #904bff;
-    /* background: #8edbfff3; */
     -webkit-transition: background 450ms;
     transition: background 450ms;
   }
@@ -250,3 +244,63 @@
   .noUi-target {
     border-radius: 2px;
   }
+
+
+
+@media (min-width:767px){
+
+  .form__field {
+    display: block;
+    width: 85px;
+    background: #fff;
+    color: #a3a3a3;
+    font: inherit;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .1);
+    border: 0;
+    outline: 0;
+    padding: 12px 8px;
+}
+
+  #MaxPriceHub{
+    float: right;
+  }
+  #MinPriceHub{
+    float: left;
+    margin-right: 5px;
+  }
+  
+  .MinLabel{
+    display: block;
+    height: 25px;
+    float: right;
+  }
+  .MaxLabel{
+    display: block;
+    height: 25px;
+    float: left;
+  }
+}
+
+@media (max-width:767px){
+  .MinLabel{
+    display: block;
+    height: 25px;
+    float: right;
+  }
+  .MaxLabel{
+    display: block;
+    height: 25px;
+    float: right;
+  }
+  .form__field {
+    display: block;
+    width: 85px;
+    background: #fff;
+    color: #a3a3a3;
+    font: inherit;
+    box-shadow: 0 6px 10px 0 rgba(0, 0, 0, .1);
+    border: 0;
+    outline: 0;
+    padding: 12px 8px;
+}
+}

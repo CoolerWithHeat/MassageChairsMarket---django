@@ -302,18 +302,6 @@
     100% { background-color: transparent; }
 }
 
-#AllImagesWindow {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  
-#AllImagesWindow img {
-    width: 50px;
-    height: 50px;
-    object-fit: cover;
-    margin-right: 5px;
-}
-
 .fade-appear {
     opacity: 0;
     animation: fadeIn 0.5s ease-in-out forwards;

@@ -30,14 +30,6 @@
         });
       });
 
-      // Add event listener: to go to next slide
-      this.sliderNext.addEventListener('click', () => {
-        if (this.currentItemIndex < this.sliderItemsLength - this.numberOfVisibleItems) {
-          this.currentItemIndex++;
-          this.shiftSlides();
-        }
-      });
-
       // Add event listener: to go to previous slide
       this.sliderPrev.addEventListener('click', () => {
         if (this.currentItemIndex > 0) {

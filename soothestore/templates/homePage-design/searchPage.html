@@ -32,14 +32,14 @@
                 <div class="col-12">
                     <nav class="main-nav">
 
-                        <a href="\../" class="logo">
+                        <a href="../" class="logo">
                             <img id="LogoPoint" class="brandLogo" src="{% static 'images/companyLogo.png' %}">   
                         </a>
 
                         <ul class="nav">
                             <li class="scroll-to-section">
                                 <div class="CartBoundary" style="cursor: pointer;">
-                                    <a href="./Cart/">
+                                    <a href="../Cart/">
                                         <i class="fa" style="font-size:25px">&#xf07a;</i>
                                         <span id="lblCartCount" class='badge badge-warning'> 0 </span>
                                     </a>
@@ -49,10 +49,9 @@
                                 <li class="submenu">
                                     <a href="javascript:;">Pages</a>
                                     <ul>
-                                        <li><a href="about.html">About Us</a></li>
-                                        <li><a href="products.html">Products</a></li>
-                                        <li><a href="single-product.html">Single Product</a></li>
-                                        <li><a href="contact.html">Contact Us</a></li>
+                                        <li><a href="../../../">Home</a></li>
+                                        <li><a href="../../FindProduct/">Products</a></li>
+                                        <li><a href="../../../FAQ/">FAQ</a></li>
                                     </ul>
                                 </li>
                             <li class="submenu">                               
@@ -144,6 +143,7 @@
     <script>
         var MinPriceDemonstration;
         var MaxPriceDemonstration;
+        var WindowFilters;
         function debounce(func, delay) {
             let timeoutId;
             return function(...args) {
@@ -158,38 +158,53 @@
             return typeof data === 'string' ? [data] : data
         }
 
-        function searchAlgoliaWithParams(RequestedProperties) {
+        let filtersReady = false;
+        function searchAlgoliaWithParams(RequestedProperties){
             UpdateLoadingStatus(false);
             const client = algoliasearch('K7LWE7RYA4', 'dd84d643cb097b484b87bf0a2c35d742');
             const products = client.initIndex('MassageChair');
             const minPrice = parseFloat(RequestedProperties.minPrice)  || 0;
             const maxPrice = parseFloat(RequestedProperties.maxPrice) || 16000;
-            const brandFilters = ValidateSearchParam(RequestedProperties.Brand); 
+            const brandFilters = ValidateSearchParam(RequestedProperties.Brands); 
             const KeywordSearch = RequestedProperties.SearchKey || '*';
+            const featureFilters = ValidateSearchParam(RequestedProperties.Features); 
             let brand_filters = '';
-            const price_filters = `${brandFilters ? ' AND ' : ''}(price > ${minPrice} AND price <= ${maxPrice})`;
+            let feature_filters = '';
+            const price_filters = `${brandFilters ? ' AND ' : ''}(price > ${minPrice} AND price <= ${maxPrice})${featureFilters ? ' AND ' : ''}`;
             let search_filter = `(brand: 'Osaki' OR brand:Kahuna) AND (price > ${minPrice} AND price <= ${maxPrice})`
+            
             if (brandFilters && Array.isArray(brandFilters)){
                 const filter = brandFilters.map(each=>`brand: '${each}' `)
                 const finalBrandFilter = `(${filter.join('OR ')}) `;
                 brand_filters = finalBrandFilter;
             }
+            
+            if (featureFilters && Array.isArray(featureFilters)){
+                const filter = featureFilters.map(each=>`chair_features: '${each}' `)
+                const finalBrandFilter = `(${filter.join('OR ')}) `;
+                feature_filters = finalBrandFilter;
+            }
+            
             const searchOptions = {
                 hitsPerPage: 100,
-                filters: brand_filters + price_filters,
+                filters: brand_filters+price_filters+feature_filters,
             };
-            if (search_filter){
+
+            if (searchOptions.filters){
                 products.search(KeywordSearch, searchOptions).then((response) => {
                     const hits = response.hits;
-                    console.log('seasrch triggered')
+                    console.log('search triggered')
                     setTimeout(() => {
                         UpdateLoadingStatus(true);
                         if (hits.length) {
                             hits.forEach(Each => {
+                                if (!filtersReady){if (Each.FilterOptions) PlaceSubFilters(Each.FilterOptions); filtersReady=true}
                                 const container = document.getElementById('ProductContainer');
                                 const product = extractProductData(Each);
                                 container.innerHTML += product;
                             });
+                    }else{
+                        PlaceSubFiltersByCache();
                     }
                     }, 499);
                 })
@@ -198,16 +213,6 @@
                 });
             }
         }
-
-        // function manageSearchHistory(data, retrieve = false) {
-        //     if (retrieve) {
-        //         const storedData = localStorage.getItem('searchHistory');
-        //         return storedData ? JSON.parse(storedData) : [];
-        //     } else {
-        //         localStorage.setItem('searchHistory', JSON.stringify(data));
-        //     }
-        // }
-
         function removeLatestAlert() {
             var element = document.getElementById("LatestAlert");
             if (element) {
@@ -228,7 +233,7 @@
             const rating_stars = getRating(rating);
             const Cart = JSON.parse(localStorage.getItem('MassageCart')) || [];
             const style = Cart.some(item => item.product_id === 2) ? "color: rgb(127,255,212);" : null;
-            const blackColor_Url = availableColors[0][2];
+            const blackColor_Url = availableColors ? availableColors[0][2] : '';
             if (blackColor_Url){
                 const Products = `
                     <div class="col-lg-4">
@@ -238,7 +243,7 @@
                                     <ul>
                                         <li><a href="../Buy/${product_id}/"><i class="fa fa-eye"></i></a></li>
                                         <li><a href="single-product.html"><i class="fa fa-star"></i></a></li>
-                                        <li><a><i style="${style}" data-id="${product_id}" data-type="listed-product" data-color="${availableColors[0][0]}" onclick="AddToCard(event)" class="fa fa-shopping-cart"></i></a></li>
+                                        <li><a><i style="${style}" data-id="${product_id}" data-type="listed-product" data-color="${availableColors ? availableColors[0][0] : ''}" onclick="AddToCard(event)" class="fa fa-shopping-cart"></i></a></li>
                                     </ul>
                                 </div>
                                 <img src="${blackColor_Url}" alt="">
@@ -246,6 +251,7 @@
                             <div class="down-content">
                                 <h4>${title}</h4>
                                 <span>$${Number(price).toFixed(2)}</span>
+                                <br>
                                 ${rating_stars.outerHTML}
                             </div>
                         </div>
@@ -550,21 +556,6 @@
                 const product_added = checkProductIdExists(product_id, Cart);
                 TheProduct.style.color = product_added ? 'rgb(127,255,212)' : '';
             })
-            // if (!forCartValidation){
-            //     Cart.forEach(Each=>{
-            //         const element = document.querySelector(`[data-id="${Each.product_id}"]`);
-            //         if (element)
-            //             element.style.color = 'rgb(127,255,212)';
-            //     })
-            // }
-            // else{
-            //     const listerProducts = document.querySelectorAll('[data-type="listed-product"]');
-            //     listerProducts.forEach(TheProduct=>{
-            //         const product_id = Number(TheProduct.getAttribute('data-id'));
-            //         const product_added = checkProductIdExists(product_id, Cart);
-            //         TheProduct.style.color = product_added ? 'rgb(127,255,212)' : '';
-            //     })
-            // }
         }
 
         function HandleSearchBarState(){
@@ -640,13 +631,13 @@
             var url = new URL(window.location.href);
             var existingValue = url.searchParams.get(key);
             if (existingValue) {
-                var values = existingValue.split(','); // Split the existing values
-                var updatedValues = values.filter(val => val !== valueToRemove); // Remove the specified value
+                var values = existingValue.split(',');
+                var updatedValues = values.filter(val => val !== valueToRemove);
 
                 if (updatedValues.length === 0) {
-                    url.searchParams.delete(key); // If no values left, delete the parameter
+                    url.searchParams.delete(key);
                 } else {
-                    url.searchParams.set(key, updatedValues.join(',')); // Update the parameter with the remaining values
+                    url.searchParams.set(key, updatedValues.join(','));
                 }
 
                 window.history.pushState({ path: url.href }, '', url.href);
@@ -707,7 +698,7 @@
 
         function TriggerFilter(updatedProperties){
             const params = getUrlParams();
-            const finalParams = isObject(updatedProperties) ? {...params, ...updatedProperties} : params
+            const finalParams = isObject(updatedProperties) ? {...params, ...updatedProperties} : params;
             searchAlgoliaWithParams(finalParams);
         }; 
 
@@ -724,63 +715,64 @@
             }
         }
 
-    function arrangeFilters(){
-            TriggerFilter();
+        function deploySubFilters(options){
             const current_params = getUrlParams();
-            function deploySubFilters(options){
-                const getOption = (optionName, amountAvailable, filterName)=> {
-                        const already_activated = checkIfActivated(current_params[filterName], optionName);
-                        const amount = amountAvailable ? amountAvailable : (29 + (Math.floor(Math.random() * 8) + -1))
-                        return  `    <label class="custom-control custom-checkbox">
-                                        <input onchange='HandleFilterCheckbox(event)' ${already_activated ? 'checked' : ''} name='${optionName}' data-parent='${filterName}' type="checkbox" class="custom-control-input">
-                                        <div class="custom-control-label">${optionName}<b class="badge badge-pill badge-info float-right">${amount}</b></div>
-                                    </label>
-                                `
-                    }
-                let ParentOptions = [];
-                var objectIDs = 3;
-                if (isObject(options)){
-                    for (let key in options){
-                        const filterName = key;
-                        const filterOptions = options[key];
-                        let processedOptions = [];
-                        if (Array.isArray(filterOptions)){
-                            for (const obj of filterOptions) {
-                                for (const key in obj) {
-                                    if (obj.hasOwnProperty(key)) {
-                                        const value = obj[key];
-                                        processedOptions.push(getOption(key, value, filterName))
-                                    }
+            const getOption = (optionName, amountAvailable, filterName)=> {
+                    const already_activated = checkIfActivated(current_params[filterName], optionName);
+                    const amount = amountAvailable ? amountAvailable : (29 + (Math.floor(Math.random() * 8) + -1))
+                    return  `   <label class="custom-control custom-checkbox">
+                                    <input onchange='HandleFilterCheckbox(event)' ${already_activated ? 'checked' : ''} name='${optionName}' data-parent='${filterName}' type="checkbox" class="custom-control-input">
+                                    <div style="cursor:pointer;" class="custom-control-label">${optionName}<b class="badge badge-pill badge-info float-right">${amount}</b></div>
+                                </label>
+                            `
+            }
+            let ParentOptions = [];
+            var objectIDs = 3;
+            if (isObject(options)){
+                for (let key in options){
+                    const filterName = key;
+                    const filterOptions = options[key];
+                    let processedOptions = [];
+                    if (Array.isArray(filterOptions)){
+                        for (const obj of filterOptions) {
+                            for (const key in obj) {
+                                if (obj.hasOwnProperty(key)) {
+                                    const value = obj[key];
+                                    processedOptions.push(getOption(key, value, filterName))
                                 }
                             }
                         }
-                        if (processedOptions){
-                            processedOptions = processedOptions.join('');
-                            ParentOptions.push(`
-                                <article class="filter-group">
-                                    <div class="card-header">
-                                        <a href="#" data-toggle="collapse" data-target="#collapse_${objectIDs}" aria-expanded="true" class="">
-                                            <i class="icon-control fa fa-chevron-down"></i>
-                                            <h6 class="title">${filterName}</h6>
-                                        </a>
+                    }
+                    if (processedOptions){
+                        processedOptions = processedOptions.join('');
+                        ParentOptions.push(`
+                            <article id="additionalSubFilters" class="filter-group">
+                                <div class="card-header">
+                                    <a href="#" data-toggle="collapse" data-target="#collapse_${objectIDs}" aria-expanded="false" class="">
+                                        <i class="icon-control fa fa-chevron-down"></i>
+                                        <h6 data-filtername='SubFilterElement' class="title">${filterName}</h6>
+                                    </a>
+                                </div>
+                                <div class="filter-content collapse FilterWindow_${objectIDs}" id="collapse_${objectIDs}" style="">
+                                    <div class="card-body">
+                                        ${processedOptions}
                                     </div>
-                                    <div class="filter-content collapse" id="collapse_${objectIDs}" style="">
-                                        <div class="card-body">
-                                            ${processedOptions}
-                                        </div>
-                                    </div>
-                                </article>
-                            `)
-                            objectIDs += 1;
-                        }
-                    } 
-                if (ParentOptions)
-                    ParentOptions = ParentOptions.join('');
-                    return ParentOptions
+                                </div>
+                            </article>
+                            <br>
+                        `)
+                        objectIDs += 1;
+                    }
                 }
-                }
+            if (ParentOptions)
+                ParentOptions = ParentOptions.join('');
+                return ParentOptions
+            }
+        }
+
+    function arrangeFilters(){
+            TriggerFilter();
             const FilterWindow = document.getElementById('ProductFilters');
-            const SubFilters = deploySubFilters({Brand: [{Kahuna: 26}, {Osaki: 29}, {'Real Relax': 25}], Date: [{Latest: 0}, {Options: 0}]});
             const filterObject = `
             <article class="FiltersParent" class="filter-group">
                 <div class="card-header">
@@ -824,17 +816,18 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-6">
                                                 <label class="MinLabel">Min</label>
-                                                <input data-id="minPrice" class="form-control" placeholder="$0" type="text" id="MinPriceHub">
+                                                <input data-id="minPrice" id="MinPriceHub" type="text" class="form__field" placeholder="$0" />
                                             </div>
                                             <div class="form-group text-right col-md-6">
                                                 <label class="MaxLabel">Max</label>
-                                                <input data-id="maxPrice" class="form-control" placeholder="$15,999" type="text" id="MaxPriceHub">
+                                                <input data-id="maxPrice" id="MaxPriceHub" type="text" class="form__field" placeholder="$15999" />
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </article>
-                            ${SubFilters}
+                            <div id="SubfiltersBase">
+                            </div>
                         </div>
                 </div>
             </article>`
@@ -872,6 +865,40 @@
                 value_window.value = search_value;
             }
         }
+
+        function SubFiltersExist(){
+            const elements = document.querySelectorAll('[data-filtername="SubFilterElement"]');
+            const expectedFilters = {'Brands': true, 'Features': true,}
+            elements.forEach(element => {
+                const brandName = element.textContent;
+                if (!expectedFilters[brandName]){
+                    return false
+                }
+            });
+            return elements.length == 0 ? false : true
+        }
+
+        function PlaceSubFilters(filters){
+            const already_mounted = SubFiltersExist();
+            if (!already_mounted){
+                const SubfiltersPlace = document.getElementById('SubfiltersBase')
+                const SubFilters = deploySubFilters(filters);
+                SubfiltersPlace.innerHTML = SubFilters;
+                localStorage.setItem('CachedFilterProperties', JSON.stringify(filters))
+            }
+        }
+        function PlaceSubFiltersByCache(filters){
+            const already_mounted = SubFiltersExist();
+            if (!already_mounted){
+                const RawData = localStorage.getItem('CachedFilterProperties')
+                const DataReady = RawData ? JSON.parse(RawData) : null
+                if (DataReady){
+                    const SubfiltersPlace = document.getElementById('SubfiltersBase')
+                    const SubFilters = deploySubFilters(DataReady);
+                    SubfiltersPlace.innerHTML = SubFilters;
+                }
+            }
+        }
         
         const ready = arrangeFilters();
 
@@ -890,14 +917,35 @@
             }, 111);
         }
 
-        SetProductCard();
+        const CloseFiltersForMobiles = ()=>{
+            const deviceWidth = window.innerWidth;
+            if (Number(deviceWidth) < 770){
+                const FilterWindow = document.getElementsByClassName('ParentDropDown');
+                if (FilterWindow[0])
+                    FilterWindow[0].click();
+            }
+        };
+
+        function ClickSearchForClient(){
+            const searchTriggerButton = document.getElementsByClassName('searchButton')[0];
+            if(searchTriggerButton)
+                searchTriggerButton.click()
+        }
+
+        window.addEventListener("keypress", function(event) {
+            if (event.keyCode === 13) {
+                ClickSearchForClient();
+            }
+        });
+
         window.addEventListener('pageshow', function(event) {
+            CloseFiltersForMobiles();
+            SetProductCard();
             setTimeout(() => {
                 SetProductCard(true);
                 HandleSearchBarState();
-            }, 799);
+            }, 699);
         });
-
     </script>
 
 </body>

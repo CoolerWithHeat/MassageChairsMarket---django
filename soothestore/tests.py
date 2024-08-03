@@ -1,56 +1,31 @@
-import asyncio
-# import aiohttp
-import time,  requests
+import requests
 
-data = {
-    'amount': 1000
-}
-
-request = requests.post("http://localhost/initiate_checkout/", data=data)
+token = '3d4b0c8396313ed640876a2d707e8521a4a1575a'
+request = requests.get('http://192.168.0.105/serverdestination/GetAllFAQs/')
 print(request.json())
+# import websocket
 
-# async def fetch(url, session):
-#     try:
-#         start_time = time.time()
-#         async with session.get(url) as response:
-#             status_code = response.status
-#             text = await response.text()
-#             end_time = time.time()
-#             duration = end_time - start_time
-#             return status_code, text, duration
-#     except aiohttp.ClientError as e:
-#         return 500, str(e), None
+# def on_message(ws, message):
+#     print(message)
 
-# async def fetch_all(urls):
-#     async with aiohttp.ClientSession() as session:
-#         tasks = [fetch(url, session) for url in urls]
-#         return await asyncio.gather(*tasks)
+# def on_error(ws, error):
+#     print(error)
 
-# tries = 0
+# def on_close(ws, close_status_code, close_msg):
+#     print("### closed ###")
+
+# def on_open(ws):
+#     print("Opened connection")
+
+# token = '3d4b0c8396313ed640876a2d707e8521a4a1575a'
+# # token = None
+# landed_page = 2
 # if __name__ == "__main__":
-#     urls = ["http://172.206.235.69/Buy/"] * 1999
-#     while True:
-#         try:
-#             loop = asyncio.get_event_loop()
-#             results = loop.run_until_complete(fetch_all(urls))
-#             total_duration = 0
-#             for status_code, result, duration in results:
-#                 print("Status code:", status_code)
-#                 if (status_code == 500):
-#                     print(result)
-#                 if duration:
-#                     rounded_duration = round(duration, 1)
-#                     print("Request duration:", rounded_duration, "seconds")
-#                     total_duration += duration
-#             if total_duration:
-#                 average_duration = round(total_duration / len(results), 1)
-#                 print("Average request duration:", average_duration, "seconds")
-#             print(f"Trial {tries} Done waiting for second")
-#             tries += 1
-#             time.sleep(0.1)
-#         except KeyboardInterrupt:
-#             print("Interrupted by user. Exiting...")
-#             break
-#         except Exception as e:
-#             print("An error occurred:", e)
-#             print("Continuing...")
+#     websocket.enableTrace(True)
+#     ws = websocket.WebSocketApp(f"ws://127.0.0.1:7999/analyticsdestination/{landed_page}/{token}",
+#                               on_open=on_open,
+#                               on_message=on_message,
+#                               on_error=on_error,
+#                               on_close=on_close)
+
+#     ws.run_forever(reconnect=5)

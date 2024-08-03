@@ -83,3 +83,47 @@
   opacity: 1;
   transition: opacity 0.5s ease-in;
 }
+
+
+@media (min-width:770px){
+  #SubfiltersBase{
+    max-height: 50vh;
+    overflow-y: scroll;
+  }
+
+  #SubfiltersBase::-webkit-scrollbar {
+    width: 6px;
+    height: 4px;
+  }
+  
+  #SubfiltersBase::-webkit-scrollbar-thumb {
+    background-color: #b486ff;
+    border-radius: 3px;
+  }
+  
+  #SubfiltersBase::-webkit-scrollbar-thumb:hover {
+    background-color: hsl(211, 100%, 59%);
+    cursor: pointer;
+  }
+  
+  #SubfiltersBase::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+}
+
+
+#additionalSubFilters{
+  opacity: 0;
+  animation: dropAnimation 0.7s forwards ease-in-out;
+}
+
+@keyframes dropAnimation {
+  0% {
+    opacity: 0.2; 
+    transform: translateY(-100%);
+  }
+  100% {
+    opacity: 1; 
+    transform: translateY(0);
+  }
+}

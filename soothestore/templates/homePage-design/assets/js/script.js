@@ -86,10 +86,10 @@ var total = 1;
 var Result = null;
 
 function plus() {
-    ManageChanges();
     if (Result == null){
         Result = document.getElementById('quantityHolder');
     }
+    ManageChanges(false);
     const deductSpan = document.getElementById("deducted");
     const priceSpan = document.getElementById("amount");
     const price = priceSpan.dataset.price;
@@ -102,13 +102,13 @@ function plus() {
 }
 
 function minus() {
-    ManageChanges();
     if (Result == null){
         Result = document.getElementById('quantityHolder');
     }
+    ManageChanges(false);
     const priceSpan = document.getElementById("amount");
     const deductSpan = document.getElementById("deducted");
-    if (Result.innerHTML > 1) {
+    if (Number(Result.innerHTML) > 1) {
         const price = priceSpan.dataset.price;
         total -= 1;
         const resulted_price = (price*total).toFixed(2);
@@ -117,57 +117,5 @@ function minus() {
         if (deductSpan){
             deductSpan.textContent = `-$${deductSpan.dataset.amount*total}`;
         }
-    }
-}
-
-///////////////////////////////////////////////////////// Cart  //////////////////////////////////////////////////////////////
-
-function ob(item, price, count) {
-    this.item = item;
-    this.price = price;
-    this.count = count;
-}
-
-var cart = [];
-
-num =  document.getElementById('num');
-num.innerHTML = cart.length;
-
-function addItem() {
-    var newItem = new ob();
-    newItem.name = document.getElementById('name').innerHTML;
-    newItem.price = document.getElementById('amount').innerHTML;
-    newItem.count = Result.innerHTML;
-    cart.push(newItem);
-    num.innerHTML = cart.length;
-    generatCartItems();
-}
-
-function dropItem(i){
-    //delete cart[i];
-    cart.pop(i);
-    generatCartItems();
-}
-const cartContainer = document.querySelector('.cart');
-
-function generatCartItems(){
-    if(cart.length == 0){
-        var empty = '<h3>Cart</h3><p id ="empty">Your cart is empty.</p>';
-        cartContainer.innerHTML = empty;
-        //cartContainer.insertAdjacentHTML('beforeend',empty)      
-    }
-
-    else{
-        cartContainer.innerHTML = '<h3>Cart</h3>';
-        for(i=0;i<cart.length;i++){
-            cartContainer.insertAdjacentHTML('beforeend',
-            `<div class="item">
-            <img src="images/image-product-1-thumbnail.jpg" alt="" style="height: 60px;">
-            <p>${cart[i].name} $${cart[i].price} x ${cart[i].count} <strong>$${cart[i].price * cart[i].count}</strong></p>
-            <img src="images/icon-delete.svg" alt="" onclick="dropItem(${i})" class="cursor">
-          </div>`
-            ) ;
-        }
-        cartContainer.insertAdjacentHTML('beforeend','<button>Checkout</button>');
     }
 }
