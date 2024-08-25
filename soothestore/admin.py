@@ -18,6 +18,7 @@ admin.site.register(product_track)
 admin.site.register(CompanyContactInformation)
 admin.site.register(CustomerInquiry)
 admin.site.register(FAQ)
+admin.site.register(ProductMeta)
 
 class ChairBrand(admin.ModelAdmin):
     list_display = ('brand_name', 'authorized_in')

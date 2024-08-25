@@ -41,6 +41,19 @@ def RetrieveDate(Raw_Date):
     year = Raw_Date.year
     return day, month, year
 
+class ProductMeta(models.Model):
+    meta_description = models.TextField(max_length=160, blank=True, null=True, help_text="Description for SEO, max 160 characters.")
+    meta_keywords = models.CharField(max_length=255, blank=True, null=True, help_text="Comma-separated SEO keywords.")
+    # Open Graph fields
+    og_title = models.CharField(max_length=255, blank=True, null=True, help_text="Title for Open Graph, defaults to product title if blank.")
+    og_description = models.TextField(max_length=160, blank=True, null=True, help_text="Description for Open Graph, defaults to meta_description if blank.")
+    og_image = models.URLField(help_text="URL of the image for Open Graph.", blank=True, null=True,)
+    og_url = models.URLField(blank=True, null=True, help_text="Canonical URL of the product for Open Graph.")
+    og_type = models.CharField(max_length=50, blank=True, null=True, default='product', help_text="Type of content, e.g., product, article, etc.")
+
+    def __str__(self):
+        return f"Meta for {self.meta_keywords}"
+
 class ChairFeature(models.Model):
     called = models.CharField(max_length=120, default=None)
     feature_side = models.CharField(max_length=35, choices=showcase_side_options, default='any side')
@@ -132,6 +145,7 @@ class MassageChair(models.Model):
     additional_images = models.ManyToManyField('Additional_Images', related_name='additional_product_images', blank=True)
     video_demo = models.ManyToManyField(VideoShowcase, related_name='video_demonstration', blank=True)
     features = models.ManyToManyField(ChairFeature, related_name='Massage_Features', blank=True)
+    product_meta = models.ForeignKey(ProductMeta, on_delete=models.SET_NULL, default=None, blank=True, null=True)
     purchased = models.IntegerField(default=0)
     rating = models.DecimalField(max_digits=2, decimal_places=1, default=5.0, validators=[MaxValueValidator(limit_value=5.0)])
     posted = models.DateTimeField(default=timezone.now)
@@ -157,6 +171,13 @@ class MassageChair(models.Model):
                 return [images.image.url for images in additiona_images if images.image]
             except: pass
         return []
+
+    @property
+    def meta_data(self):
+        from .serializers import ProductMetaSerializer
+        meta = self.product_meta or None
+        if meta: meta = ProductMetaSerializer(meta).data
+        return meta or {}
     
     @property
     def chair_features_found(self):

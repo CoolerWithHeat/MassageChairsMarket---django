@@ -21,6 +21,11 @@ class DiscountCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = discount_code
         fields = '__all__' 
+    
+class ProductMetaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductMeta
+        fields = '__all__' 
 
 
 class CustomerInquirySerializer(serializers.ModelSerializer):

@@ -473,7 +473,7 @@ def InitiateCheckoutSession(request):
         print('last interpretation 8')
         if len(cart_details) > 0:
             new_order_number = generate_order_number()
-            current_url = 'http://192.168.0.105/' if settings.DEBUG else 'https://massagechairsmarket/'
+            current_url = 'http://192.168.180.22/' if settings.DEBUG else 'https://massagechairsmarket.com/'
             checkout_session = stripe.checkout.Session.create(
                 line_items=cart_details,
                 mode='payment',
@@ -577,7 +577,7 @@ def GetDiscountData(discount_used):return bool(discount_used)
 @api_view(['GET']) 
 def order_details(request, order_number):
     if (order_number) and (len(order_number) == 12):
-        try:
+        # try:
             order = Payment_Session.objects.get(order_number=order_number)
             amount_paid = Payed(order.session)
             first_time_seeing = False
@@ -616,7 +616,7 @@ def order_details(request, order_number):
             else: 
                 order.delete()
                 return Response(status=404)
-        except: return Response(status=404)
+        # except: return Response(status=404)
     else: return Response(status=404)
 
 def initiatePayment(request): return render(request, "homePage-design/trial.html")
@@ -952,6 +952,7 @@ def HandleVideoDemo(model, data, operation_type):
     return {}
 
 def UpdateProductTextInformation(model, data, operation_type):
+    print(operation_type)
     if operation_type == 'add':
         requested_brand = Brand.objects.get(brand_name=data.pop('brand'))
         for key, value in data.items():
@@ -978,7 +979,7 @@ class UpdateProduct(APIView):
             if data.get('operation') == 'delete':
                 print('delete requested !!!')
                 product_details = MassageChairSerializer(requested_product, many=False).data
-                requested_product.delete()
+                requested_product.delete()  
                 return Response(product_details, status=status.HTTP_200_OK)
             operation_point = data.get('to_model')
             operation_type = data.get('do')
@@ -987,6 +988,7 @@ class UpdateProduct(APIView):
             if operation_point and operation_point and callable(request_operator):
                 added_object = request_operator(requested_product, data_for_operation, operation_type)
                 return Response(added_object, status=status.HTTP_201_CREATED)
+        print('went without condition met!')
         return Response({}, status=status.HTTP_201_CREATED)
 
 class GetBrands(APIView):
@@ -1297,3 +1299,75 @@ class RemoveFAQ(APIView):
             faq_being_removed.delete()
             return Response({}, status=status.HTTP_200_OK)
         return Response(status=status.HTTP_404_NOT_FOUND)
+
+class IndexProductView(APIView):
+    permission_classes = [HasToBeAdmin]
+    def post(self, request, product_id):
+        if not product_id:
+            return Response({'error': 'Product ID is required'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            from .index import ChairIndex
+            from algoliasearch_django import get_adapter
+            product = MassageChair.objects.get(id=product_id)
+            adapter = get_adapter(MassageChair)
+            index = adapter.save_record(product)
+            return Response({'message': 'Product indexed successfully'}, status=status.HTTP_200_OK)
+        except MassageChair.DoesNotExist:
+            return Response({'error': 'Product not found'}, status=status.HTTP_404_NOT_FOUND)
+
+class companyContactPoint(APIView):
+    def get(self, request):
+        contact = CompanyContactInformation.objects.all()[0]
+        serializedContact = CompanyContactInformationSerializer(contact, many=False)
+        return Response(serializedContact.data, status=status.HTTP_200_OK)
+
+def Get_OG_image_url(data):
+    requested_model = data.get('path')
+    requested_id = data.get('id')
+    data_indecies = {
+        'color_options': Color_Options,
+        'additional_images': Additional_Images, 
+    }
+    if requested_id and requested_model:
+        found_model = data_indecies.get(requested_model)
+        if(found_model):
+            requested_instance = get_object_or_404(found_model, id=int(requested_id))
+            return requested_instance.image.url if (requested_instance and requested_instance.image) else None
+
+class Product_Meta(APIView):
+    permission_classes = [HasToBeAdmin]
+    def get(self, request, product_id):
+        requested_product = get_object_or_404(MassageChair, id=product_id)
+        print(requested_product)
+        if requested_product:
+            product_images = requested_product.available_colors_found
+            product_additional_images = requested_product.additional_images.all()
+            if len(product_images): product_images = list(map(lambda product: {'id':product['id'], 'image':product['image']}, product_images))
+            if len(product_additional_images): product_additional_images = list(map(lambda product: {'id':product.id, 'image': product.image.url if product.image else None}, product_additional_images))
+            all_images = {'color_images': product_images, 'additional_images': product_additional_images}
+            product_meta = requested_product.product_meta or None
+            if product_meta: 
+                product_meta = ProductMetaSerializer(product_meta, many=False).data
+                product_meta['images_found'] = all_images
+            return Response(product_meta or {}, status=status.HTTP_200_OK)
+        return Response({}, status=status.HTTP_200_OK)
+    def post(self, request, product_id):
+        requested_product = get_object_or_404(MassageChair, id=product_id)
+        if requested_product:
+            found_meta = requested_product.product_meta or None
+            posted_data = json.loads(request.body) or {}
+            og_image = posted_data.get('og_image') if posted_data else None
+            if og_image: og_image = Get_OG_image_url(og_image) 
+            posted_data['og_image'] = og_image
+            handled_meta = None
+            if found_meta: 
+                for key, value in posted_data.items():
+                    setattr(found_meta, key, value)
+                found_meta.save()
+                handled_meta = found_meta
+            if not found_meta:
+                handled_meta = ProductMeta.objects.create(**posted_data)
+                requested_product.product_meta = handled_meta
+                requested_product.save()
+            serialized_meta = ProductMetaSerializer(handled_meta, many=False).data
+            return Response(serialized_meta or {}, status=status.HTTP_200_OK)

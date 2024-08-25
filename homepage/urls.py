@@ -13,6 +13,7 @@ if using_nginx:
         path('serverdestination/FAQ/', FAQ),
         path('serverdestination/Cart/', Cart),
         path('serverdestination/VerifyCart/', CheckCart.as_view()),
+        path('serverdestination/GetCompanyContact/', companyContactPoint.as_view()),
         path('serverdestination/RecordReview/<int:chair_id>/', ChairReviewCreateAPIView.as_view()),
         path('serverdestination/DeleteReview/<int:review_id>/', RemoveReview.as_view()),
         path('serverdestination/RecordInquiry/', SaveCustomerQuestion.as_view()),
@@ -54,6 +55,8 @@ if using_nginx:
         path('serverdestination/SwapFAQ/<int:FAQ_id>/', SwapFAQs.as_view()),
         path('serverdestination/RemoveFAQ/<int:FAQ_id>/', RemoveFAQ.as_view()),
         path('serverdestination/SwapEach/<int:FAQ_id>/<int:FAQ_at_priority>/', SwapEach.as_view()),
+        path('serverdestination/reindex-product/<int:product_id>/', IndexProductView.as_view()),
+        path('serverdestination/Product_Meta/<int:product_id>/', Product_Meta.as_view()),
     ]
 else:
     urlpatterns = [
