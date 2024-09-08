@@ -1,4 +1,4 @@
-#!/home/badassguy/Desktop/dropshipper-store/env/bin/python3
+#!/home/mansur/Desktop/dropshipper-store/env/bin/python3
 
 import sys
 import json

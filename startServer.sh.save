@@ -1,0 +1,5 @@
+#!/bin/bash
+# This script starts the server
+cd /home/mansur/Desktop/dropshipper-store
+sudo /usr/bin/python3 /home/mansur/Desktop/dropshipper-store/manage.py runserver 0.0.0.0:8000
+python3 -m venv env
