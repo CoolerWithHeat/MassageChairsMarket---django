@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Navigate to the project directory
-cd /home/mansur/Desktop/dropshipper-store || { echo "Directory not found"; exit 1; }
+cd /home/badassguy/Desktop/dropshipper-store || { echo "Directory not found"; exit 1; }
 
 # Create a virtual environment in the 'env' directory (if it doesn't already exist)
 if [ ! -d "env" ]; then

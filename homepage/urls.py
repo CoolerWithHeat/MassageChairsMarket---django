@@ -57,6 +57,8 @@ if using_nginx:
         path('serverdestination/SwapEach/<int:FAQ_id>/<int:FAQ_at_priority>/', SwapEach.as_view()),
         path('serverdestination/reindex-product/<int:product_id>/', IndexProductView.as_view()),
         path('serverdestination/Product_Meta/<int:product_id>/', Product_Meta.as_view()),
+        path('serverdestination/AdjustPrice/', PriceAdjustmentPoint.as_view()),
+        path('serverdestination/SpecialEvent/', PromotionDetails.as_view()),
     ]
 else:
     urlpatterns = [

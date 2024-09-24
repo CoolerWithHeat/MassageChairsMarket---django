@@ -36,10 +36,17 @@ def get_customer_location(ip_address):
     try:
         location = g.city(ip_address)
     except Exception as e:
+        print(e)
         return None
-
     return location.get('region', None)
-    
+
+def GetSpecialEvent():
+    special_offer = SpecialEvent.objects.first()
+    if special_offer:
+        if special_offer.offer_active:
+            offer = SpecialEventSerializer(special_offer, many=False)
+            return offer.data
+    return None
 def GetDiscount(eligible='new_customer_only'):
     discounts = discount_code.objects.filter(eligible=eligible)
     if discounts:
@@ -130,7 +137,7 @@ class CheckCart(APIView):
                 try:
                     verified_customer = None
                     try:verified_customer = SubscribedCustomers.objects.get(email=customer_email)
-                    except: 'Exception occured for getting customer'
+                    except: print('Exception occured for getting customer')
                     verified_discount_code = discount_code.objects.get(discount_code=requested_discount_code) if requested_discount_code else None
                     if isinstance(verified_discount_code, discount_code):
                         first_time_customer = (not verified_customer.used_first_time_discount or verified_customer == None) if verified_customer else False
@@ -189,7 +196,8 @@ def ValidateReview(data):
     for_product = MassageChair.objects.get(id=data.get('posted_for'))
     rate = data.get('customer_rate')
     poster = data.get('poster')
-    if (not isinstance(for_product, MassageChair)) or (not rate) or (not poster): return None
+    print(len(str(poster)))
+    if (not isinstance(for_product, MassageChair)) or (not rate) or (not poster) or (len(str(poster)) > 35 or len(str(poster)) < 2): return None
     data['posted_for'] = for_product
     return data
 
@@ -200,27 +208,22 @@ def SaveReview(data):
 
 class ChairReviewCreateAPIView(APIView):
     def post(self, request, chair_id):
-        customer_ip_adress = get_client_ip(request)
-        poster_location = None
-        try:
-            poster_location = get_customer_location(customer_ip_adress)
-            request.data['poster_location'] = poster_location
-        except: pass
-        request.data['posted_for'] = chair_id
-        validData = ValidateReview(request.data)
-        if validData:
-            review = SaveReview(validData)
-            review['customers_reaction'] = {'likes':0, 'dislikes':0}
-            return Response(review, status=status.HTTP_201_CREATED)
-        # serializer = ChairReviewSerializer(data=request.data)
-        # print(request.data)
-        # if serializer.is_valid():
-        #     serializer.save()
-        #     UpdateProductReviewStatus(chair_id)
-        #     processed_data = serializer.data
-        #     processed_data['customers_reaction'] = {'likes':0, 'dislikes':0}
-        #     return Response(processed_data, status=status.HTTP_201_CREATED)
-        # else: print(serializer.errors)
+        for_chair = get_object_or_404(MassageChair, id=chair_id)
+        if for_chair:
+            customer_ip_adress = get_client_ip(request)
+            poster_location = None
+            try:
+                poster_location = get_customer_location(customer_ip_adress)
+                request.data['poster_location'] = poster_location
+            except: pass
+            request.data['posted_for'] = chair_id
+            validData = ValidateReview(request.data)
+            if validData:
+                reviewsCount = ChairReview.objects.filter(posted_for=for_chair).count()
+                review = SaveReview(validData)
+                review['is_the_first'] = True if reviewsCount==0 else False 
+                review['customers_reaction'] = {'likes':0, 'dislikes':0}
+                return Response(review, status=status.HTTP_201_CREATED)
         return Response(status=status.HTTP_400_BAD_REQUEST)
 
 class ProductReviewsEndpoint(generics.RetrieveAPIView):
@@ -312,6 +315,12 @@ class MassageChairDetailView(APIView):
         except MassageChair.DoesNotExist:
             return Response({'message': 'Chair with id {} does not exist'.format(product_ID)}, status=status.HTTP_404_NOT_FOUND)
 
+def GetDecidedOffer():
+    special_offer = GetSpecialEvent()
+    new_customer_discount = GetDiscount()
+    if special_offer: return {'new_customers_discount': new_customer_discount, 'public_discount':None, 'special_event': special_offer}
+    else: return {'new_customers_discount': new_customer_discount, 'public_discount':GetDiscount('everyone')}
+
 class FetchHomePage(APIView):
     def get(self, request, *args, **kwargs):
         brands = []
@@ -324,13 +333,12 @@ class FetchHomePage(APIView):
         product_amount = len(filtered_objects)
         if not (product_amount >= 6) :
             filtered_objects = MassageChair.objects.filter(Q(purchased__gte=10) | Q(rating__gt=4.0))
-        
+
         if (product_amount):
             serializedProducts = MassageChairSerializer(filtered_objects, many=True)
-            new_customer_discount = GetDiscount()
-            public_discount = GetDiscount('everyone')
             contactInformation = GetCompanyContactInformation()
-            return Response({'products': serializedProducts.data, 'partners': brands, 'brand_names': brand_names, 'company_contact': contactInformation, 'available_discounts':{'new_customers_discount': new_customer_discount, 'public_discount':public_discount}}) 
+            offersAvailable = GetDecidedOffer()
+            return Response({'products': serializedProducts.data, 'partners': brands, 'brand_names': brand_names, 'company_contact': contactInformation, 'available_discounts':offersAvailable}) 
         else:
             return Response({'message': 'no data available yet !'}, status=404)
 
@@ -358,6 +366,7 @@ def get_cart_details(products, discount=None):
             'quantity': quantity,
         })
         if (product and exact_color):
+            item['price'] = float(product.price)
             verified_ids.append(product.id)
             verified_client_cart.append(item)
     return line_items, verified_ids, verified_client_cart
@@ -438,6 +447,16 @@ def PrepareJsonDiscount(discount):
         return discount.data
     else: return None
 
+def get_local_ip():
+    import socket
+    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+    try:
+        s.connect(("8.8.8.8", 80))
+        ip = s.getsockname()[0]
+    finally:
+        s.close()
+    return ip
+
 @api_view(['POST'])
 def InitiateCheckoutSession(request):
     # try:
@@ -473,7 +492,7 @@ def InitiateCheckoutSession(request):
         print('last interpretation 8')
         if len(cart_details) > 0:
             new_order_number = generate_order_number()
-            current_url = 'http://192.168.180.22/' if settings.DEBUG else 'https://massagechairsmarket.com/'
+            current_url = f'http://192.168.0.107/' if settings.DEBUG else 'https://massagechairsmarket.com/'
             checkout_session = stripe.checkout.Session.create(
                 line_items=cart_details,
                 mode='payment',
@@ -484,6 +503,8 @@ def InitiateCheckoutSession(request):
             stripe_session = checkout_session.id
             shipping = ShippingInformation.objects.create(**validShipmentData)
             print('last interpretation 10')
+            print(verified_client_cart)
+            print(discount_instance)
             Payment_Session.objects.create(order_number=new_order_number, session=stripe_session, shipping_address=shipping, verified_cart=verified_client_cart, expected_amount=expected_payment, discount_code_used=PrepareJsonDiscount(discount_instance), associated_email = discount_amount_for_deduction.get('associated_email') if discount_amount_for_deduction else None)
             print('last interpretation 11')
             return Response({'sessionId': stripe_session})
@@ -557,6 +578,7 @@ def getExactColorProducts(verifiedCart=[], payment_session=None):
             product_id = each_products.get('product_id')
             product_color = each_products.get('selectedColor')
             product_quantity = each_products.get('quantity')
+            product_price = each_products.get('price')
             retrieved_product = None
             try: retrieved_product = MassageChair.objects.get(id=product_id)
             except: pass
@@ -565,7 +587,6 @@ def getExactColorProducts(verifiedCart=[], payment_session=None):
                 color_data = retrieved_product.get_exact_color(product_color)
                 product_color = {'colorname':str(color_data), 'product_image': color_data.image.url if color_data.image else None}
                 product_name = retrieved_product.title
-                product_price = retrieved_product.price
                 prepared_data = {'product_color': product_color, 'product_price':product_price, 'product_name': product_name, 'product_quantity': product_quantity, **product_tracking}
                 found_products.append(prepared_data)
                 total += (product_price * int(product_quantity))
@@ -582,7 +603,7 @@ def order_details(request, order_number):
             amount_paid = Payed(order.session)
             first_time_seeing = False
             updated_data = False
-            was_for_new_customers = order.discount_code_used.get('eligible') == 'new_customer_only' if order else None
+            was_for_new_customers = (order.discount_code_used.get('eligible') == 'new_customer_only' if order else False) if order.discount_code_used else False
             customer = None
             try: customer = SubscribedCustomers.objects.get(email=order.associated_email) if order.associated_email else None
             except: pass
@@ -847,13 +868,12 @@ class SaveProduct(APIView):
         additional_images = incoming_data.get('additional_images')
         product_features = incoming_data.get('features')
         product_videos = incoming_data.get('video_demo')
+        product_price = incoming_data.get('price')
         # reference variables !!!!
         product_colors = []
         product_additional_images = []
         features = []
         video_demos = []
-        print(len(available_colors or []))
-        print(len(additional_images or []))
         if (incoming_data):
             of_brand = Brand.objects.get(brand_name=requested_brand)
             incoming_data['brand'] = of_brand
@@ -861,7 +881,7 @@ class SaveProduct(APIView):
             if additional_images: product_additional_images = getAdditionalImages(incoming_data.pop('additional_images'))
             if product_features: features = getFeatures(incoming_data.pop('features'))
             if product_videos: video_demos = getVideos(incoming_data.pop('video_demo'))
-            created_product = MassageChair.objects.create(**incoming_data)
+            created_product = MassageChair.objects.create(**incoming_data, initial_price=(int(product_price) if product_price else 0))
             AddColorOptions(created_product, product_colors)
             AddAdditionalImages(created_product, product_additional_images)
             AddFeatures(created_product, features)
@@ -1371,3 +1391,86 @@ class Product_Meta(APIView):
                 requested_product.save()
             serialized_meta = ProductMetaSerializer(handled_meta, many=False).data
             return Response(serialized_meta or {}, status=status.HTTP_200_OK)
+
+
+def AdjustPrices(operation, adjustment_value):
+    if adjustment_value and operation:
+        from django.db import transaction
+        adjustment_value = float(adjustment_value)
+        if operation == 'increase':
+            MassageChair.objects.update(price=models.F('price') + adjustment_value)
+        elif operation == 'reset':
+            from django.db.models import F
+            MassageChair.objects.update(price=F('initial_price'))
+        SyncWithAlgola()
+
+def SyncWithAlgola():
+    from django.core.management import call_command
+    call_command('algolia_reindex')
+
+class PriceAdjustmentPoint(APIView):
+    def post(self, request):
+        posted_data = json.loads(request.body) or {}
+        valid_change = posted_data.get('value') or None
+        valid_change = float(valid_change) if valid_change else valid_change
+        reset_requested = str(posted_data.get('operation')) == 'reset'
+        increaseHistory = PriceIncreaseHistory.objects.first()
+        if reset_requested and increaseHistory:
+            wasIncreased = float(increaseHistory.increasedBy)
+            increaseHistory.delete()
+            AdjustPrices('reset', wasIncreased)
+        else:
+            if valid_change:
+                if increaseHistory:
+                    wasIncreased = float(increaseHistory.increasedBy)
+                    resultingIncrease = abs(wasIncreased - valid_change)
+                    if resultingIncrease:
+                        increaseHistory.increasedBy = valid_change
+                        increaseHistory.save()
+                        AdjustPrices('increase', resultingIncrease)
+                    else: increaseHistory.delete()
+                else:
+                    PriceIncreaseHistory.objects.create(increasedBy=valid_change)
+                    AdjustPrices('increase', valid_change)
+        return Response({}, status=status.HTTP_200_OK)
+
+def generate_offer_id(): return str(random.randint(10000000, 99999999))
+
+class PromotionDetails(APIView):
+    def post(self, request):
+        posted_data = json.loads(request.body)
+        title = posted_data.get('called')
+        code = posted_data.get('offer_code')
+        amount = posted_data.get('offer_amount')
+        if (not title) or (not code) or (not amount): return Response({}, status=status.HTTP_400_BAD_REQUEST)
+        imageLeft = Return_Base64_AsFile(posted_data.pop('left_image', None))
+        imageRight = Return_Base64_AsFile(posted_data.pop('right_image', None))
+        imageMobile = Return_Base64_AsFile(posted_data.pop('mobile_image', None))
+        event = SpecialEvent.objects.first()
+        if event:
+            for key, value in posted_data.items():
+                setattr(event, key, value)
+            if imageLeft: event.left_image = imageLeft
+            if imageRight: event.right_image = imageRight
+            if imageMobile: event.mobile_image = imageMobile
+            event.identifier = generate_offer_id()
+            event.save()
+            serializedEvent = SpecialEventSerializer(event, many=False)
+            return Response(serializedEvent.data, status=status.HTTP_200_OK)
+        else:
+            firstEvent = SpecialEvent.objects.create(**posted_data)
+            if imageLeft: event.left_image = imageLeft
+            if imageRight: event.right_image = imageRight
+            if imageMobile: event.mobile_image = imageMobile
+            event.identifier = generate_offer_id()
+            firstEvent.save()
+            serializedEvent = SpecialEventSerializer(firstEvent, many=False)
+            return Response(serializedEvent.data, status=status.HTTP_200_OK)
+    
+    
+    def get(self, request):
+        event = SpecialEvent.objects.first()
+        if event:
+            serializedEvent = SpecialEventSerializer(event, many=False)
+            return Response(serializedEvent.data, status=status.HTTP_200_OK)
+        return Response({}, status=status.HTTP_200_OK)

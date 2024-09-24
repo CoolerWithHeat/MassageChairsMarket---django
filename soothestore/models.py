@@ -54,12 +54,28 @@ class ProductMeta(models.Model):
     def __str__(self):
         return f"Meta for {self.meta_keywords}"
 
+class SpecialEvent(models.Model):
+    called = models.CharField(max_length=120, default=None)
+    left_image = models.ImageField(default=None, blank=True, null=True)
+    right_image = models.ImageField(default=None, blank=True, null=True)
+    mobile_image  = models.ImageField(default=None, blank=True, null=True)
+    offer_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
+    offer_code = models.CharField(max_length=120, default=None)
+    show_on_scroll = models.BooleanField(default=False)
+    offer_active = models.BooleanField(default=True)
+    identifier = models.IntegerField(unique=True, blank=True, null=True)
+    def __str__(self): return str(self.called)
+
 class ChairFeature(models.Model):
     called = models.CharField(max_length=120, default=None)
     feature_side = models.CharField(max_length=35, choices=showcase_side_options, default='any side')
     feature_description = models.TextField(max_length=655, default=None, blank=True, null=True)
     feature_showcase = models.ImageField(default=None, blank=True, null=True)
     def __str__(self): return str(self.called)
+
+class PriceIncreaseHistory(models.Model):
+    increasedBy = models.FloatField()
+    def __str__(self): return f'increase of ${float(self.increasedBy)}'
 
 class CompanyContactInformation(models.Model):
     phone_number = models.CharField(max_length=25, default=None, blank=True)
@@ -139,6 +155,7 @@ class MassageChair(models.Model):
     title = models.CharField(max_length=60)
     brand = models.ForeignKey(Brand, on_delete=models.DO_NOTHING)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    initial_price = models.DecimalField(max_digits=10, decimal_places=2, default=0.00)
     discount_amount = models.DecimalField(max_digits=10, decimal_places=2, default=0.00, blank=True, null=True)
     description = models.TextField(default=None)
     available_colors = models.ManyToManyField('Color_Options', related_name='massage_chairs')

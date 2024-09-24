@@ -21,6 +21,11 @@ class DiscountCodeSerializer(serializers.ModelSerializer):
     class Meta:
         model = discount_code
         fields = '__all__' 
+
+class SpecialEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SpecialEvent
+        fields = '__all__' 
     
 class ProductMetaSerializer(serializers.ModelSerializer):
     class Meta:
@@ -78,15 +83,10 @@ class ReviewResponseSerializer(serializers.ModelSerializer):
 
 class ChairReviewSerializer(serializers.ModelSerializer):
     replies = ReviewResponseSerializer(many=True, read_only=True)
-    is_the_first = serializers.SerializerMethodField()
     posted_for = MassageChairSerializer()
     class Meta:
         model = ChairReview
-        fields = ['id', 'posted_for', 'poster', 'poster_location', 'customer_rate', 'review_text', 'posted_date', 'replies', 'is_the_first']
-    
-    def get_is_the_first(self, obj):
-        first_review = ChairReview.objects.count()
-        return first_review == 1
+        fields = ['id', 'posted_for', 'poster', 'poster_location', 'customer_rate', 'review_text', 'posted_date', 'replies']
     
 class AdminReviewsSerializer(serializers.ModelSerializer):
     posted_for = MassageChairSerializer()
