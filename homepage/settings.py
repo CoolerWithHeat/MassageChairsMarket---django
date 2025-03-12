@@ -61,18 +61,18 @@ TEMPLATES = [
 WSGI_APPLICATION = 'homepage.wsgi.application'
 
 
-AWS_ACCESS_KEY_ID = 'AKIA3FLDZ7S'
+AWS_ACCESS_KEY_ID = ''
 AWS_SECRET_ACCESS_KEY = '16zFgW/'
 AWS_STORAGE_BUCKET_NAME = 'massagechairs'
 AWS_S3_REGION_NAME = 'eu-north-1'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_QUERYSTRING_AUTH = False
 
-STRIPE_SECRET_KEY = 'sk_test_51P4rPa03nbzcvY4RdeSc'
+STRIPE_SECRET_KEY = ''
 
 ALGOLIA = {
-    'APPLICATION_ID': 'K7LWE7RYA4',
-    'API_KEY': 'dd84d643cb097b484b87bf0a2c35d742'
+    'APPLICATION_ID': '',
+    'API_KEY': ''
 }
 
 GEOIP_PATH = os.path.join(BASE_DIR, 'GetLite2', 'GeoLite2-City.mmdb')
