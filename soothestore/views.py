@@ -16,6 +16,7 @@ from django.contrib.gis.geoip2 import GeoIP2
 from django.utils.timezone import now
 from .permissions import HasToBeAdmin
 
+
 def generate_unique_id(): return random.randint(100000000000, 999999999999)
 
 def GetCompanyContactInformation():
@@ -82,9 +83,6 @@ def HomePage(request):
     filters = {
         "filters": "brand: Osaki",
     }
-    response = raw_search(MassageChair, filters)
-
-    print(response)
     return render(request, 'homePage-design/home.html')
 
 def SearchPage(request):
@@ -328,13 +326,12 @@ class FetchHomePage(APIView):
         for each_brand in Brand.objects.all():
             brand_names.append(each_brand.brand_name)
             if each_brand.brand_logo: brands.append(each_brand.brand_logo.url)
-
-        filtered_objects = MassageChair.objects.filter(price__gte=5000)
+        filtered_objects = MassageChair.objects.all()
         product_amount = len(filtered_objects)
         if not (product_amount >= 6) :
             filtered_objects = MassageChair.objects.filter(Q(purchased__gte=10) | Q(rating__gt=4.0))
 
-        if (product_amount):
+        if (filtered_objects):
             serializedProducts = MassageChairSerializer(filtered_objects, many=True)
             contactInformation = GetCompanyContactInformation()
             offersAvailable = GetDecidedOffer()
@@ -345,15 +342,22 @@ class FetchHomePage(APIView):
 def get_cart_details(products, discount=None):
     line_items = []
     verified_client_cart = []
-    products_amount = len(products)
+    products_amount = sum(item['quantity'] for item in products) if len(products) else 1
     each_reduction_as_discount = discount / products_amount if discount else 0
     verified_ids = []
     for item in products:
         product_id = item['product_id']
         quantity = item['quantity']
+        print(quantity, 'as quantity')
+        print(each_reduction_as_discount, 'each for as discount')
+        print(discount, 'as overall discount')
+        print(products_amount, 'as overall product quantity')
+        print(products, 'as overall product')
         color = item['selectedColor']
         product = get_object_or_404(MassageChair, id=product_id)
         exact_color = product.get_exact_color(color, True)
+
+        print(product.price, 'as price')
         line_items.append({
             'price_data': {
                 'currency': 'usd',
@@ -404,9 +408,10 @@ def GetRawTotal(data):
     if len(data):
         for eachProductData in data:
             product_id = eachProductData.get('product_id')
+            quantity = eachProductData.get('quantity')
             try:
                 product = MassageChair.objects.get(id=product_id)
-                total += product.price
+                total += (float(product.price) * int(quantity))
             except:
                 pass
     return total
@@ -457,13 +462,29 @@ def get_local_ip():
         s.close()
     return ip
 
+def validate_address(data):
+    required_fields = ['firstname', 'address', 'country', 'zipcode', 'city', 'state', 'phone_number']
+    try:
+        for field in required_fields:
+            if field not in data or not data[field]:
+                return None
+        if data['country'] != 'United States':
+            return None
+        if not data['phone_number'].startswith('+1'):
+            return None
+        if not data['firstname']:
+            return None
+        return data
+    except: return None
+
+
 @api_view(['POST'])
 def InitiateCheckoutSession(request):
     # try:
     cart = request.data.get('cartProducts')
     discount_request = request.data.get('discountVerfication')
-    shipping_details = request.data.get('shipping_information')
-    print(discount_request)
+    shipping_details = validate_address(request.data.get('shipping_information') or {})
+    shipping_details = ShippingInformation.objects.create(**shipping_details) if shipping_details else None
     print('discount request was ', discount_request)
     discount_data = GetCheckoutWithDiscount(discount_request)
     print('last interpretation 1')
@@ -476,12 +497,11 @@ def InitiateCheckoutSession(request):
     RawTotal = float(GetRawTotal(cart))
     print('last interpretation 3')
     processed_discount_details = discount_amount_for_deduction
-    validShipmentData = ValidateShipmentInformation(shipping_details)
     print('last interpretation 4')
     print('after discount resulted in amount -->', getExpectedPayment(RawTotal, discount_amount_for_deduction))
     expected_payment = getExpectedPayment(RawTotal, discount_amount_for_deduction)
     print('last interpretation 5')
-    if validShipmentData and len(cart) and RawTotal:
+    if len(cart) and RawTotal:
         if discount_amount_for_deduction: processed_discount_details = ((RawTotal / 100) * discount_amount_for_deduction.get('amount')) if discount_amount_for_deduction.get('type') == 'percentage' else discount_amount_for_deduction.get('amount')
         print('last interpretation 6')
         processed_data = get_cart_details(cart, processed_discount_details)
@@ -492,7 +512,7 @@ def InitiateCheckoutSession(request):
         print('last interpretation 8')
         if len(cart_details) > 0:
             new_order_number = generate_order_number()
-            current_url = f'http://192.168.0.107/' if settings.DEBUG else 'https://massagechairsmarket.com/'
+            current_url = f'http://localhost/' #if settings.DEBUG else 'https://massagechairsmarket.com/'
             checkout_session = stripe.checkout.Session.create(
                 line_items=cart_details,
                 mode='payment',
@@ -501,11 +521,10 @@ def InitiateCheckoutSession(request):
             )
             print('last interpretation 9')
             stripe_session = checkout_session.id
-            shipping = ShippingInformation.objects.create(**validShipmentData)
             print('last interpretation 10')
             print(verified_client_cart)
             print(discount_instance)
-            Payment_Session.objects.create(order_number=new_order_number, session=stripe_session, shipping_address=shipping, verified_cart=verified_client_cart, expected_amount=expected_payment, discount_code_used=PrepareJsonDiscount(discount_instance), associated_email = discount_amount_for_deduction.get('associated_email') if discount_amount_for_deduction else None)
+            Payment_Session.objects.create(order_number=new_order_number, session=stripe_session, verified_cart=verified_client_cart, expected_amount=expected_payment, discount_code_used=PrepareJsonDiscount(discount_instance), associated_email = discount_amount_for_deduction.get('associated_email') if discount_amount_for_deduction else None, shipping_address=shipping_details)
             print('last interpretation 11')
             return Response({'sessionId': stripe_session})
     # except Exception as e:
@@ -881,7 +900,7 @@ class SaveProduct(APIView):
             if additional_images: product_additional_images = getAdditionalImages(incoming_data.pop('additional_images'))
             if product_features: features = getFeatures(incoming_data.pop('features'))
             if product_videos: video_demos = getVideos(incoming_data.pop('video_demo'))
-            created_product = MassageChair.objects.create(**incoming_data, initial_price=(int(product_price) if product_price else 0))
+            created_product = MassageChair.objects.create(**incoming_data, initial_price=(float(product_price) if product_price else 0))
             AddColorOptions(created_product, product_colors)
             AddAdditionalImages(created_product, product_additional_images)
             AddFeatures(created_product, features)
@@ -893,18 +912,21 @@ class SaveProduct(APIView):
 
 class GetProducts(APIView):
     permission_classes = [HasToBeAdmin]
+
     def get(self, request):
         products = MassageChair.objects.all()
         brands = Brand.objects.all()
         serializedProducts = MassageChairSerializer(products, many=True)
-        serializedBrands = BrandSerializer(brands, many=(len(brands) > 1))
-        return Response({'products': serializedProducts.data, 'brands':serializedBrands.data}, status=status.HTTP_201_CREATED)
+        data = {'products': serializedProducts.data}
+        if brands:
+            serializedBrands = BrandSerializer(brands, many=True)
+            data['brands'] = serializedBrands.data
+        return Response(data, status=status.HTTP_200_OK)
+
 
 def HandleFeatureUpdate(model, data, operation_type):
     if operation_type == 'add':
         data['feature_showcase'] = Return_Base64_AsFile(data.get('feature_showcase'))
-        print(data.get('feature_side'))
-        # if (data.get('feature_side')): data['feature_side'] = showcase_side_options[int(data.pop('feature_side'))-1][0]
         feature = ChairFeature.objects.create(**data)
         model.features.add(feature)
         serialized_feature = ChairFeatureSerializer(feature, many=False)
@@ -976,6 +998,7 @@ def UpdateProductTextInformation(model, data, operation_type):
     if operation_type == 'add':
         requested_brand = Brand.objects.get(brand_name=data.pop('brand'))
         for key, value in data.items():
+            print(data.items())
             setattr(model, key, value)
         if isinstance(requested_brand, Brand): model.brand = requested_brand
         model.save()
@@ -1016,7 +1039,8 @@ class GetBrands(APIView):
     def get(self, request):
         brands = Brand.objects.all()
         serializedBrands = BrandSerializer(brands, many=True)
-        return Response(serializedBrands.data, status=status.HTTP_200_OK)
+        data = serializedBrands.data if(len(brands)) else []
+        return Response(data, status=status.HTTP_200_OK)
 
 class UpdateBrand(APIView):
     permission_classes = [HasToBeAdmin]
